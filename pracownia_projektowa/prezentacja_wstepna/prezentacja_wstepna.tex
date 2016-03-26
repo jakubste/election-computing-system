@@ -1,13 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Beamer Presentation
-% LaTeX Template
-% Version 1.0 (10/11/12)
+% Election Computing System
+% System obliczający i wizualizujący wyniki zgodnie z uogólnieniem systemu k-Borda na podstawie norm ell_p.
 %
-% This template has been downloaded from:
-% http://www.LaTeXTemplates.com
-%
-% License:
-% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% Prezentacja wykonana na Pracownię Projektową
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -21,6 +16,8 @@
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+\usepackage{amsmath}
+
 \selectlanguage{polish}
 
 \mode<presentation> {
@@ -57,42 +54,43 @@
 %\usetheme{Szeged}
 \usetheme{Warsaw}
 
-% As well as themes, the Beamer class has a number of color themes
-% for any slide theme. Uncomment each of these in turn to see how it
-% changes the colors of your current slide theme.
-
-%\usecolortheme{albatross}
-%\usecolortheme{beaver}
-%\usecolortheme{beetle}
-%\usecolortheme{crane}
-%\usecolortheme{dolphin}
-%\usecolortheme{dove}
-%\usecolortheme{fly}
-%\usecolortheme{lily}
-%\usecolortheme{orchid}
-%\usecolortheme{rose}
-%\usecolortheme{seagull}
-%\usecolortheme{seahorse}
-%\usecolortheme{whale}
-%\usecolortheme{wolverine}
-
-%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
-%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
-
 %\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
 
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 
+
+% Custom macros
+
+\newcommand{\red}[1]{
+	{ \color{red}{#1} }
+}
+
+\newcommand{\score}[2]{
+	\stackrel
+	{\red{#1}}
+	{#2}
+}
+
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+
+
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[System obliczący wyniki wyborów]{System obliczający wyniki wyborów dla uogólnienia systemu k-Borda} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title
+[System obliczący wyniki wyborów]
+{System obliczający wyniki wyborów dla uogólnienia systemu k-Borda}
 
-\author{T. Kasprzyk, D. Ogiela, J. Stępak} % Your name
-\institute[AGH] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+\author
+[T. Kasprzyk, D. Ogiela, J. Stępak]
+{Tomasz Kasprzyk, \ Daniel Ogiela, \ Jakub Stępak}
+
+\institute
+[AGH]
 {
 Akademia Górniczo-Hutnicza
 
@@ -103,17 +101,18 @@ Katedra Informatyki
 Projekt realizowany pod opieką \\dr. hab. inż. Piotra Faliszewskiego
 
 }
-\date{4 kwietnia 2016} % Date, can be changed to a custom date
+\date{4 kwietnia 2016}
+
+%----------------------------------------------------------------------------------------
 
 \begin{document}
 
-\begin{frame}
-\titlepage % Print the title page as the first slide
-\end{frame}
+\frame{\titlepage}
 
 \begin{frame}
-\frametitle{Plan (chyba to wywalimy)} % Table of contents slide, comment this block out to remove it
-\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+\frametitle{Plan}
+% TODO: zastanowić się czy to w ogóle potrzebne, IMHO nie i należy wywalić
+\tableofcontents
 \end{frame}
 
 %----------------------------------------------------------------------------------------
@@ -121,14 +120,18 @@ Projekt realizowany pod opieką \\dr. hab. inż. Piotra Faliszewskiego
 %----------------------------------------------------------------------------------------
 
 %------------------------------------------------
-\section{Opis problemu} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+\section{Opis problemu}
 %------------------------------------------------
 
-\subsection{Wybory} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+\subsection{Wybory}
 
 \begin{frame}
 \frametitle{Wybory}
-Naszym zadaniem jest obliczenie wyników wyborów. Przez wybory możemy rozumieć zarówno „tradycyjne” wybory np. parlamentarne, ale także, na przykład, problem wyboru odpowiednich tytułów filmowych do systemów rozrywkowych samolotu, aby jak najwięcej pasażerów mogło wybrać coś dla siebie. \\~\\
+Naszym zadaniem jest obliczenie wyników wyborów.
+Przez wybory możemy rozumieć zarówno „tradycyjne” wybory np. parlamentarne,
+ale także, na przykład, problem wyboru odpowiednich tytułów filmowych do
+systemów rozrywkowych samolotu, aby jak najwięcej pasażerów mogło wybrać
+coś dla siebie.
 \end{frame}
 
 %------------------------------------------------
@@ -136,7 +139,13 @@ Naszym zadaniem jest obliczenie wyników wyborów. Przez wybory możemy rozumie�
 
 \begin{frame}
 \frametitle{Wybory formalnie}
-Wybory to para $E = (C, V)$, gdzie $C = {c_1, c_2, …, c_m}$ to zbiór kandydatów, a $V = (v_1, v_2, …, v_m)$ to ciąg wyborców. Każdy wyborca jest opisany przez swoje $preferencje$, które są ciągiem kandydatów w porządku od najbardziej pożądanego przez danego wyborcę do najmniej pożądanego. Rozpatrujemy wybory komitetów, więc otrzymujemy też liczbę $k$ będącą wielkością wybieranego komitetu.
+Wybory to para $E = (C, V)$,
+gdzie $C = {c_1, c_2, \ldots, c_m}$ to zbiór kandydatów,
+a $V = (v_1, v_2, \ldots, v_m)$ to ciąg wyborców.
+Każdy wyborca jest opisany przez swoje $preferencje$,
+które są ciągiem kandydatów w porządku od najbardziej pożądanego
+przez danego wyborcę do najmniej pożądanego. Rozpatrujemy wybory
+komitetów, więc otrzymujemy też liczbę $k$ będącą wielkością wybieranego komitetu.
 \end{frame}
 
 %------------------------------------------------
@@ -145,28 +154,44 @@ Wybory to para $E = (C, V)$, gdzie $C = {c_1, c_2, …, c_m}$ to zbiór kandydat
 \frametitle{Przykładowe wybory}
 \begin{exampleblock}{Przykładowe wybory}
 
-
-$C = {a, b, c, d, e, … }$
-
-$V = (v_1, v_2, v_3, …, v_n)$
-
+$C = {a, b, c, d, e, \ldots }$
+$V = (v_1, v_2, v_3, \ldots, v_n)$
 $ $
-
-$v_1: a > b > c > d > e > …$
-
-$v_2: c > d > a > b > f > …$
-
-$v_3: …$
-
+$v_1: a > b > c > d > e > \ldots$
+$v_2: c > d > a > b > f > \ldots$
+$v_3: \ldots$
 $ \vdots $
-
-$v_n: f > g > e > b > a > …$
-
+$v_n: f > g > e > b > a > \ldots$
 $ $
-
 $ k = 20 $
 
 \end{exampleblock}
+\end{frame}
+
+%------------------------------------------------
+\subsection{Scoring rules}
+
+\begin{frame}
+\frametitle{Metoda Bordy}
+
+Metoda Bordy -
+niech $v$ będzie głosem nad zbiorem kandydatów $C$.
+Wynik wg Bordy kandydata $c \in C$ w $v$ jest równy
+$ ||C|| - pos_v(c) $.
+Wynik $c$ w wyborach jest sumą wyników $c$ dla każdego wyborcy.
+
+\begin{exampleblock}{Wynik metodą Bordy}
+$$
+\beta(i) = m-i, \quad gdzie \ m = ||C||
+$$
+\end{exampleblock}
+
+\begin{exampleblock}{Preferencje wyborcy}
+$$ 
+v_1: \score{m-1}{a} < \score{m-2}{b} < \score{m-3}{c} < \score{m-4}{d} < \ldots
+$$
+\end{exampleblock}
+
 \end{frame}
 
 %------------------------------------------------
@@ -174,140 +199,104 @@ $ k = 20 $
 \begin{frame}
 \frametitle{Committee scoring rules}
 
+\begin{exampleblock}{Preferencje wyborcy}
+$$
+v_3: \score{m-1}{g} < \score{m-2}{d} < \score{m-3}{e} < \score{m-4}{b} < \score{m-5}{f} < \score{m-6}{a} < \ldots
+$$
+\end{exampleblock}
 
+Dla wybranego komitetu $W = {a, b, e, f}$ i danego
+wyborcy $v_i$ definiujemy ciąg $ pos_i(W) $ jako
+posortowany ciąg pozycji, jakie zajmują kandydaci w preferencjach wyborcy:
+
+$$pos_{v_3}(W) = (3, 4, 5, 6)$$
+
+\begin{exampleblock}{Wartość komitetu dla wyborcy}
+$$
+f(i_1, \ldots, i_k)
+$$
+\end{exampleblock}
 
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Bullet Points}
+\frametitle{Committee scoring rules}
+
+Istnieją systemy wyborcze:
+
+\begin{tabular}{ll}
+k-Borda: 			& $f_{kB}(i_1, \ldots, i_k) = \beta(i_1) + \beta(i_2) + \ldots + \beta(i_k)$\\
+Chamberlin–Courant:  & $f_{CC}(i_1, \ldots, i_k) = \beta(i_1)$
+\end{tabular}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Norma $\ell_p$}
+
+\begin{block}{Norma $\ell_p$}
+$$
+\ell_p(x_1, x_2, \ldots, x_n ) = \sqrt[p]{ x_1^p + x_2^p + \ldots + x_n^p }
+$$
+\end{block}
+
+\begin{exampleblock}{}
+$$
+\begin{aligned}
+\ell_1 	\	 &\equiv 	\ \ +  \\
+\ell_\infty 	\  &\equiv 	\ max 
+\end{aligned}
+$$
+\end{exampleblock}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{System $\ell_p-Borda$}
+
+Rozważmy więc system definiowany następująco:
+
+\begin{exampleblock}{System $\ell_p-Borda$}
+$$
+f_{\ell_p}(i_1, i_2, \ldots, i_k ) = \ell_p( \beta(i_1) + \beta(i_2) + \ldots + \beta(i_k) )
+$$
+\end{exampleblock}
+
+\begin{exampleblock}{}
+$$
+\begin{aligned}
+f_{\ell_1} 	\	 &\equiv 	f_{k-Borda}  \\
+f_{\ell_\infty} 	\  &\equiv 	\ f_{Chamberlin-Courant} 
+\end{aligned}
+$$
+\end{exampleblock}
+
+\end{frame}
+
+%------------------------------------------------
+\section{Projekt inżynierski}
+
+\subsection{Nasze zadanie}
+
+\begin{frame}
+\frametitle{Nasze zadanie}
 \begin{itemize}
-\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
-\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
-\item Nam cursus est eget velit posuere pellentesque
-\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
+\item Obliczanie wyników wyborów w systemie $\ell_p-Borda$ jest czasochłonne.
+\item Naszym zadaniem jest znalezienie algorytmu, który pozwoli szybko przybliżać wyniki wyborów.
+\item Do systemu należy dostarczyć pewien interfejs, który będzie pozwalał na wprowadzenie preferencji z otwartych baz (jak \href{http://www.preflib.org/}{PrefLib}) lub generował rozkład wyborców i kandydatów np. w oparciu o rozkład naturalny.
 \end{itemize}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Blocks of Highlighted Text}
-\begin{block}{Block 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-\end{block}
-
-\begin{block}{Block 2}
-Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
-\end{block}
-
-\begin{block}{Block 3}
-Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
-\end{block}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Multiple Columns}
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-
-\column{.45\textwidth} % Left column and width
-\textbf{Heading}
-\begin{enumerate}
-\item Statement
-\item Explanation
-\item Example
-\end{enumerate}
-
-\column{.5\textwidth} % Right column and width
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-\end{columns}
-\end{frame}
-
-%------------------------------------------------
-\section{Second Section}
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Table}
-\begin{table}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\caption{Table caption}
-\end{table}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Verbatim}
-\begin{example}[Theorem Slide Code]
-\begin{verbatim}
-\begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}\end{verbatim}
-\end{example}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Figure}
-Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-%\begin{figure}
-%\includegraphics[width=0.8\linewidth]{test}
-%\end{figure}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Citation}
-An example of the \verb|\cite| command to cite within the presentation:\\~
-
-This statement requires citation \cite{p1}.
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{References}
-\footnotesize{
-\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Smith, 2012]{p1} John Smith (2012)
-\newblock Title of the publication
-\newblock \emph{Journal Name} 12(3), 45 -- 678.
-\end{thebibliography}
-}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\Huge{\centerline{The End}}
+\Huge{\centerline{Dziękujemy za uwagę}}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
