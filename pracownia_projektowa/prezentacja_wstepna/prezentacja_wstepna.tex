@@ -21,40 +21,7 @@
 \selectlanguage{polish}
 
 \mode<presentation> {
-
-% The Beamer class comes with a number of default slide themes
-% which change the colors and layouts of slides. Below this is a list
-% of all the themes, uncomment each in turn to see what they look like.
-
-%\usetheme{default}
-%\usetheme{AnnArbor}
-%\usetheme{Antibes}
-%\usetheme{Bergen}
-%\usetheme{Berkeley}
-%\usetheme{Berlin}
-%\usetheme{Boadilla}
-%\usetheme{CambridgeUS}
-%\usetheme{Copenhagen}
-%\usetheme{Darmstadt}
-%\usetheme{Dresden}
-%\usetheme{Frankfurt}
-%\usetheme{Goettingen}
-%\usetheme{Hannover}
-%\usetheme{Ilmenau}
-%\usetheme{JuanLesPins}
-%\usetheme{Luebeck}
-%\usetheme{Madrid}
-%\usetheme{Malmoe}
-%\usetheme{Marburg}
-%\usetheme{Montpellier}
-%\usetheme{PaloAlto}
-%\usetheme{Pittsburgh}
-%\usetheme{Rochester}
-%\usetheme{Singapore}
-%\usetheme{Szeged}
-\usetheme{Warsaw}
-
-%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+	\usetheme{Copenhagen}
 }
 
 \usepackage{graphicx} % Allows including images
@@ -154,16 +121,16 @@ komitetów, więc otrzymujemy też liczbę $k$ będącą wielkością wybieraneg
 \frametitle{Przykładowe wybory}
 \begin{exampleblock}{Przykładowe wybory}
 
-$C = {a, b, c, d, e, \ldots }$
-$V = (v_1, v_2, v_3, \ldots, v_n)$
-$ $
-$v_1: a > b > c > d > e > \ldots$
-$v_2: c > d > a > b > f > \ldots$
-$v_3: \ldots$
-$ \vdots $
-$v_n: f > g > e > b > a > \ldots$
-$ $
+
+$ C = {a, b, c, d, e, \ldots } $ \\
+$ V = (v_1, v_2, v_3, \ldots, v_n) $ \\ ~ \\
+$ v_1: a > b > c > d > e > \ldots $ \\
+$ v_2: c > d > a > b > f > \ldots $ \\
+$ v_3: \ldots $ \\
+$ \vdots $ \\
+$ v_n: f > g > e > b > a > \ldots $ \\ ~ \\
 $ k = 20 $
+
 
 \end{exampleblock}
 \end{frame}
@@ -224,10 +191,10 @@ $$
 \begin{frame}
 \frametitle{Committee scoring rules}
 
-Istnieją systemy wyborcze:
+Istnieją systemy wyborcze: \\ ~ \\
 
 \begin{tabular}{ll}
-k-Borda: 			& $f_{kB}(i_1, \ldots, i_k) = \beta(i_1) + \beta(i_2) + \ldots + \beta(i_k)$\\
+k-Borda: 			& $f_{kB}(i_1, \ldots, i_k) = \beta(i_1) + \ldots + \beta(i_k)$\\
 Chamberlin–Courant:  & $f_{CC}(i_1, \ldots, i_k) = \beta(i_1)$
 \end{tabular}
 
@@ -289,7 +256,7 @@ $$
 \begin{itemize}
 \item Obliczanie wyników wyborów w systemie $\ell_p-Borda$ jest czasochłonne.
 \item Naszym zadaniem jest znalezienie algorytmu, który pozwoli szybko przybliżać wyniki wyborów.
-\item Do systemu należy dostarczyć pewien interfejs, który będzie pozwalał na wprowadzenie preferencji z otwartych baz (jak \href{http://www.preflib.org/}{PrefLib}) lub generował rozkład wyborców i kandydatów np. w oparciu o rozkład naturalny.
+\item Do systemu należy dostarczyć pewien interfejs, który będzie pozwalał na wprowadzenie preferencji z otwartych baz (jak \href{http://www.preflib.org/}{PrefLib}) lub generował rozkład wyborców i kandydatów np. w\,oparciu o rozkład naturalny.
 \end{itemize}
 \end{frame}
 
@@ -300,10 +267,10 @@ $$
 \begin{frame}
 \frametitle{Plan pracy}
 \begin{itemize}
-\item Implementacja brute-force.
-\item Równolegle praca nad algorytmem, który pozwoli szybko wykonywać obliczenia.
-\item Implementacja szybszej wersji obliczeń.
-\item Stworzenie interfejsu, import danych z PrefLib'a, symulowanie wyborów np. z rozkładu normalnego, etc.
+\item [maj -] Implementacja brute-force.
+\item [maj -] Równolegle praca nad algorytmem, który pozwoli szybko wykonywać obliczenia.
+\item [lipiec -] Implementacja szybszej wersji obliczeń.
+\item [lipiec -] Stworzenie interfejsu, import danych z PrefLib'a, symulowanie wyborów np. z rozkładu normalnego, etc.
 \end{itemize}
 \end{frame}
 
