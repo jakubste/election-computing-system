@@ -5,9 +5,13 @@ class Vote(object):
     # indicates the number of same votes in election
     repeats = 1
 
-    preference = []
+    preference = None
 
     def __init__(self, repeats, preference):
+        """
+        :type repeats: int
+        :type preference: list of int
+        """
         self.repeats = repeats
         self.preference = preference
         super(Vote, self).__init__()
