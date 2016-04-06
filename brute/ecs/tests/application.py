@@ -39,6 +39,6 @@ class ApplicationTest(TestCase):
         app.load_data_from_file(filename)
         self.assertEqual(
             app.algorithm.run(),
-            (3,4,5)
+            (3, 4, 5)
         )
         del app
