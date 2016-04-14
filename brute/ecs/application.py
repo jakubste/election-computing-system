@@ -7,13 +7,13 @@ class ElectionComputingSystem(object):
     algorithm = None
 
     candidates_number = 0
-    candidates = []
+    candidates = None
 
     committee_size = 0
 
     voters_number = 0
     unique_votes = 0
-    votes = []
+    votes = None
 
     p_parameter = 1
 
@@ -21,6 +21,8 @@ class ElectionComputingSystem(object):
         self.committee_size = int(committee_size)
         self.p_parameter = int(p_parameter)
         self.algorithm = BruteForce(self)
+        self.candidates = []
+        self.votes = []
         super(ElectionComputingSystem, self).__init__()
 
     def load_data_from_file(self, filename):
