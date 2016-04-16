@@ -1,4 +1,7 @@
 from math import sqrt
+from population import Population
+from tests.test_data import *
+import pprint
 
 
 class Preferences:
@@ -17,8 +20,8 @@ class Preferences:
         """
         voters_preferences = {}
         for voter in self.voters_coordinates:
-            voter_preferences = self.candidates_coordinates.sort(
-                key=lambda candidate: self.compute_euclidean_norm(voter, candidate))
+            voter_preferences = sorted(self.candidates_coordinates,
+                                       key=lambda candidate: self.compute_euclidean_norm(voter, candidate))
             voters_preferences[voter] = voter_preferences
         return voters_preferences
 

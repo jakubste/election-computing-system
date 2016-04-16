@@ -1,5 +1,6 @@
 from random import gauss
 import config
+import pprint
 
 
 class Population:
