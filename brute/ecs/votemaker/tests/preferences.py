@@ -1,12 +1,12 @@
-import unittest
-from votemaker.preferences import Preferences
-from votemaker.population import Population
-from test_data import *
 from math import sqrt
+from unittest import TestCase
+
+from ecs.votemaker.population import Population
+from ecs.votemaker.preferences import Preferences
+from test_data import *
 
 
-class PreferencesTest(unittest.TestCase):
-
+class PreferencesTest(TestCase):
     def test_euclidean_norm_1(self):
         self.assertAlmostEqual(sqrt(2), Preferences.compute_euclidean_norm((0, 0), (1, 1)), 4)
 

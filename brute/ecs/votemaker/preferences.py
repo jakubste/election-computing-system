@@ -18,10 +18,12 @@ class Preferences:
         voters_preferences = {}
         for voter in self.voters_coordinates:
             voter_preferences = sorted(
-                self.candidates_coordinates, key=lambda candidate: self.compute_euclidean_norm(voter, candidate))
+                self.candidates_coordinates,
+                key=lambda candidate: self.compute_euclidean_norm(voter, candidate)
+            )
             voters_preferences[voter] = voter_preferences
         return voters_preferences
 
     @staticmethod
-    def compute_euclidean_norm((x_1, y_1), (x_2, y_2)):
-        return sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2)
+    def compute_euclidean_norm((x1, y1), (x2, y2)):
+        return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
