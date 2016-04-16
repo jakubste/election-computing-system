@@ -1,6 +1,5 @@
 from random import gauss
 import config
-import pprint
 
 
 class Population:
@@ -13,4 +12,4 @@ class Population:
 
     @staticmethod
     def load_coordinates(size):
-        return [(gauss(config.MEAN, config.SIGMA), gauss(config.MEAN, config.SIGMA)) for i in range(1, size)]
+        return [(gauss(config.MEAN, config.SIGMA), gauss(config.MEAN, config.SIGMA)) for i in range(0, size)]

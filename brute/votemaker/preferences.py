@@ -1,7 +1,4 @@
 from math import sqrt
-from population import Population
-from tests.test_data import *
-import pprint
 
 
 class Preferences:
