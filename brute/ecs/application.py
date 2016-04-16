@@ -1,6 +1,7 @@
 from ecs.algorithms.brute_force import BruteForce
 from ecs.exceptions import BadDataFormatException
 from ecs.vote import Vote
+from ecs.datavalidation import InputDataValidation
 
 
 class ElectionComputingSystem(object):
@@ -12,6 +13,8 @@ class ElectionComputingSystem(object):
     committee_size = 0
 
     voters_number = 0
+    # to check data consistency
+    voters_number_in_loop = 0
     unique_votes = 0
     votes = None
 
@@ -26,6 +29,7 @@ class ElectionComputingSystem(object):
         super(ElectionComputingSystem, self).__init__()
 
     def load_data_from_file(self, filename):
+        input_data_validation = InputDataValidation()
         election_data = open(filename, 'r')
 
         self.candidates_number = int(election_data.readline())
@@ -46,8 +50,12 @@ class ElectionComputingSystem(object):
                 raise BadDataFormatException
             line = line.split(',', self.candidates_number)
             line = map(lambda x: int(x), line)
+            self.voters_number_in_loop += line[0]
+            input_data_validation.check_vote_consistency(line[1:], self.candidates_number)
             vote = Vote(line[0], line[1:])
             self.votes.append(vote)
+
+        input_data_validation.check_number_of_votes_consistency(self.voters_number, self.voters_number_in_loop)
 
         print '*' * (38 + 4 + len(filename))
         print '* Successfully loaded data from file \'{}\':'.format(filename)
