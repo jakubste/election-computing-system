@@ -32,24 +32,59 @@ class ElectionComputingSystem(object):
         input_data_validation = InputDataValidation()
         election_data = open(filename, 'r')
 
-        self.candidates_number = int(election_data.readline())
+        # reading number of candidates
+        try:
+            self.candidates_number = int(election_data.readline())
+            if self.candidates_number <= 0:
+                raise ValueError
+        except ValueError:
+            print "Incorrect type of candidates_number. Positive integer expected"
+            raise
 
+        # reading candidates' names
         for i in xrange(self.candidates_number):
             line = election_data.readline()
-            candidate_name = line.split(',', 1)[1].strip()
+            try:
+                candidate_name = line.split(',', 1)[1].strip()
+            except IndexError:
+                print "Incorrect format of a line with candidates' name"
+                print "Line number in an input file:", 2 + i
+                raise
             self.candidates.append(candidate_name)
 
+        # reading number of all votes and unique votes
         line = election_data.readline()
         line = line.split(',', 2)
-        self.voters_number = int(line[1])
-        self.unique_votes = int(line[2])
 
+        try:
+            self.voters_number = int(line[1])
+            self.unique_votes = int(line[2])
+            input_data_validation.check_votes_number_unique_votes_relation(self.voters_number, self.unique_votes)
+        except IndexError:
+            print "Incorrect format of a line with number of all votes and unique votes"
+            print "Line number in an input file:", 2 + self.candidates_number
+            raise
+        except ValueError:
+            print "Incorrect type of voters_number or unique_votes. Positive integers expected"
+            print "Line number in an input file:", 2 + self.candidates_number
+            raise
+
+        # reading order preferences
         for i in xrange(self.unique_votes):
             line = election_data.readline()
             if line == '':
                 raise BadDataFormatException
             line = line.split(',', self.candidates_number)
-            line = map(lambda x: int(x), line)
+            try:
+                line = map(lambda x: int(x), line)
+            except ValueError:
+                print "Incorrect type of candidates' number in order preference or unique votes"
+                print "Line number in an input file:", 3 + self.candidates_number + i
+                raise
+            if line[0] <= 0 or line[0] > self.voters_number:
+                print "Non positive number or too big number of unique votes for an order preference"
+                print "Line number in an input file:", 3 + self.candidates_number + i
+                raise ValueError
             self.voters_number_in_loop += line[0]
             input_data_validation.check_vote_consistency(line[1:], self.candidates_number)
             vote = Vote(line[0], line[1:])
