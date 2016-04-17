@@ -16,7 +16,8 @@ class Algorithm(object):
         :return: all combinations of committees in this elections
         """
         combinations = itertools.combinations(
-            range(1, self.elections.candidates_number + 1),
+            self.elections.candidates,
+            #range(1, self.elections.candidates_number + 1),
             self.elections.committee_size
         )
         return combinations
