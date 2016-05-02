@@ -18,12 +18,22 @@ class Election(models.Model):
     def get_absolute_url(self):
         return reverse('elections:election_details', args=(self.pk,))
 
+    def is_set_up(self):
+        """
+        Indicates if candidates and voters where added to election.
+        """
+        if self.candidates.all() and self.voters.all():
+            return True
+        else:
+            return False
+
 
 class Candidate(models.Model):
     name = models.CharField(max_length=50, null=True)
     position = models.ForeignKey(Point, null=True)
     preferences = models.ManyToManyField('Voter', through='Preference')
     election = models.ForeignKey(Election, related_name='candidates')
+    soc_id = models.IntegerField(null=True)
 
     def __unicode__(self):
         return self.name
@@ -33,6 +43,14 @@ class Voter(models.Model):
     repeats = models.IntegerField(default=1)
     position = models.ForeignKey(Point, null=True)
     election = models.ForeignKey(Election, related_name='voters')
+
+    def set_preferences_by_ids(self, ids):
+        for preference, candidate_id in enumerate(ids):
+            Preference.objects.create(
+                candidate=Candidate.objects.get(election=self.election, soc_id=candidate_id),
+                voter=self,
+                preference=preference+1
+            )
 
 
 class Preference(models.Model):
