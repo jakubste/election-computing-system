@@ -1,5 +1,3 @@
-
-
 class Candidate:
 
     def __init__(self, candidate_id, name):
