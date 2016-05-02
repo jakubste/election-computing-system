@@ -56,12 +56,12 @@ class Voter(object):
         return self.repeats * self.ell_p_norm(committee, p)
 
     @staticmethod
-    def order_candidates_by_ids(candidates, identities):
+    def get_candidates_by_ids(candidates, identities):
         """
-        converts list (tuple) of int to list (tuple) of Candidate
+        filter candidates by id in identities and order them as in identities list
         :param candidates: list (tuple) of Candidate
         :param identities: list (tuple) of int
-        :return: list of Candidate ordered by identities
+        :return: list (tuple) of Candidate
         """
         preference = []
         for candidate_id in identities:
