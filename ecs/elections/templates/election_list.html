@@ -5,16 +5,26 @@
 {% endblock %}
 
 {% block content %}
-    <ul>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
         {% for election in elections %}
-            <li>
-
-                 <a href="{% url 'elections:election_details' election.pk %}">{{ election }}</a>
-                <a href="{% url 'elections:election_delete' election.pk %}">usuń</a>
-            </li>
-
+            <tr>
+                <td>
+                    <a href="{{ election.get_absolute_url }}">
+                        {{ election }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'elections:election_delete' election.pk %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 
     <p style="float:right">
         <a href="{% url 'elections:election_create' %}">
