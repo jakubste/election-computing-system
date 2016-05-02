@@ -31,3 +31,47 @@ class IncorrectVotesNumberUniqueVotesRelationException(Exception):
 class NonPositiveNumberOfVotesException(Exception):
     def __str__(self):
         return "Non positive number of voters_number or unique_votes. Positive integers expected"
+
+class IncorrectTypeOfCandidatesNumberException(Exception):
+    def __str__(self):
+        return "Incorrect type of candidates_number. Positive integer expected"
+
+class CandidatesNameIncorrectFormatException(Exception):
+    def __init__(self, line_number):
+        self.line_number = line_number
+
+    def __str__(self):
+        return "Incorrect format of a line with candidates' name\n"  +\
+               "Line number in an input file: " + str(self.line_number)
+
+class SummingLineFormatException(Exception):
+    def __init__(self, line_number):
+        self.line_number = line_number
+
+    def __str__(self):
+        return "Incorrect format of a line with number of all votes and unique votes\n" + \
+               "Line number in an input file: " + str(self.line_number)
+
+class SummingLineTypeException(Exception):
+    def __init__(self, line_number):
+        self.line_number = line_number
+
+    def __str__(self):
+        return "Incorrect type of voters_number or unique_votes. Positive integers expected\n" + \
+               "Line number in an input file: " + str(self.line_number)
+
+class PreferenceOrderTypeException(Exception):
+    def __init__(self, line_number):
+        self.line_number = line_number
+
+    def __str__(self):
+        return "Incorrect type of candidates' number in order preference or unique votes\n" + \
+               "Line number in an input file: " + str(self.line_number)
+
+class PreferenceOrderLogicException(Exception):
+    def __init__(self, line_number):
+        self.line_number = line_number
+
+    def __str__(self):
+        return "Non positive number or too big number of unique votes for an order preference" + \
+               "Line number in an input file: " + str(self.line_number)

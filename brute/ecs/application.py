@@ -1,5 +1,5 @@
 from ecs.algorithms.brute_force import BruteForce
-from ecs.exceptions import BadDataFormatException
+from ecs.exceptions import *
 from ecs.vote import Vote
 from ecs.datavalidation import InputDataValidation
 
@@ -32,14 +32,10 @@ class ElectionComputingSystem(object):
         input_data_validation = InputDataValidation()
         election_data = open(filename, 'r')
 
-        # reading number of candidates
-        try:
-            self.candidates_number = int(election_data.readline())
-            if self.candidates_number <= 0:
-                raise ValueError
-        except ValueError:
-            print "Incorrect type of candidates_number. Positive integer expected"
-            raise
+
+        self.candidates_number = int(election_data.readline())
+        if self.candidates_number <= 0:
+            raise IncorrectTypeOfCandidatesNumberException
 
         # reading candidates' names
         for i in xrange(self.candidates_number):
@@ -47,9 +43,7 @@ class ElectionComputingSystem(object):
             try:
                 candidate_name = line.split(',', 1)[1].strip()
             except IndexError:
-                print "Incorrect format of a line with candidates' name"
-                print "Line number in an input file:", 2 + i
-                raise
+                raise CandidatesNameIncorrectFormatException(2+i)
             self.candidates.append(candidate_name)
 
         # reading number of all votes and unique votes
@@ -61,13 +55,9 @@ class ElectionComputingSystem(object):
             self.unique_votes = int(line[2])
             input_data_validation.check_votes_number_unique_votes_relation(self.voters_number, self.unique_votes)
         except IndexError:
-            print "Incorrect format of a line with number of all votes and unique votes"
-            print "Line number in an input file:", 2 + self.candidates_number
-            raise
+            raise SummingLineFormatException(2 + self.candidates_number)
         except ValueError:
-            print "Incorrect type of voters_number or unique_votes. Positive integers expected"
-            print "Line number in an input file:", 2 + self.candidates_number
-            raise
+            raise SummingLineTypeException(2 + self.candidates_number)
 
         # reading order preferences
         for i in xrange(self.unique_votes):
@@ -78,13 +68,9 @@ class ElectionComputingSystem(object):
             try:
                 line = map(lambda x: int(x), line)
             except ValueError:
-                print "Incorrect type of candidates' number in order preference or unique votes"
-                print "Line number in an input file:", 3 + self.candidates_number + i
-                raise
+                raise PreferenceOrderTypeException(3 + self.candidates_number + i)
             if line[0] <= 0 or line[0] > self.voters_number:
-                print "Non positive number or too big number of unique votes for an order preference"
-                print "Line number in an input file:", 3 + self.candidates_number + i
-                raise ValueError
+                raise PreferenceOrderLogicException(3 + self.candidates_number + i)
             self.voters_number_in_loop += line[0]
             input_data_validation.check_vote_consistency(line[1:], self.candidates_number)
             vote = Vote(line[0], line[1:])

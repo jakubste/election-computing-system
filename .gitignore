@@ -1,3 +1,5 @@
+.idea/*
+
 # Latex files
 *.aux
 *.glo
