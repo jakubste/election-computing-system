@@ -21,10 +21,10 @@ class ApplicationTest(TestCase):
         self.assertEqual(app.voters_number, 10)
         self.assertEqual(app.unique_votes, 4)
         voters = [
-            Voter(1, Voter.order_candidates_by_ids(app.candidates, [1, 2, 3, 4, 5])),
-            Voter(1, Voter.order_candidates_by_ids(app.candidates, [3, 2, 1, 4, 5])),
-            Voter(1, Voter.order_candidates_by_ids(app.candidates, [2, 1, 3, 4, 5])),
-            Voter(7, Voter.order_candidates_by_ids(app.candidates, [5, 4, 3, 2, 1])),
+            Voter(1, Voter.get_candidates_by_ids(app.candidates, [1, 2, 3, 4, 5])),
+            Voter(1, Voter.get_candidates_by_ids(app.candidates, [3, 2, 1, 4, 5])),
+            Voter(1, Voter.get_candidates_by_ids(app.candidates, [2, 1, 3, 4, 5])),
+            Voter(7, Voter.get_candidates_by_ids(app.candidates, [5, 4, 3, 2, 1])),
         ]
         self.assertListEqual(
             [str(x) for x in app.voters],
@@ -39,6 +39,6 @@ class ApplicationTest(TestCase):
         app.load_data_from_file(filename)
         self.assertEqual(
             app.algorithm.run(),
-            Voter.order_candidates_by_ids(app.candidates, (3, 4, 5))
+            Voter.get_candidates_by_ids(app.candidates, (3, 4, 5))
         )
         del app

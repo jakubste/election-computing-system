@@ -51,7 +51,7 @@ class ElectionComputingSystem(object):
             line = map(lambda x: int(x), line)
             vote_repeats = line[0]
             # list of candidates in specified order
-            preference = Voter.order_candidates_by_ids(self.candidates, line[1:])
+            preference = Voter.get_candidates_by_ids(self.candidates, line[1:])
             # arrange candidates according to preference from the file
             voter = Voter(vote_repeats, preference)
             self.voters.append(voter)
