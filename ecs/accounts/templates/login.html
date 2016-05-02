@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Log in form{% endblock %}
+
+{% block content %}
+    <form action="" method="post" class="form-horizontal">
+
+        {% csrf_token %}
+
+        {% for field in form %}
+            {% include '_field.html' with field=field %}
+        {% endfor %}
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </div>
+        </div>
+
+    </form>
+{% endblock %}
