@@ -8,7 +8,7 @@ from ecs.voter import Voter
 from ecs.candidate import Candidate
 
 
-class VoteTest(TestCase):
+class VoterTest(TestCase):
 
     candidates = [
         Candidate(1, "Monika"),
@@ -37,33 +37,33 @@ class VoteTest(TestCase):
         )
 
     def test_calculate_committee_score(self):
-        vote = Voter(1, Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [1, 2, 3, 4, 5]))
+        vote = Voter(1, Voter.order_candidates_by_ids(self.candidates, [1, 2, 3, 4, 5]))
         p = 2
-        committee = Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [1, 2, 3])
+        committee = Voter.order_candidates_by_ids(self.candidates, [1, 2, 3])
         self.assertAlmostEquals(
             vote.calculate_committee_score(committee, p),
             Decimal(pow(4 ** p + 3 ** p + 2 ** p, 1.0 / p))
         )
         p = 3
-        committee = Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [5, 4, 3])
+        committee = Voter.order_candidates_by_ids(self.candidates, [5, 4, 3])
         self.assertAlmostEquals(
             vote.calculate_committee_score(committee, p),
             Decimal(pow(1 ** p + 2 ** p, 1.0 / p))
         )
         p = 8
-        committee = Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [4, 2, 3])
+        committee = Voter.order_candidates_by_ids(self.candidates, [4, 2, 3])
         self.assertAlmostEquals(
             vote.calculate_committee_score(committee, p),
             Decimal(pow(1 ** p + 3 ** p + 2 ** p, 1.0 / p))
         )
         p = 8
-        committee = Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [1])
+        committee = Voter.order_candidates_by_ids(self.candidates, [1])
         self.assertAlmostEquals(
             vote.calculate_committee_score(committee, p),
             Decimal(4)
         )
         p = 8
-        committee = Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [5])
+        committee = Voter.order_candidates_by_ids(self.candidates, [5])
         self.assertAlmostEquals(
             vote.calculate_committee_score(committee, p),
             Decimal(0)
@@ -72,18 +72,18 @@ class VoteTest(TestCase):
     @mock.patch.object(Voter, 'ell_p_norm')
     def test_calculate_committee_score_multiplies_by_repeats(self, mocked_ell_p):
         mocked_ell_p.return_value = 2
-        vote = Voter(1, Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [1, 2, 3, 4, 5]))
+        vote = Voter(1, Voter.order_candidates_by_ids(self.candidates, [1, 2, 3, 4, 5]))
         self.assertEqual(
-            vote.calculate_committee_score(Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [1, 2, 3]), 4),
+            vote.calculate_committee_score(Voter.order_candidates_by_ids(self.candidates, [1, 2, 3]), 4),
             2
         )
         vote.repeats = 2
         self.assertEqual(
-            vote.calculate_committee_score(Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [1, 2, 3]), 4),
+            vote.calculate_committee_score(Voter.order_candidates_by_ids(self.candidates, [1, 2, 3]), 4),
             4
         )
         vote.repeats = 100
         self.assertEqual(
-            vote.calculate_committee_score(Voter.int_list_or_tuple_to_candidate_list_or_tuple(self.candidates, [1, 2, 3]), 4),
+            vote.calculate_committee_score(Voter.order_candidates_by_ids(self.candidates, [1, 2, 3]), 4),
             200
         )

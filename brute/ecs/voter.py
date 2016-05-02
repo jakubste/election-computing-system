@@ -64,7 +64,7 @@ class Voter(object):
         :return: list of Candidate ordered by identities
         """
         preference = []
-        for candidate_id in candidates:
+        for candidate_id in identities:
             preference.append(
                 next(
                     (candidate for candidate in candidates

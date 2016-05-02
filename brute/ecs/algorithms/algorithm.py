@@ -17,7 +17,6 @@ class Algorithm(object):
         """
         combinations = itertools.combinations(
             self.elections.candidates,
-            #range(1, self.elections.candidates_number + 1),
             self.elections.committee_size
         )
         return combinations
