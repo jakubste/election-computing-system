@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'ecs',
     'ecs.accounts',
+    'ecs.elections',
 ]
 
 MIDDLEWARE_CLASSES = [
