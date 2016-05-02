@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Delete election
+{% endblock %}
+
+{% block content %}
+
+    <form action="" method="post" class="form-horizontal">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <button type="submit" class="btn btn-primary">Delete election</button>
+            </div>
+        </div>
+        <a href="{% url "elections:election_list" %}">No, cancel.</a>
+
+    </form>
+
+{% endblock %}
