@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import models
 
 from ecs.elections.geo.models import Point
@@ -13,6 +14,9 @@ class Election(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('elections:election_details', args=(self.pk,))
 
 
 class Candidate(models.Model):

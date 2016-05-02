@@ -1,4 +1,6 @@
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.views.generic import DeleteView
+from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
@@ -27,3 +29,17 @@ class ElectionCreateView(LoginRequiredMixin, CreateView):
         kwargs = super(ElectionCreateView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+
+class ElectionDeleteView(DeleteView):
+    model = Election
+    template_name = 'election_delete.html'
+
+    def get_success_url(self):
+        return reverse('elections:election_list')
+
+
+class ElectionDetailView(DetailView):
+    model = Election
+    template_name = 'election_details.html'
+    context_object_name = 'election'
