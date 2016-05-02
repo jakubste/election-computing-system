@@ -55,18 +55,23 @@ class Voter(object):
         )
         return self.repeats * self.ell_p_norm(committee, p)
 
-    # map list of int to list of candidates in the specified order
     @staticmethod
-    def int_list_or_tuple_to_candidate_list_or_tuple(list_of_candidates, list_or_tuple_of_int):
+    def order_candidates_by_ids(candidates, identities):
+        """
+        converts list (tuple) of int to list (tuple) of Candidate
+        :param candidates: list (tuple) of Candidate
+        :param identities: list (tuple) of int
+        :return: list of Candidate ordered by identities
+        """
         preference = []
-        for candidate_id in list_or_tuple_of_int:
+        for candidate_id in candidates:
             preference.append(
                 next(
-                    (candidate for candidate in list_of_candidates
+                    (candidate for candidate in candidates
                      if candidate.candidate_id == candidate_id), None
                 )
             )
-        if type(list_or_tuple_of_int) is list:
+        if type(identities) is list:
             return preference
         else:
             return tuple(preference)
