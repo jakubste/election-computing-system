@@ -1,0 +1,5 @@
+bpython
+Django==1.9.5
+django-extensions
+factory-boy
+fake-factory

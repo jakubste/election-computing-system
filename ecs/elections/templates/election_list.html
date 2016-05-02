@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Your elections
+{% endblock %}
+
+{% block content %}
+    <ul>
+        {% for election in elections %}
+            <li>
+
+                 <a href="{% url 'elections:election_details' election.pk %}">{{ election }}</a>
+                <a href="{% url 'elections:election_delete' election.pk %}">usuń</a>
+            </li>
+
+        {% endfor %}
+    </ul>
+
+    <p style="float:right">
+        <a href="{% url 'elections:election_create' %}">
+            <button type="button" class="btn btn-success">
+                <span class="glyphicon glyphicon-plus"></span>
+                New election
+            </button>
+        </a>
+    </p>
+
+{% endblock %}

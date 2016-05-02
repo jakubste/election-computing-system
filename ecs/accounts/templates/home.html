@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Hello world!
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <p> Zalogowany jako {{ user }}.</p>
+    {% endif %}
+{% endblock %}
