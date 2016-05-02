@@ -1,24 +1,24 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
 from ecs.elections.forms import ElectionForm
 from ecs.elections.models import Election
+from ecs.utils.views import LoginRequiredMixin
 
 
-class ElectionListView(ListView, LoginRequiredMixin):
+class ElectionListView(LoginRequiredMixin, ListView):
     model = Election
     template_name = 'election_list.html'
     context_object_name = 'elections'
 
     def get_queryset(self):
         qs = super(ElectionListView, self).get_queryset()
-        qs.filter(user=self.request.user)
+        qs = qs.filter(user=self.request.user)
         return qs
 
 
-class ElectionCreateView(CreateView, LoginRequiredMixin):
+class ElectionCreateView(LoginRequiredMixin, CreateView):
     form_class = ElectionForm
     template_name = 'election_create.html'
     success_url = reverse_lazy('elections:election_list')
