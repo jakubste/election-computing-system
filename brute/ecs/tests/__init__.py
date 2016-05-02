@@ -1,2 +1,2 @@
 from .application import *
-from .vote import *
+from .voter import *

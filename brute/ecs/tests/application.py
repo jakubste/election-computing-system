@@ -2,7 +2,7 @@ import os
 from unittest import TestCase
 
 from ecs.application import ElectionComputingSystem
-from ecs.vote import Vote
+from ecs.voter import Voter
 
 
 class ApplicationTest(TestCase):
@@ -15,20 +15,20 @@ class ApplicationTest(TestCase):
         app.load_data_from_file(filename)
         self.assertEqual(app.candidates_number, 5)
         self.assertListEqual(
-            app.candidates,
+            [c.name for c in app.candidates],
             ['Monika', 'Weronika', 'Beata', 'Zuzanna', 'Alicja']
         )
         self.assertEqual(app.voters_number, 10)
         self.assertEqual(app.unique_votes, 4)
-        votes = [
-            Vote(1, [1, 2, 3, 4, 5]),
-            Vote(1, [3, 2, 1, 4, 5]),
-            Vote(1, [2, 1, 3, 4, 5]),
-            Vote(7, [5, 4, 3, 2, 1]),
+        voters = [
+            Voter(1, Voter.get_candidates_by_ids(app.candidates, [1, 2, 3, 4, 5])),
+            Voter(1, Voter.get_candidates_by_ids(app.candidates, [3, 2, 1, 4, 5])),
+            Voter(1, Voter.get_candidates_by_ids(app.candidates, [2, 1, 3, 4, 5])),
+            Voter(7, Voter.get_candidates_by_ids(app.candidates, [5, 4, 3, 2, 1])),
         ]
         self.assertListEqual(
-            [str(x) for x in app.votes],
-            [str(x) for x in votes]
+            [str(x) for x in app.voters],
+            [str(x) for x in voters]
         )
 
     def test_get_election_results(self):
@@ -39,6 +39,6 @@ class ApplicationTest(TestCase):
         app.load_data_from_file(filename)
         self.assertEqual(
             app.algorithm.run(),
-            (3, 4, 5)
+            Voter.get_candidates_by_ids(app.candidates, (3, 4, 5))
         )
         del app
