@@ -2,18 +2,20 @@ from decimal import Decimal
 
 
 class Voter(object):
-    # indicates the number of same votes in election
-    repeats = 1
 
     preference = None
 
-    def __init__(self, repeats, preference):
+    def __init__(self, repeats=1, preference=None, coordinates=None):
         """
         :type repeats: int
         :type preference: list of ecs.candidate.Candidate
+        :type coordinates: Point
         """
+        self.id = id(self)
+        # indicates the number of same votes in election
         self.repeats = repeats
         self.preference = preference
+        self.coordinates = coordinates
         super(Voter, self).__init__()
 
     def __str__(self):
