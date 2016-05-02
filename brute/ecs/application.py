@@ -4,7 +4,7 @@ from ecs.vote import Vote
 from ecs.datavalidation import InputDataValidation
 
 
-class ElectionComputingSystem(object):
+class ElectionComputingSystem(InputDataValidation):
     algorithm = None
 
     candidates_number = 0
@@ -14,7 +14,6 @@ class ElectionComputingSystem(object):
 
     voters_number = 0
     # to check data consistency
-    voters_number_in_loop = 0
     unique_votes = 0
     votes = None
 
@@ -29,7 +28,7 @@ class ElectionComputingSystem(object):
         super(ElectionComputingSystem, self).__init__()
 
     def load_data_from_file(self, filename):
-        input_data_validation = InputDataValidation()
+        voters_number_in_loop = 0
         election_data = open(filename, 'r')
 
 
@@ -53,7 +52,7 @@ class ElectionComputingSystem(object):
         try:
             self.voters_number = int(line[1])
             self.unique_votes = int(line[2])
-            input_data_validation.check_votes_number_unique_votes_relation(self.voters_number, self.unique_votes)
+            self.check_votes_number_unique_votes_relation(self.voters_number, self.unique_votes)
         except IndexError:
             raise SummingLineFormatException(2 + self.candidates_number)
         except ValueError:
@@ -71,12 +70,12 @@ class ElectionComputingSystem(object):
                 raise PreferenceOrderTypeException(3 + self.candidates_number + i)
             if line[0] <= 0 or line[0] > self.voters_number:
                 raise PreferenceOrderLogicException(3 + self.candidates_number + i)
-            self.voters_number_in_loop += line[0]
-            input_data_validation.check_vote_consistency(line[1:], self.candidates_number)
+            voters_number_in_loop += line[0]
+            self.check_vote_consistency(line[1:], self.candidates_number)
             vote = Vote(line[0], line[1:])
             self.votes.append(vote)
 
-        input_data_validation.check_number_of_votes_consistency(self.voters_number, self.voters_number_in_loop)
+        self.check_number_of_votes_consistency(self.voters_number, voters_number_in_loop)
 
         print '*' * (38 + 4 + len(filename))
         print '* Successfully loaded data from file \'{}\':'.format(filename)
