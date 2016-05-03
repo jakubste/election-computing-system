@@ -7,3 +7,6 @@ names
 psycopg2
 coverage
 coveralls
+dj-config-url
+gunicorn
+whitenoise
