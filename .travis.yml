@@ -1,8 +1,13 @@
 language: python
 python:
-  - "2.7"
+- '2.7'
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 before_script:
-  - echo -e "\nclass DisableMigrations(object):\n    def __contains__(self, item):\n        return True\n    def __getitem__(self, item):\n        return 'notmigrations'\nMIGRATION_MODULES = DisableMigrations()" >> ./ecs/local_settings.py
+- echo -e "\nclass DisableMigrations(object):\n    def __contains__(self, item):\n        return
+  True\n    def __getitem__(self, item):\n        return 'notmigrations'\nMIGRATION_MODULES
+  = DisableMigrations()" >> ./ecs/local_settings.py
 script: "./manage.py test"
+notifications:
+  slack:
+    secure: k9sptngtDTd9uaK7QlNo5tz6m1NBmOjd4baMyNfoIlvBLUOG7Bt0UWVlgkv2r0l9UMhdeLg41yOG8j1ipuigRqRCOfaLDdubTLhmMJTIf/1pLnMkLorXLrXHwIexpkGa3KlA3KRBY5GtHCE4XA4G4XwEVnmoazWtZTolwhh+UUvU7IUdpAXcXoyqYsEgcUhmLpNT2O9UwqSmXtee7vriVmwlVheOCAqErRwj3HPFfM02Pjh6zvC8Yg4kJOFQ3rjK6mu21bnTKmZmG4r4//e8sI169T2VGo7TNN8v6suvl3PJJzeTgtSAJnyZEWq03SoXbkxzeTz7b8o7bd9xqCZRFmDdIKTtuqUl4dy59i6UDSpZVg40/NxVtolE7WdY7b9AqppoID5ns1DmHGpZcjnHLhqOiGkjYQpJnzw1GukXxcs4sItnvIiRDYJK7mX+6Lw5IHVkR7nRxzjvycmsfTJUyY+dKWjI2czz8DsS7CSHJcQ2pwd7ZfI9caxC92ygoRQWTO81gpXPcrK03bZVw0KdlEyW1kDQcy2A4f2jJHF2YQweyNRrerPoLv16ewhiT+BBU4f26WqboESmAlgpkOkN5kOLQfHYiCLVvuBIgxaowyNwZnuQIWBM6sexPYm6LSW6U/035KUaCEaFiSVA3X/QYvb+dFfbBsDeQRrmV2UoAG8=
