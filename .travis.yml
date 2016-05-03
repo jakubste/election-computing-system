@@ -10,7 +10,7 @@ before_script:
     True\n    def __getitem__(self, item):\n        return 'notmigrations'\nMIGRATION_MODULES
     = DisableMigrations()" >> ./ecs/local_settings.py
 script:
-  - coverage run --source=home manage.py test ecs
+  - coverage run --source='.' manage.py test ecs
 after_success: coveralls
 notifications:
   slack:
