@@ -1,2 +1,2 @@
-from .population import *
-from .point import *
+from .election_generator import *
+
