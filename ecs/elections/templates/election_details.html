@@ -5,6 +5,16 @@
 {% endblock %}
 
 {% block content %}
-    committee size: {{ election.committee_size }}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message|safe }}</div>
+    {% endfor %}
+
+    <p>
+        committee size: {{ election.committee_size }}
+    </p>
+    {% if not election.is_set_up %}
+        You should add voters and candidates!
+        <a href="{% url 'elections:election_load_data' election.pk %}">Load data from file (.soc PrefLib format)</a>
+    {% endif %}
 
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Form, forms
 
 from ecs.elections.models import Election
 
@@ -18,3 +18,11 @@ class ElectionForm(ModelForm):
             election.user = self.user
             election.save()
         return election
+
+
+class ElectionLoadDataForm(Form):
+    file = forms.FileField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        self.election = kwargs.pop('election')
+        super(ElectionLoadDataForm, self).__init__(*args, **kwargs)
