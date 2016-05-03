@@ -1,12 +1,12 @@
 language: python
 python:
-- '2.7'
+  - '2.7'
 install:
-- pip install -r requirements.txt
+  - pip install -r requirements.txt
 before_script:
-- echo -e "\nclass DisableMigrations(object):\n    def __contains__(self, item):\n        return
-  True\n    def __getitem__(self, item):\n        return 'notmigrations'\nMIGRATION_MODULES
-  = DisableMigrations()" >> ./ecs/local_settings.py
+  - echo -e "\nclass DisableMigrations(object):\n    def __contains__(self, item):\n        return
+    True\n    def __getitem__(self, item):\n        return 'notmigrations'\nMIGRATION_MODULES
+    = DisableMigrations()" >> ./ecs/local_settings.py
 script: "./manage.py test"
 notifications:
   slack:

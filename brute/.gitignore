@@ -1,12 +1,8 @@
-### PyCharm
+# folder for PrefLib datasets
+soc/*
 
+# Pycharm stuff
 .idea/*
-
-### Django
-
-db.sqlite3
-
-#### Python
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -63,9 +59,8 @@ coverage.xml
 *.log
 local_settings.py
 
-# Flask stuff:
+# Flask instance folder
 instance/
-.webassets-cache
 
 # Scrapy stuff:
 .scrapy
@@ -94,35 +89,3 @@ ENV/
 
 # Spyder project settings
 .spyderproject
-
-# Rope project settings
-.ropeproject
-
-### Latex files
-*.aux
-*.glo
-*.idx
-*.log
-*.toc
-*.ist
-*.acn
-*.acr
-*.alg
-*.bbl
-*.blg
-*.dvi
-*.glg
-*.gls
-*.ilg
-*.ind
-*.lof
-*.lot
-*.maf
-*.mtc
-*.mtc1
-*.out
-*.synctex.gz
-*.nav
-*.vrb
-*.snm
-
