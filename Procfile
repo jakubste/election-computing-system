@@ -1,1 +1,1 @@
-web: gunicorn election-computing-system.wsgi
+web: gunicorn ecs.wsgi
