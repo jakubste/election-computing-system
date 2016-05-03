@@ -126,6 +126,13 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
 
+ELECTION_GENERATOR = {
+    'MAX_CANDIDATES': 1000,
+    'MAX_VOTERS': 1000,
+    'MAX_MEAN': 1000,
+    'MAX_SIGMA': 1000
+}
+
 try:
     from local_settings import *
 except:
