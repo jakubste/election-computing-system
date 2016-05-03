@@ -83,4 +83,3 @@ class ElectionGenerator(object):
                         voter=voter,
                         preference=i+1
                     )
-
