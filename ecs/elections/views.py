@@ -5,12 +5,14 @@ from django.http.response import Http404
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
+from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
 from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, SummingLineFormatException
-from ecs.elections.forms import ElectionForm, ElectionLoadDataForm
+from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter
@@ -44,7 +46,26 @@ class ElectionCreateView(LoginRequiredMixin, CreateView):
             return reverse_lazy('elections:election_list')
 
 
-class ElectionDeleteView(DeleteView):
+class ConfigureElectionMixin(View):
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.election = Election.objects.get(pk=kwargs['pk'])
+        except:
+            raise Http404
+        if self.election.user != self.request.user:
+            raise Http404
+        return super(ConfigureElectionMixin, self).dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(ConfigureElectionMixin, self).get_form_kwargs()
+        kwargs['election'] = self.election
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('elections:election_details', args=(self.election.pk,))
+
+
+class ElectionDeleteView(ConfigureElectionMixin, DeleteView):
     model = Election
     template_name = 'election_delete.html'
 
@@ -58,27 +79,10 @@ class ElectionDetailView(DetailView):
     context_object_name = 'election'
 
 
-class ElectionLoadDataFormView(FormView):
+class ElectionLoadDataFormView(ConfigureElectionMixin, FormView):
     form_class = ElectionLoadDataForm
     template_name = 'election_load_data.html'
     election = None
-
-    def dispatch(self, request, *args, **kwargs):
-        try:
-            self.election = Election.objects.get(pk=kwargs['pk'])
-        except:
-            raise Http404
-        if self.election.user != self.request.user:
-            raise Http404
-        return super(ElectionLoadDataFormView, self).dispatch(request, *args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super(ElectionLoadDataFormView, self).get_form_kwargs()
-        kwargs['election'] = self.election
-        return kwargs
-
-    def get_success_url(self):
-        return reverse('elections:election_details', args=(self.election.pk,))
 
     def form_valid(self, form):
         file = form.cleaned_data['file']
@@ -104,7 +108,7 @@ class ElectionLoadDataFormView(FormView):
                     candidate_name = line.split(',', 1)[1].strip()
                     candidate_id = line.split(',', 1)[0].strip()
                 except IndexError:
-                    raise CandidatesNameIncorrectFormatException(2+i)
+                    raise CandidatesNameIncorrectFormatException(2 + i)
                 Candidate.objects.create(
                     election=self.election,
                     name=candidate_name,
@@ -158,5 +162,15 @@ class ElectionLoadDataFormView(FormView):
                 message.format(candidates_number, voters_number, unique_votes)
             )
 
-
         election_data.close()
+
+
+class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
+    form_class = ElectionGenerateDataForm
+    template_name = 'election_generate_data.html'
+    election = None
+
+    def form_valid(self, form):
+        generator = ElectionGenerator(self.election, **form.cleaned_data)
+        generator.generate_elections()
+        return super(ElectionGenerateDataFormView, self).form_valid(form)
