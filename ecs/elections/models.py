@@ -54,6 +54,9 @@ class Voter(models.Model):
 
 
 class Preference(models.Model):
+    class Meta:
+        ordering = ['preference']
+
     candidate = models.ForeignKey(Candidate)
     voter = models.ForeignKey(Voter, related_name='preferences')
     preference = models.IntegerField(null=False)
