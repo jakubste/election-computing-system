@@ -1,6 +1,7 @@
 from random import gauss
 
 import names
+from django.db import transaction
 
 from ecs.elections.geo.models import Point
 from ecs.elections.models import Candidate, Preference
@@ -70,15 +71,16 @@ class ElectionGenerator(object):
         """
             For each voter arranges candidates in order of euclidean norm distances
         """
-        for voter in self.election.voters.all():
-            voter_preference = sorted(
-                self.election.candidates.all(),
-                key=lambda c: voter.position.distance(c.position)
-            )
-            for i, candidate in enumerate(voter_preference):
-                Preference.objects.create(
-                    candidate=candidate,
-                    voter=voter,
-                    preference=i+1
+        with transaction.atomic():
+            for voter in self.election.voters.all():
+                voter_preference = sorted(
+                    self.election.candidates.all(),
+                    key=lambda c: voter.position.distance(c.position)
                 )
+                for i, candidate in enumerate(voter_preference):
+                    Preference.objects.create(
+                        candidate=candidate,
+                        voter=voter,
+                        preference=i+1
+                    )
 

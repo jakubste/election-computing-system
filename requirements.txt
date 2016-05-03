@@ -4,3 +4,4 @@ django-extensions
 factory-boy
 fake-factory
 names
+psycopg2
