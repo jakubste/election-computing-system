@@ -5,3 +5,4 @@ factory-boy
 fake-factory
 names
 psycopg2
+coverage
