@@ -1,4 +1,4 @@
-# Election Computing System
+# Election Computing System [![Build Status](https://travis-ci.org/jakubste/election-computing-system.svg?branch=migrate-election-generation)](https://travis-ci.org/jakubste/election-computing-system) 
 
 System for Computing Election Results According to Generalized k-Borda System.
 
