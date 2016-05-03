@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^delete/(?P<pk>\d+)/$', ElectionDeleteView.as_view(), name='election_delete'),
     url(r'^details/(?P<pk>\d+)/$', ElectionDetailView.as_view(), name='election_details'),
     url(r'^load_data/(?P<pk>\d+)/$', ElectionLoadDataFormView.as_view(), name='election_load_data'),
+    url(r'^generate_data/(?P<pk>\d+)/$', ElectionGenerateDataFormView.as_view(), name='election_generate'),
 ]

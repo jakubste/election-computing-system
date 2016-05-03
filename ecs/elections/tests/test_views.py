@@ -1,6 +1,7 @@
 import os
 
 import mock
+from django.core.urlresolvers import reverse
 from django.test import RequestFactory
 
 from ecs.elections.exceptions import *
@@ -27,22 +28,43 @@ class ElectionListTestCase(TestCase):
             1
         )
 
+
+class ElectionLoadDataFromFileTestCase(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+        self.url = reverse('elections:election_load_data', args=(self.election.pk,))
+
+    def get_url(self):
+        return self.url
+
     @mock.patch('ecs.elections.views.messages')
-    def test_load_data_from_file_suit_1(self, mocked_messages):
+    def test_load_data_from_file(self, mocked_messages):
         # basic test for data loading
         filename = 'test_data1.txt'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), filename)
-        election = ElectionFactory.create()
         request = RequestFactory().get(self.get_url())
-        view = ElectionLoadDataFormView(request=request, election=election)
+        view = ElectionLoadDataFormView(request=request, election=self.election)
         view.load_data_from_file(open(filename))
         self.assertListEqual(
-            [c.name for c in election.candidates.all()],
+            [c.name for c in self.election.candidates.all()],
             ['Monika', 'Weronika', 'Beata', 'Zuzanna', 'Alicja']
         )
         self.assertEqual(Preference.objects.count(), 20)
         mocked_messages.success.assert_called()
+
+    def test_load_data_from_file_by_form(self):
+        filename = 'test_data1.txt'
+        filename = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), filename)
+        response = self.client.post(self.get_url(), {
+            'file': open(filename)
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.election.voters.count(), 4)
+        self.assertEqual(self.election.candidates.count(), 5)
+        self.assertEqual(Preference.objects.filter(candidate__election=self.election).count(), 20)
 
     def test_incorrect_type_of_candidates_number_exception(self):
         filename = 'test_exceptions1.soc'

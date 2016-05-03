@@ -9,4 +9,4 @@ class Point(Model):
     y = IntegerField()
 
     def distance(self, other):
-        sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2)
+        return sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2)

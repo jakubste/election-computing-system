@@ -3,7 +3,10 @@ Django==1.9.5
 django-extensions
 factory-boy
 fake-factory
+names
+psycopg2
+coverage
+coveralls
 dj-config-url
 gunicorn
 whitenoise
-psycopg2

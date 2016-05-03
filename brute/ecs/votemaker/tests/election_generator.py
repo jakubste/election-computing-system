@@ -8,12 +8,6 @@ mock.patch.object = mock.patch.object
 
 
 class ElectionGeneratorTest(TestCase):
-    def test_euclidean_norm_1(self):
-        self.assertAlmostEqual(sqrt(2), Point.compute_euclidean_norm(Point(0, 0), Point(1, 1)), 4)
-
-    def test_euclidean_norm_2(self):
-        self.assertAlmostEqual(sqrt(2), Point.compute_euclidean_norm(Point(0, 0), Point(-1, -1)), 4)
-
     @mock.patch.object(ElectionGenerator, 'load_candidates')
     @mock.patch.object(ElectionGenerator, 'load_voters')
     def test_compute_preferences_1(self, mocked_load_voters, mocked_load_candidates):

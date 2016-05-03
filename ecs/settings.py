@@ -129,6 +129,13 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
+ELECTION_GENERATOR = {
+    'MAX_CANDIDATES': 1000,
+    'MAX_VOTERS': 1000,
+    'MAX_MEAN': 1000,
+    'MAX_SIGMA': 1000
+}
+
 try:
     from local_settings import *
 except:
