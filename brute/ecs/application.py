@@ -28,6 +28,7 @@ class ElectionComputingSystem(InputDataValidation):
         self.voters = []
         super(ElectionComputingSystem, self).__init__()
 
+    # moved to django
     def load_data_from_file(self, filename):
         voters_number_in_loop = 0
         election_data = open(filename, 'r')

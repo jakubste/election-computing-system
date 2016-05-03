@@ -75,7 +75,11 @@ class ElectionLoadDataFormView(FormView):
 
     def form_valid(self, form):
         file = form.cleaned_data['file']
-        self.load_data_from_file(file)
+        try:
+            self.load_data_from_file(file)
+        except Exception as exc:
+            form.add_error('file', str(exc))
+            return self.form_invalid(form)
         return super(ElectionLoadDataFormView, self).form_valid(form)
 
     def load_data_from_file(self, election_data):
