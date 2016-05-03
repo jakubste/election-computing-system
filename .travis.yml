@@ -11,7 +11,7 @@ before_script:
     = DisableMigrations()" >> ./ecs/local_settings.py
 script:
   - ./manage.py test
-  - coverage run --source=home manage.py test home
+  - coverage run --source=home manage.py test ecs
 after_success: coveralls
 notifications:
   slack:
