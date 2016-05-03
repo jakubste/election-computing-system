@@ -37,5 +37,11 @@ class PreferenceFactory(factory.DjangoModelFactory):
 
     candidate = factory.SubFactory(CandidateFactory)
     voter = factory.SubFactory(VoterFactory)
-    # TODO: this is bad, should be next int for self.candidate
-    preference = factory.lazy_attribute(lambda i: random.randint(1, 50))
+
+    @factory.lazy_attribute
+    def preference(self):
+        preferences = Preference.objects.filter(voter=self.voter).values_list('preference', flat=True)
+        if preferences:
+            return max(preferences) + 1
+        else:
+            return 1

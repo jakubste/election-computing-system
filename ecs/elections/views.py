@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.http.response import Http404
@@ -30,12 +31,17 @@ class ElectionListView(LoginRequiredMixin, ListView):
 class ElectionCreateView(LoginRequiredMixin, CreateView):
     form_class = ElectionForm
     template_name = 'election_create.html'
-    success_url = reverse_lazy('elections:election_list')
 
     def get_form_kwargs(self):
         kwargs = super(ElectionCreateView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+    def get_success_url(self):
+        if self.object:
+            return self.object.get_absolute_url()
+        else:
+            return reverse_lazy('elections:election_list')
 
 
 class ElectionDeleteView(DeleteView):
@@ -55,6 +61,7 @@ class ElectionDetailView(DetailView):
 class ElectionLoadDataFormView(FormView):
     form_class = ElectionLoadDataForm
     template_name = 'election_load_data.html'
+    election = None
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -140,9 +147,16 @@ class ElectionLoadDataFormView(FormView):
 
             check_number_of_votes_consistency(voters_number, voters_number_in_loop)
 
-            # TODO: Message instead of print
-            print '* Candidates number:', candidates_number
-            print '* Voters number:', voters_number
-            print '* Unique votes:', unique_votes
+            message = """
+            <strong>Successfully added election data from file!</strong><br>
+            * Candidates number: {}<br>
+            * Voters number: {}<br>
+            * Unique votes: {}<br>
+            """
+            messages.success(
+                self.request,
+                message.format(candidates_number, voters_number, unique_votes)
+            )
+
 
         election_data.close()
