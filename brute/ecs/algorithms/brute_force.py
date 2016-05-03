@@ -10,8 +10,8 @@ class BruteForce(Algorithm):
 
         for committee in combinations:
             temp_score = 0
-            for vote in self.elections.votes:
-                temp_score += vote.calculate_committee_score(committee, self.elections.p_parameter)
+            for voter in self.elections.voters:
+                temp_score += voter.calculate_committee_score(committee, self.elections.p_parameter)
             if temp_score > max_score:
                 max_score = temp_score
                 winning_committee = committee

@@ -1,6 +1,7 @@
 from ecs.algorithms.brute_force import BruteForce
+from ecs.voter import Voter
+from ecs.candidate import Candidate
 from ecs.exceptions import *
-from ecs.vote import Vote
 from ecs.datavalidation import InputDataValidation
 
 
@@ -15,7 +16,7 @@ class ElectionComputingSystem(InputDataValidation):
     voters_number = 0
     # to check data consistency
     unique_votes = 0
-    votes = None
+    voters = None
 
     p_parameter = 1
 
@@ -24,13 +25,12 @@ class ElectionComputingSystem(InputDataValidation):
         self.p_parameter = int(p_parameter)
         self.algorithm = BruteForce(self)
         self.candidates = []
-        self.votes = []
+        self.voters = []
         super(ElectionComputingSystem, self).__init__()
 
     def load_data_from_file(self, filename):
         voters_number_in_loop = 0
         election_data = open(filename, 'r')
-
 
         self.candidates_number = int(election_data.readline())
         if self.candidates_number <= 0:
@@ -39,11 +39,14 @@ class ElectionComputingSystem(InputDataValidation):
         # reading candidates' names
         for i in xrange(self.candidates_number):
             line = election_data.readline()
+            print "lel"
             try:
+                candidate_id = int(line.split(',', 1)[0].strip())
                 candidate_name = line.split(',', 1)[1].strip()
-            except IndexError:
-                raise CandidatesNameIncorrectFormatException(2+i)
-            self.candidates.append(candidate_name)
+            except (IndexError, ValueError):
+                raise CandidatesNameIncorrectFormatException(2 + i)
+            candidate = Candidate(candidate_id, candidate_name)
+            self.candidates.append(candidate)
 
         # reading number of all votes and unique votes
         line = election_data.readline()
@@ -72,8 +75,12 @@ class ElectionComputingSystem(InputDataValidation):
                 raise PreferenceOrderLogicException(3 + self.candidates_number + i)
             voters_number_in_loop += line[0]
             self.check_vote_consistency(line[1:], self.candidates_number)
-            vote = Vote(line[0], line[1:])
-            self.votes.append(vote)
+            vote_repeats = line[0]
+            # list of candidates in specified order
+            preference = Voter.get_candidates_by_ids(self.candidates, line[1:])
+            # arrange candidates according to preference from the file
+            voter = Voter(vote_repeats, preference)
+            self.voters.append(voter)
 
         self.check_number_of_votes_consistency(self.voters_number, voters_number_in_loop)
 
