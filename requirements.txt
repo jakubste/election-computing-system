@@ -6,3 +6,4 @@ fake-factory
 names
 psycopg2
 coverage
+coveralls
