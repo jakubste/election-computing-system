@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ election }}
+{% endblock %}
+
+{% block content %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message|safe }}</div>
+    {% endfor %}
+
+    <p>
+        committee size: {{ election.committee_size }}
+    </p>
+    {% if not election.is_set_up %}
+        <div class="alert alert-info">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            You should add voters and candidates!
+        </div>
+
+        <div class="btn-group btn-group-lg btn-group-justified" role="group">
+            <a href="{% url 'elections:election_load_data' election.pk %}" class="btn btn-info" role="button">
+                <span class="glyphicon glyphicon-upload" style="font-size: 4em"></span><br>
+                Load data from file (.soc PrefLib format)
+            </a>
+            <a href="{% url 'elections:election_generate' election.pk %}" class="btn btn-info" role="button">
+                <span class="glyphicon glyphicon-equalizer" style="font-size: 4em"></span><br>
+                Generate election from normal distribution
+            </a>
+        </div>
+
+    {% else %}
+
+        <h2>Voters listing</h2>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse1">Collapse/expand voters listing</a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse">
+                    {% for voter in voters %}
+                        <div class="panel-body">
+                            <strong>{{ voter.repeats }}</strong>x
+                            {% for preference in voter.preferences.all %}
+                                {{ preference.preference }}&nbsp;-&nbsp;{{ preference.candidate }}&nbsp;[{{ preference.candidate.soc_id }}]{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <div class="panel-footer">
+                        <p>Listing format:<br>
+                            <code>
+                            <strong>:vote_repeats:</strong> x :preference_index: - :candidate_name: [:candidate_id:],
+                            :preference_index: - :candidate_name: [:candidate_id:], …
+                            </code>
+                        </p>
+                        <p>
+                            Example:
+                            <br>
+                            <code>
+                                <strong>7</strong>x 1 - John Snow [2], 2 - Daenerys [1], 3 - Cersei [3]
+                            </code><br>
+                            means there are 7 voters that choose John Snow in the first place, Danearys the second and
+                            Cersei as the last candidate in their preference.
+                            <br>
+                            Daenerys has id 1 in database (John Snow has 2 and Cersei has 3).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}
