@@ -6,7 +6,7 @@ from chartjs.colors import next_color
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
-from django.http.response import Http404
+from django.http.response import Http404, JsonResponse
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
@@ -187,32 +187,38 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
         return super(ElectionGenerateDataFormView, self).form_valid(form)
 
 
-class ScatterChartJSONView(BaseLineChartView):
-    def get_labels(self):
-        """Return 7 labels."""
-        return ["January", "February", "March", "April", "May", "June", "July"]
-
+class ScatterChartJSONView(View):
     def get_data(self):
-        """Return 3 datasets to plot."""
+        """
+        Returns list of lists of points.
+        First list for candidatates, second for voters.
+        """
+        # TODO: Get proper values from DB
+        return [[(1, 2), (2, 3)], [(3, 4), (4, 5)]]
 
-        return [[75, 44, 92, 11, 44, 95, 35],
-                [41, 92, 18, 3, 73, 87, 92],
-                [87, 21, 94, 3, 90, 13, 65]]
+    def get_datasets(self):
+        """
+        Format data to Scatter dataset format
+        """
+        data = self.get_data()
+        # TODO: This is ugly
+        return [
+            {
+                'label': 'Candidates',
+                'pointColor': 'red',
+                'pointStrokeColor': 'black',
+                'data': [{'x': x, 'y': y} for (x, y) in data[0]]
+            },
+            {
+                'label': 'Voters',
+                'pointColor': 'blue',
+                'pointStrokeColor': 'black',
+                'data': [{'x': x, 'y': y} for (x, y) in data[1]]
+            },
 
-    def get_colors(self):
-        """Return a new shuffle list of color so we change the color
-        each time."""
-        return next_color([
-            (254, 0, 0),
-            (128, 42, 42),
-            (0, 0, 200),
-            (220, 220, 0),
-        ])
+        ]
 
-    def get_context_data(self, *agrs, **kwargs):
-        data = {}
-        data['labels'] = self.get_labels()
-        data['datasets'] = self.get_datasets()
-        data['colors'] = self.get_colors()
-        return data
-
+    def get(self, *agrs, **kwargs):
+        return JsonResponse(
+            {'data': self.get_datasets()}
+        )
