@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block title %}
+    {% load static from staticfiles %}
+    <div align="center">
+        <img src="{% static 'vote.png' %}" align="middle"/><br>
+    </div>
     Hello world!
 {% endblock %}
 

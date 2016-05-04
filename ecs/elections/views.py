@@ -187,7 +187,7 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
         return super(ElectionGenerateDataFormView, self).form_valid(form)
 
 
-class ScatterChartJSONView(BaseLineChartView):
+class ExampleChartJSONView(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels."""
         return ["January", "February", "March", "April", "May", "June", "July"]
@@ -216,3 +216,32 @@ class ScatterChartJSONView(BaseLineChartView):
         data['colors'] = self.get_colors()
         return data
 
+
+class ScatterChartJSONView(BaseLineChartView):
+    def get_labels(self):
+        """Return 7 labels."""
+        return ["January", "February", "March", "April", "May", "June", "July"]
+
+    def get_data(self):
+        """Return 3 datasets to plot."""
+
+        return [[75, 44, 92, 11, 44, 95, 35],
+                [41, 92, 18, 3, 73, 87, 92],
+                [87, 21, 94, 3, 90, 13, 65]]
+
+    def get_colors(self):
+        """Return a new shuffle list of color so we change the color
+        each time."""
+        return next_color([
+            (254, 0, 0),
+            (128, 42, 42),
+            (0, 0, 200),
+            (220, 220, 0),
+        ])
+
+    def get_context_data(self, *agrs, **kwargs):
+        data = {}
+        data['labels'] = self.get_labels()
+        data['datasets'] = self.get_datasets()
+        data['colors'] = self.get_colors()
+        return data
