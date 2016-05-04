@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.test import RequestFactory
 
 from ecs.elections.exceptions import *
-from ecs.elections.factories import ElectionFactory
+from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory
 from ecs.elections.models import Preference
 from ecs.elections.views import ElectionLoadDataFormView
 from ecs.utils.unittestcases import TestCase
@@ -26,6 +26,33 @@ class ElectionListTestCase(TestCase):
         self.assertEqual(
             len(response.context['elections']),
             1
+        )
+
+
+class ElectionDetailViewTestCase(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+
+    def get_url(self):
+        return reverse('elections:election_details', args=(self.election.pk,))
+
+    def test_voters_in_context(self):
+        v = VoterFactory(election=self.election)
+        c = CandidateFactory(election=self.election)
+        p = PreferenceFactory(voter=v, candidate=c)
+        response = self.client.get(self.get_url())
+        self.assertIn(
+            'voters',
+            response.context
+        )
+        self.assertIn(
+            str(v.repeats),
+            response.content
+        )
+        self.assertIn(
+            p.candidate.name,
+            response.content
         )
 
 

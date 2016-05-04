@@ -23,6 +23,7 @@ class ElectionListView(LoginRequiredMixin, ListView):
     model = Election
     template_name = 'election_list.html'
     context_object_name = 'elections'
+    active_election_list = 'active'
 
     def get_queryset(self):
         qs = super(ElectionListView, self).get_queryset()
@@ -77,6 +78,11 @@ class ElectionDetailView(DetailView):
     model = Election
     template_name = 'election_details.html'
     context_object_name = 'election'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ElectionDetailView, self).get_context_data(**kwargs)
+        ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
+        return ctx
 
 
 class ElectionLoadDataFormView(ConfigureElectionMixin, FormView):
