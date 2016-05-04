@@ -84,6 +84,7 @@ class ElectionDetailView(DetailView):
         ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
         return ctx
 
+
 class ElectionLoadDataFormView(ConfigureElectionMixin, FormView):
     form_class = ElectionLoadDataForm
     template_name = 'election_load_data.html'
