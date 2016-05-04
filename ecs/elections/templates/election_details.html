@@ -28,7 +28,6 @@
                 Generate election from normal distribution
             </a>
         </div>
-
     {% else %}
 
         <h2>Voters listing</h2>
@@ -80,10 +79,19 @@
                     </h4>
                 </div>
                 <div id="collapse2" class="panel-collapse collapse">
-                    W Y K R E S
+                    <canvas id="myChart" width="500" height="400"></canvas>
+                    <script type="text/javascript">
+                        $.get('{% url 'elections:chart_data' election.pk %}', function (data) {
+                            var ctx = $("#myChart").get(0).getContext("2d");
+                            new Chart(ctx).Line(data, {
+                            responsive: true,
+                            datasetFill: false
+                        });
+                    });
+                    </script>
                 </div>
             </div>
-        </div>
+         </div>
 
     {% endif %}
 

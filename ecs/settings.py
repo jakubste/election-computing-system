@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ecs',
     'ecs.accounts',
     'ecs.elections',
+    'chartjs',
 ]
 
 MIDDLEWARE_CLASSES = [
