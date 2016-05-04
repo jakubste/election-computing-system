@@ -117,7 +117,6 @@ LOGIN_URL = '/login/'
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # If you want to see it in browser
@@ -136,8 +135,6 @@ DATABASES = {
 }
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 ELECTION_GENERATOR = {
     'MAX_CANDIDATES': 1000,
