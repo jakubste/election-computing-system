@@ -23,6 +23,7 @@ class ElectionListView(LoginRequiredMixin, ListView):
     model = Election
     template_name = 'election_list.html'
     context_object_name = 'elections'
+    active_election_list = 'active'
 
     def get_queryset(self):
         qs = super(ElectionListView, self).get_queryset()
