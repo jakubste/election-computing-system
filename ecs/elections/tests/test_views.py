@@ -1,3 +1,4 @@
+import json
 import os
 
 import mock
@@ -10,6 +11,8 @@ from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFac
 from ecs.elections.models import Preference
 from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView
 from ecs.utils.unittestcases import TestCase
+
+mock.patch.object = mock.patch.object
 
 
 class ElectionListTestCase(TestCase):
@@ -253,3 +256,40 @@ class ElectionChartViewTest(TestCase):
         self.assertEqual(labels[1], 'Voters')
         self.assertEqual(len(candidates), 4)
         self.assertEqual(len(voters), 10)
+
+    @mock.patch.object(ElectionChartView, 'get_labels')
+    @mock.patch.object(ElectionChartView, 'get_colors')
+    @mock.patch.object(ElectionChartView, 'get_points_stroke_colors')
+    @mock.patch.object(ElectionChartView, 'get_data')
+    def test_get_datasets(
+            self, mocked_get_data, mocked_get_points_stroke_colors,
+            mocked_get_colors, mocked_get_labels
+    ):
+        mocked_get_labels.return_value = ['label1', 'label2']
+        mocked_get_colors.return_value = ['red', 'blue']
+        mocked_get_points_stroke_colors.return_value = ['black', 'black']
+        mocked_get_data.return_value = [[(0, 1)], [(2, 3)]]
+        expected = [
+            {
+                "pointColor": "red",
+                "pointStrokeColor": "black",
+                "data": [{"x": 0, "y": 1}],
+                "label": "label1"
+            },
+            {
+                "pointColor": "blue",
+                "pointStrokeColor": "black",
+                "data": [{"x": 2, "y": 3}],
+                "label": "label2"
+            },
+        ]
+        request = RequestFactory().get(self.url)
+        view = ElectionChartView(
+            request=request,
+            election=self.gauss_election
+        )
+        datasets = view.get_datasets()
+        self.assertEqual(expected, datasets)
+        response = self.client.get(self.gauss_url)
+        response = json.loads(response.content)
+        self.assertEqual(expected, response['data'])
