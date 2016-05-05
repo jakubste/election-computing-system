@@ -1,12 +1,7 @@
-from random import randint
-from django.views.generic import TemplateView
-from chartjs.views.lines import BaseLineChartView
-from chartjs.colors import next_color
-
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
-from django.http.response import Http404, JsonResponse
+from django.http.response import Http404
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
@@ -21,6 +16,7 @@ from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGene
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter
+from ecs.scatter_view import ScatterChartMixin
 from ecs.utils.views import LoginRequiredMixin
 
 
@@ -187,40 +183,23 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
         return super(ElectionGenerateDataFormView, self).form_valid(form)
 
 
-class ScatterChartJSONView(View):
-    def get_data(self, *args, **kwargs):
+class ElectionChartView(ScatterChartMixin):
+    datasets_number = 2
+    labels = ['Candidates', 'Voters']
+    colors = ['red', 'blue']
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.election = Election.objects.get(pk=kwargs['pk'])
+        except:
+            raise Http404
+        return super(ElectionChartView, self).dispatch(request, *args, **kwargs)
+
+    def get_data(self):
         """
         Returns list of lists of points.
         First list for candidatates, second for voters.
         """
-        self.election = Election.objects.get(pk=kwargs['pk'])
         candidates = self.election.candidates.values_list('position__x', 'position__y')
         voters = self.election.voters.values_list('position__x', 'position__y')
         return [candidates, voters]
-
-    def get_datasets(self, *args, **kwargs):
-        """
-        Format data to Scatter dataset format
-        """
-        data = self.get_data(*args, **kwargs)
-        # TODO: This is ugly
-        return [
-            {
-                'label': 'Candidates',
-                'pointColor': 'red',
-                'pointStrokeColor': 'black',
-                'data': [{'x': x, 'y': y} for (x, y) in data[0]]
-            },
-            {
-                'label': 'Voters',
-                'pointColor': 'blue',
-                'pointStrokeColor': 'black',
-                'data': [{'x': x, 'y': y} for (x, y) in data[1]]
-            },
-
-        ]
-
-    def get(self, *args, **kwargs):
-        return JsonResponse(
-            {'data': self.get_datasets(*args, **kwargs)}
-        )

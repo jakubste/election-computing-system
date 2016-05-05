@@ -41,7 +41,6 @@ class Election(models.Model):
             return False
 
 
-
 class Candidate(models.Model):
     name = models.CharField(max_length=50, null=True)
     position = models.ForeignKey(Point, null=True)
