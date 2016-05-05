@@ -27,6 +27,19 @@ class Election(models.Model):
         else:
             return False
 
+    def is_generated(self):
+        """
+        Indicates if elections where
+        generated from normal distribution.
+        """
+        try:
+            if self.candidates.all()[0].position:
+                return True
+            else:
+                return False
+        except:
+            return False
+
 
 class Candidate(models.Model):
     name = models.CharField(max_length=50, null=True)

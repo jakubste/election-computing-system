@@ -16,6 +16,7 @@ from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGene
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter
+from ecs.utils.scatter_view import ScatterChartMixin
 from ecs.utils.views import LoginRequiredMixin
 
 
@@ -180,3 +181,25 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
         generator = ElectionGenerator(self.election, **form.cleaned_data)
         generator.generate_elections()
         return super(ElectionGenerateDataFormView, self).form_valid(form)
+
+
+class ElectionChartView(ScatterChartMixin):
+    datasets_number = 2
+    labels = ['Candidates', 'Voters']
+    colors = ['red', 'blue']
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.election = Election.objects.get(pk=kwargs['pk'])
+        except:
+            raise Http404
+        return super(ElectionChartView, self).dispatch(request, *args, **kwargs)
+
+    def get_data(self):
+        """
+        Returns list of lists of points.
+        First list for candidatates, second for voters.
+        """
+        candidates = self.election.candidates.values_list('position__x', 'position__y')
+        voters = self.election.voters.values_list('position__x', 'position__y')
+        return [candidates, voters]

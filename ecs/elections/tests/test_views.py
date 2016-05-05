@@ -1,14 +1,19 @@
+import json
 import os
 
 import mock
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.test import RequestFactory
 
 from ecs.elections.exceptions import *
-from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory
+from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory, \
+    PointCandidateFactory, PointVoterFactory
 from ecs.elections.models import Preference
-from ecs.elections.views import ElectionLoadDataFormView
+from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView
 from ecs.utils.unittestcases import TestCase
+
+mock.patch.object = mock.patch.object
 
 
 class ElectionListTestCase(TestCase):
@@ -183,3 +188,106 @@ class ElectionLoadDataFromFileTestCase(TestCase):
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
         view = ElectionLoadDataFormView(election=ElectionFactory.create())
         self.assertRaises(NumberOfVotesInconsistencyException, view.load_data_from_file, open(filename))
+
+
+class ElectionChartViewTest(TestCase):
+    def setUp(self):
+        self.file_election = ElectionFactory.create()
+        self.file_cs = CandidateFactory.create_batch(4, election=self.file_election)
+        self.file_vs = VoterFactory.create_batch(10, election=self.file_election)
+        self.file_url = reverse('elections:chart_data', args=(self.file_election.pk,))
+
+        self.gauss_election = ElectionFactory.create()
+        self.gauss_cs = PointCandidateFactory.create_batch(4, election=self.gauss_election)
+        self.gauss_vs = PointVoterFactory.create_batch(10, election=self.gauss_election)
+        self.gauss_url = reverse('elections:chart_data', args=(self.gauss_election.pk,))
+
+    def test_get_data_from_file(self):
+        request = RequestFactory().get(self.file_url)
+        view = ElectionChartView(request=request, election=self.file_election)
+        data = view.get_data()
+        candidates = data[0]
+        voters = data[1]
+        colors = view.get_colors()
+        labels = view.get_labels()
+
+        for point in candidates:
+            self.assertEqual(point[0], None)
+            self.assertEqual(point[1], None)
+
+        for point in voters:
+            self.assertEqual(point[0], None)
+            self.assertEqual(point[1], None)
+
+        self.assertEqual(colors[0], 'red')
+        self.assertEqual(colors[1], 'blue')
+        self.assertEqual(labels[0], 'Candidates')
+        self.assertEqual(labels[1], 'Voters')
+        self.assertEqual(len(candidates), 4)
+        self.assertEqual(len(voters), 10)
+
+    def test_get_data_from_gauss(self):
+        request = RequestFactory().get(self.gauss_url)
+        view = ElectionChartView(request=request, election=self.gauss_election)
+        data = view.get_data()
+        candidates = data[0]
+        voters = data[1]
+        colors = view.get_colors()
+        labels = view.get_labels()
+
+        for point in candidates:
+            self.assertTrue(isinstance(point[0], int))
+            self.assertTrue(isinstance(point[1], int))
+
+        for point in voters:
+            self.assertTrue(isinstance(point[0], int))
+            self.assertTrue(isinstance(point[1], int))
+
+        self.assertEqual(colors[0], 'red')
+        self.assertEqual(colors[1], 'blue')
+        self.assertEqual(labels[0], 'Candidates')
+        self.assertEqual(labels[1], 'Voters')
+        self.assertEqual(len(candidates), 4)
+        self.assertEqual(len(voters), 10)
+
+    @mock.patch.object(ElectionChartView, 'get_labels')
+    @mock.patch.object(ElectionChartView, 'get_colors')
+    @mock.patch.object(ElectionChartView, 'get_points_stroke_colors')
+    @mock.patch.object(ElectionChartView, 'get_data')
+    def test_get_datasets(
+            self, mocked_get_data, mocked_get_points_stroke_colors,
+            mocked_get_colors, mocked_get_labels
+    ):
+        mocked_get_labels.return_value = ['label1', 'label2']
+        mocked_get_colors.return_value = ['red', 'blue']
+        mocked_get_points_stroke_colors.return_value = ['black', 'black']
+        mocked_get_data.return_value = [[(0, 1)], [(2, 3)]]
+        expected = [
+            {
+                "pointColor": "red",
+                "pointStrokeColor": "black",
+                "data": [{"x": 0, "y": 1}],
+                "label": "label1"
+            },
+            {
+                "pointColor": "blue",
+                "pointStrokeColor": "black",
+                "data": [{"x": 2, "y": 3}],
+                "label": "label2"
+            },
+        ]
+        request = RequestFactory().get(self.url)
+        view = ElectionChartView(
+            request=request,
+            election=self.gauss_election
+        )
+        datasets = view.get_datasets()
+        self.assertEqual(expected, datasets)
+        response = self.client.get(self.gauss_url)
+        response = json.loads(response.content)
+        self.assertEqual(expected, response['data'])
+
+    def test_dispatch_error(self):
+        request = RequestFactory().get(self.gauss_url)
+        view = ElectionChartView(request=request, election=self.file_election)
+        self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))
