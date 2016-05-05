@@ -196,13 +196,7 @@ class ScatterChartJSONView(View):
         self.election = Election.objects.get(pk=kwargs['pk'])
         candidates = self.election.candidates.values_list('position__x', 'position__y')
         voters = self.election.voters.values_list('position__x', 'position__y')
-        voters_positions = []
-        candidates_positions = []
-        for voter in voters:
-            voters_positions.append(voter)
-        for candidate in candidates:
-            candidates_positions.append(candidate)
-        return [candidates_positions, voters_positions]
+        return [candidates, voters]
 
     def get_datasets(self, *args, **kwargs):
         """

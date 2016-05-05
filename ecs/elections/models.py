@@ -33,12 +33,13 @@ class Election(models.Model):
         generated from normal distribution.
         """
         try:
-            if self.candidate.all()[0].position:
+            if self.candidates.all()[0].position:
                 return True
             else:
                 return False
         except:
             return False
+
 
 
 class Candidate(models.Model):
