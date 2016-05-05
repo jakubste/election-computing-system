@@ -2,6 +2,7 @@ import os
 
 import mock
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.test import RequestFactory
 
 from ecs.elections.exceptions import *
@@ -237,12 +238,18 @@ class ElectionChartViewTest(TestCase):
         for point in candidates:
             self.assertTrue(isinstance(point[0], int))
             self.assertTrue(isinstance(point[1], int))
-            self.assertLessEqual(point[0], 1000)
-            self.assertLessEqual(point[1], 1000)
+            self.assertLessEqual(point[0], 100)
+            self.assertLessEqual(point[1], 100)
+            self.assertGreaterEqual(point[0], -100)
+            self.assertGreaterEqual(point[1], -100)
 
         for point in voters:
             self.assertTrue(isinstance(point[0], int))
             self.assertTrue(isinstance(point[1], int))
+            self.assertLessEqual(point[0], 100)
+            self.assertLessEqual(point[1], 100)
+            self.assertGreaterEqual(point[0], -100)
+            self.assertGreaterEqual(point[1], -100)
 
         for color in colors:
             self.assertTrue(isinstance(color, str))
@@ -253,3 +260,9 @@ class ElectionChartViewTest(TestCase):
         self.assertEqual(labels[1], 'Voters')
         self.assertEqual(len(candidates), 4)
         self.assertEqual(len(voters), 10)
+
+    def test_dispatch_error(self):
+        request = RequestFactory().get(self.url)
+        view = ElectionChartView(request=request, election=self.file_election)
+        self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))
+

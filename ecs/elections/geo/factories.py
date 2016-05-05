@@ -9,6 +9,6 @@ class PointFactory(factory.DjangoModelFactory):
     class Meta:
         model = Point
 
-    x = factory.lazy_attribute(lambda i: random.randint(0, 1000))
-    y = factory.lazy_attribute(lambda i: random.randint(0, 1000))
+    x = factory.lazy_attribute(lambda i: random.randint(-100, 100))
+    y = factory.lazy_attribute(lambda i: random.randint(-100, 100))
 
