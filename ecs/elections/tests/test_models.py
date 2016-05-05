@@ -13,7 +13,7 @@ class ElectionTestCase(TestCase):
         self.assertEqual(election.is_set_up(), True)
 
     def test_is_set_generated_flag(self):
-        empty_election = ElectionFactoty.create()
+        empty_election = ElectionFactory.create()
         
         file_election = ElectionFactory.create()
         file_cs = CandidateFactory.create_batch(4, election=file_election)
