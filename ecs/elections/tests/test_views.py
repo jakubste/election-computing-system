@@ -3,6 +3,7 @@ import os
 
 import mock
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.test import RequestFactory
 
 from ecs.elections.exceptions import *
@@ -202,7 +203,7 @@ class ElectionChartViewTest(TestCase):
         self.gauss_url = reverse('elections:chart_data', args=(self.gauss_election.pk,))
 
     def test_get_data_from_file(self):
-        request = RequestFactory().get(self.url)
+        request = RequestFactory().get(self.file_url)
         view = ElectionChartView(request=request, election=self.file_election)
         data = view.get_data()
         candidates = data[0]
@@ -218,9 +219,6 @@ class ElectionChartViewTest(TestCase):
             self.assertEqual(point[0], None)
             self.assertEqual(point[1], None)
 
-        for color in colors:
-            self.assertTrue(isinstance(color, str))
-
         self.assertEqual(colors[0], 'red')
         self.assertEqual(colors[1], 'blue')
         self.assertEqual(labels[0], 'Candidates')
@@ -229,7 +227,7 @@ class ElectionChartViewTest(TestCase):
         self.assertEqual(len(voters), 10)
 
     def test_get_data_from_gauss(self):
-        request = RequestFactory().get(self.url)
+        request = RequestFactory().get(self.gauss_url)
         view = ElectionChartView(request=request, election=self.gauss_election)
         data = view.get_data()
         candidates = data[0]
@@ -240,15 +238,10 @@ class ElectionChartViewTest(TestCase):
         for point in candidates:
             self.assertTrue(isinstance(point[0], int))
             self.assertTrue(isinstance(point[1], int))
-            self.assertLessEqual(point[0], 1000)
-            self.assertLessEqual(point[1], 1000)
 
         for point in voters:
             self.assertTrue(isinstance(point[0], int))
             self.assertTrue(isinstance(point[1], int))
-
-        for color in colors:
-            self.assertTrue(isinstance(color, str))
 
         self.assertEqual(colors[0], 'red')
         self.assertEqual(colors[1], 'blue')
@@ -293,3 +286,8 @@ class ElectionChartViewTest(TestCase):
         response = self.client.get(self.gauss_url)
         response = json.loads(response.content)
         self.assertEqual(expected, response['data'])
+
+    def test_dispatch_error(self):
+        request = RequestFactory().get(self.gauss_url)
+        view = ElectionChartView(request=request, election=self.file_election)
+        self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))
