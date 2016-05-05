@@ -32,7 +32,13 @@ class Election(models.Model):
         Indicates if elections where
         generated from normal distribution.
         """
-        return self.candidates.values_list('position__x', 'position__y')[0][0] is not None
+        try:
+            if self.candidate.all()[0].position:
+                return True
+            else:
+                return False
+        except:
+            return False
 
 
 class Candidate(models.Model):
