@@ -2,7 +2,9 @@ import random
 
 import factory
 
+
 from ecs.accounts.factories import UserFactory
+from ecs.elections.geo.factories import PointFactory
 from ecs.elections.models import Election, Candidate, Voter, Preference
 
 
@@ -23,12 +25,20 @@ class CandidateFactory(factory.DjangoModelFactory):
     election = factory.SubFactory(ElectionFactory)
 
 
+class PointCandidateFactory(CandidateFactory):
+    position = factory.SubFactory(PointFactory)
+
+
 class VoterFactory(factory.DjangoModelFactory):
     class Meta:
         model = Voter
 
     repeats = factory.lazy_attribute(lambda i: random.randint(1, 5))
     election = factory.SubFactory(ElectionFactory)
+
+
+class PointVoterFactory(VoterFactory):
+    position = factory.SubFactory(PointFactory)
 
 
 class PreferenceFactory(factory.DjangoModelFactory):

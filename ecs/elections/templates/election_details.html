@@ -28,8 +28,21 @@
                 Generate election from normal distribution
             </a>
         </div>
-
     {% else %}
+
+        {% if election.is_generated %}
+
+            <h2>Chart</h2>
+            <div class="container">
+                <div class="col-md-1"></div>
+                <div class="col-md-9">
+                    <canvas id="election_chart" data-url="{% url 'elections:chart_data' election.pk %}"
+                            width="580" height="580"></canvas>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
+        {% endif %}
 
         <h2>Voters listing</h2>
         <div class="panel-group">
@@ -70,7 +83,6 @@
                 </div>
             </div>
         </div>
-
     {% endif %}
 
 {% endblock %}
