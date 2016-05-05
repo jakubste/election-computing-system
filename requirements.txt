@@ -11,3 +11,6 @@ dj-config-url
 gunicorn
 whitenoise
 django-debug-toolbar
+django-chartjs
+mock
+
