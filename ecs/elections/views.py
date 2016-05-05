@@ -16,7 +16,7 @@ from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGene
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter
-from ecs.scatter_view import ScatterChartMixin
+from ecs.utils.scatter_view import ScatterChartMixin
 from ecs.utils.views import LoginRequiredMixin
 
 

@@ -5,7 +5,8 @@ from django.core.urlresolvers import reverse
 from django.test import RequestFactory
 
 from ecs.elections.exceptions import *
-from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory
+from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory, \
+    PointCandidateFactory, PointVoterFactory
 from ecs.elections.models import Preference
 from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView
 from ecs.utils.unittestcases import TestCase
@@ -187,14 +188,68 @@ class ElectionLoadDataFromFileTestCase(TestCase):
 
 class ElectionChartViewTest(TestCase):
     def setUp(self):
-        self.user = self.login()
-        self.election = ElectionFactory.create(user=self.user)
+        self.file_election = ElectionFactory.create()
+        self.file_cs = CandidateFactory.create_batch(4, election=self.file_election)
+        self.file_vs = VoterFactory.create_batch(10, election=self.file_election)
+        self.file_url = reverse('elections:chart_data', args=(self.file_election.pk,))
 
-    def get_url(self):
-        return reverse('elections:election_details', args=(self.election.pk,))
+        self.gauss_election = ElectionFactory.create()
+        self.gauss_cs = PointCandidateFactory.create_batch(4, election=self.gauss_election)
+        self.gauss_vs = PointVoterFactory.create_batch(10, election=self.gauss_election)
+        self.gauss_url = reverse('elections:chart_data', args=(self.gauss_election.pk,))
 
-    def test_chart_from_file(self):
-        pass
+    def test_get_data_from_file(self):
+        request = RequestFactory().get(self.url)
+        view = ElectionChartView(request=request, election=self.file_election)
+        data = view.get_data()
+        candidates = data[0]
+        voters = data[1]
+        colors = view.get_colors()
+        labels = view.get_labels()
 
-    def test_chart_from_generated(self):
-        pass
+        for point in candidates:
+            self.assertEqual(point[0], None)
+            self.assertEqual(point[1], None)
+
+        for point in voters:
+            self.assertEqual(point[0], None)
+            self.assertEqual(point[1], None)
+
+        for color in colors:
+            self.assertTrue(isinstance(color, str))
+
+        self.assertEqual(colors[0], 'red')
+        self.assertEqual(colors[1], 'blue')
+        self.assertEqual(labels[0], 'Candidates')
+        self.assertEqual(labels[1], 'Voters')
+        self.assertEqual(len(candidates), 4)
+        self.assertEqual(len(voters), 10)
+
+    def test_get_data_from_gauss(self):
+        request = RequestFactory().get(self.url)
+        view = ElectionChartView(request=request, election=self.gauss_election)
+        data = view.get_data()
+        candidates = data[0]
+        voters = data[1]
+        colors = view.get_colors()
+        labels = view.get_labels()
+
+        for point in candidates:
+            self.assertTrue(isinstance(point[0], int))
+            self.assertTrue(isinstance(point[1], int))
+            self.assertLessEqual(point[0], 1000)
+            self.assertLessEqual(point[1], 1000)
+
+        for point in voters:
+            self.assertTrue(isinstance(point[0], int))
+            self.assertTrue(isinstance(point[1], int))
+
+        for color in colors:
+            self.assertTrue(isinstance(color, str))
+
+        self.assertEqual(colors[0], 'red')
+        self.assertEqual(colors[1], 'blue')
+        self.assertEqual(labels[0], 'Candidates')
+        self.assertEqual(labels[1], 'Voters')
+        self.assertEqual(len(candidates), 4)
+        self.assertEqual(len(voters), 10)
