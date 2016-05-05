@@ -70,32 +70,21 @@
             </div>
         </div>
 
-        <h2>Chart</h2>
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse2">Show/hide chart</a>
-                    </h4>
-                </div>
-                <div id="collapse2" class="panel-collapse collapse">
+         {% if election.is_generated %}
+            <h2>Chart</h2>
 
-                </div>
-            </div>
-        </div>
-    {# TODO: Tidy this mess #}
-        <canvas id="myChart" width="500" height="400"></canvas>
-        <script type="text/javascript">
-            $.get('{% url 'elections:chart_data' election.pk %}', function (data) {
-                var ctx = $("#myChart").get(0).getContext("2d");
-                new Chart(ctx).Scatter(data['data'], {
-                    responsive: true,
-                    datasetFill: false,
-                    datasetStroke: false
-
+            <canvas id="scatterChart" width="100" height="100"></canvas>
+            <script type="text/javascript">
+                $.get('{% url 'elections:chart_data' election.pk %}', function (data) {
+                    var ctx = $("#scatterChart").get(0).getContext("2d");
+                    new Chart(ctx).Scatter(data['data'], {
+                        responsive: true,
+                        datasetFill: false,
+                        datasetStroke: false
+                    });
                 });
-            });
-        </script>
+            </script>
+        {% endif %}
     {% endif %}
 
 {% endblock %}

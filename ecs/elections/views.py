@@ -188,19 +188,30 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
 
 
 class ScatterChartJSONView(View):
-    def get_data(self):
+    def get_data(self, *args, **kwargs):
         """
         Returns list of lists of points.
         First list for candidatates, second for voters.
         """
-        # TODO: Get proper values from DB
-        return [[(1, 2), (2, 3)], [(3, 4), (4, 5)]]
+        self.election = Election.objects.get(pk=kwargs['pk'])
+        candidates = self.election.candidates.values_list('position__x', 'position__y')
+        voters = self.election.voters.values_list('position__x', 'position__y')
+        voters_positions = []
+        candidates_positions = []
+        for voter in voters:
+            print voter
+            voters_positions.append(voter)
+        for candidate in candidates:
+            print candidate
+            candidates_positions.append(candidate)
 
-    def get_datasets(self):
+        return [candidates_positions, voters_positions]
+
+    def get_datasets(self, *args, **kwargs):
         """
         Format data to Scatter dataset format
         """
-        data = self.get_data()
+        data = self.get_data(*args, **kwargs)
         # TODO: This is ugly
         return [
             {
@@ -218,7 +229,8 @@ class ScatterChartJSONView(View):
 
         ]
 
-    def get(self, *agrs, **kwargs):
+    def get(self, *args, **kwargs):
+        print "get"
         return JsonResponse(
-            {'data': self.get_datasets()}
+            {'data': self.get_datasets(*args, **kwargs)}
         )
