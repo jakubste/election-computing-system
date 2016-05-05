@@ -21,4 +21,4 @@ class ElectionTestCase(TestCase):
         gauss_cs = PointCandidateFactory.create_batch(4, election=gauss_election)
         gauss_vs = PointVoterFactory.create_batch(10, election=gauss_election)
         self.assertEqual(file_election.is_generated(), False)
-        self.assertEqual(gauss_election.is_set_up(), True)
+        self.assertEqual(gauss_election.is_generated(), True)
