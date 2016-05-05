@@ -7,7 +7,7 @@ from django.test import RequestFactory
 from ecs.elections.exceptions import *
 from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory
 from ecs.elections.models import Preference
-from ecs.elections.views import ElectionLoadDataFormView
+from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView
 from ecs.utils.unittestcases import TestCase
 
 
@@ -183,3 +183,18 @@ class ElectionLoadDataFromFileTestCase(TestCase):
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
         view = ElectionLoadDataFormView(election=ElectionFactory.create())
         self.assertRaises(NumberOfVotesInconsistencyException, view.load_data_from_file, open(filename))
+
+
+class ElectionChartViewTest(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+
+    def get_url(self):
+        return reverse('elections:election_details', args=(self.election.pk,))
+
+    def test_chart_from_file(self):
+        pass
+
+    def test_chart_from_generated(self):
+        pass
