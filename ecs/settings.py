@@ -105,6 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 SHELL_PLUS_POST_IMPORTS = (
     ('ecs.elections.factories', '*'),
     ('ecs.geo.factories', '*'),
+    ('ecs.elections.election_generator', 'ElectionGenerator'),
 )
 
 # Internationalization

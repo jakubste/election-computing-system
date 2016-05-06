@@ -211,20 +211,12 @@ class ElectionChartViewTest(TestCase):
         colors = view.get_colors()
         labels = view.get_labels()
 
-        for point in candidates:
-            self.assertEqual(point[0], None)
-            self.assertEqual(point[1], None)
-
-        for point in voters:
-            self.assertEqual(point[0], None)
-            self.assertEqual(point[1], None)
-
         self.assertEqual(colors[0], 'red')
         self.assertEqual(colors[1], 'blue')
         self.assertEqual(labels[0], 'Candidates')
         self.assertEqual(labels[1], 'Voters')
-        self.assertEqual(len(candidates), 4)
-        self.assertEqual(len(voters), 10)
+        self.assertEqual(len(candidates), 0)
+        self.assertEqual(len(voters), 0)
 
     def test_get_data_from_gauss(self):
         request = RequestFactory().get(self.gauss_url)
@@ -236,12 +228,14 @@ class ElectionChartViewTest(TestCase):
         labels = view.get_labels()
 
         for point in candidates:
-            self.assertTrue(isinstance(point[0], int))
-            self.assertTrue(isinstance(point[1], int))
+            self.assertTrue(isinstance(point, dict))
+            self.assertIn('x', point)
+            self.assertIn('y', point)
 
         for point in voters:
-            self.assertTrue(isinstance(point[0], int))
-            self.assertTrue(isinstance(point[1], int))
+            self.assertTrue(isinstance(point, dict))
+            self.assertIn('x', point)
+            self.assertIn('y', point)
 
         self.assertEqual(colors[0], 'red')
         self.assertEqual(colors[1], 'blue')
@@ -261,7 +255,7 @@ class ElectionChartViewTest(TestCase):
         mocked_get_labels.return_value = ['label1', 'label2']
         mocked_get_colors.return_value = ['red', 'blue']
         mocked_get_points_stroke_colors.return_value = ['black', 'black']
-        mocked_get_data.return_value = [[(0, 1)], [(2, 3)]]
+        mocked_get_data.return_value = [[{'x': 0, 'y': 1}], [{'x': 2, 'y': 3}]]
         expected = [
             {
                 "pointColor": "red",

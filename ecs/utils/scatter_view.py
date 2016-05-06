@@ -39,7 +39,7 @@ class ScatterChartMixin(View):
                 'label': labels[i],
                 'pointColor': colors[i],
                 'pointStrokeColor': point_stroke_colors[i],
-                'data': [{'x': x, 'y': y} for (x, y) in data[i]]
+                'data': data[i]
             }
             for i in xrange(self.datasets_number)
             ]
