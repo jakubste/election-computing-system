@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'ecs',
     'ecs.accounts',
     'ecs.elections',
+    'ecs.geo',
     'chartjs',
 ]
 
