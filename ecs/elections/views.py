@@ -16,6 +16,7 @@ from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGene
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter
+from ecs.geo.models import Point
 from ecs.utils.scatter_view import ScatterChartMixin
 from ecs.utils.views import LoginRequiredMixin
 
@@ -82,7 +83,8 @@ class ElectionDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(ElectionDetailView, self).get_context_data(**kwargs)
-        ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
+        if self.object.voters.count() < 500:
+            ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
         return ctx
 
 
@@ -200,6 +202,6 @@ class ElectionChartView(ScatterChartMixin):
         Returns list of lists of points.
         First list for candidatates, second for voters.
         """
-        candidates = self.election.candidates.values_list('position__x', 'position__y')
-        voters = self.election.voters.values_list('position__x', 'position__y')
+        candidates = list(Point.objects.filter(candidate__election=self.election).values('x','y'))
+        voters = list(Point.objects.filter(voter__election=self.election).values('x','y'))
         return [candidates, voters]

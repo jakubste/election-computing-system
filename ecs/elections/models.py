@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 
-from ecs.elections.geo.models import Point
+from ecs.geo.models import Point
 
 
 class Election(models.Model):

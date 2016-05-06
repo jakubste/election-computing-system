@@ -2,7 +2,7 @@ import random
 
 import factory
 
-from ecs.elections.geo.models import Point
+from ecs.geo.models import Point
 
 
 class PointFactory(factory.DjangoModelFactory):
