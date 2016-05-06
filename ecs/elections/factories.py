@@ -4,7 +4,7 @@ import factory
 
 
 from ecs.accounts.factories import UserFactory
-from ecs.elections.geo.factories import PointFactory
+from ecs.geo.factories import PointFactory
 from ecs.elections.models import Election, Candidate, Voter, Preference
 
 

@@ -3,7 +3,7 @@ from random import gauss
 import names
 from django.db import transaction
 
-from ecs.elections.geo.models import Point
+from ecs.geo.models import Point
 from ecs.elections.models import Candidate, Preference
 from ecs.elections.models import Voter
 
