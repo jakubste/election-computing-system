@@ -8,9 +8,9 @@ from django.test import RequestFactory
 
 from ecs.elections.exceptions import *
 from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory, \
-    PointCandidateFactory, PointVoterFactory
+    PointCandidateFactory, PointVoterFactory, ResultFactory
 from ecs.elections.models import Preference
-from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView
+from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView, ResultChartView
 from ecs.utils.unittestcases import TestCase
 
 mock.patch.object = mock.patch.object
@@ -284,4 +284,90 @@ class ElectionChartViewTest(TestCase):
     def test_dispatch_error(self):
         request = RequestFactory().get(self.gauss_url)
         view = ElectionChartView(request=request, election=self.file_election)
+        self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))
+
+
+class ResultChartViewTest(TestCase):
+    def setUp(self):
+        self.election = ElectionFactory.create()
+        self.candidates = PointCandidateFactory.create_batch(4, election=self.election)
+        self.voters = PointVoterFactory.create_batch(10, election=self.election)
+        self.result = ResultFactory.create(election=self.election)
+        self.result.winners.add(self.candidates[0])
+        self.result.winners.add(self.candidates[1])
+        self.url = reverse('elections:result_chart_data', args=(self.result.pk,))
+
+    def test_get_data_from_gauss(self):
+        request = RequestFactory().get(self.url)
+        view = ResultChartView(
+            request=request,
+            election=self.election, result=self.result
+        )
+        data = view.get_data()
+        candidates = data[0]
+        voters = data[1]
+        winners = data[2]
+        colors = view.get_colors()
+        labels = view.get_labels()
+
+        for dataset in [candidates, voters, winners]:
+            for point in dataset:
+                self.assertTrue(isinstance(point, dict))
+                self.assertIn('x', point)
+                self.assertIn('y', point)
+
+        for text in colors + labels:
+            self.assertTrue(isinstance(text, str))
+
+        self.assertEqual(len(candidates), 4)
+        self.assertEqual(len(voters), 10)
+        self.assertEqual(len(winners), 2)
+
+    @mock.patch.object(ResultChartView, 'get_labels')
+    @mock.patch.object(ResultChartView, 'get_colors')
+    @mock.patch.object(ResultChartView, 'get_points_stroke_colors')
+    @mock.patch.object(ResultChartView, 'get_data')
+    def test_get_datasets(
+            self, mocked_get_data, mocked_get_points_stroke_colors,
+            mocked_get_colors, mocked_get_labels
+    ):
+        mocked_get_labels.return_value = ['label1', 'label2', 'label3']
+        mocked_get_colors.return_value = ['red', 'blue', 'yellow']
+        mocked_get_points_stroke_colors.return_value = ['black', 'black', 'black']
+        mocked_get_data.return_value = [[{'x': 0, 'y': 1}], [{'x': 2, 'y': 3}], [{'x': 4, 'y': 5}]]
+        expected = [
+            {
+                "pointColor": "red",
+                "pointStrokeColor": "black",
+                "data": [{"x": 0, "y": 1}],
+                "label": "label1"
+            },
+            {
+                "pointColor": "blue",
+                "pointStrokeColor": "black",
+                "data": [{"x": 2, "y": 3}],
+                "label": "label2"
+            },
+            {
+                "pointColor": "yellow",
+                "pointStrokeColor": "black",
+                "data": [{"x": 4, "y": 5}],
+                "label": "label3"
+            },
+        ]
+        request = RequestFactory().get(self.url)
+        view = ResultChartView(
+            request=request,
+            election=self.election,
+            result=self.result
+        )
+        datasets = view.get_datasets()
+        self.assertEqual(expected, datasets)
+        response = self.client.get(self.url)
+        response = json.loads(response.content)
+        self.assertEqual(expected, response['data'])
+
+    def test_dispatch_error(self):
+        request = RequestFactory().get(self.url)
+        view = ResultChartView(request=request, election=self.url)
         self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))

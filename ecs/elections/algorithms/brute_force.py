@@ -11,6 +11,7 @@ class BruteForce(Algorithm):
         candidates_number = self.election.candidates.count()
 
         for committee in combinations:
+            # print for developer - when it's running long, at least you have something to watch ;)
             print 'committee', committee
             temp_score = 0
             for voter in self.election.voters.all():

@@ -5,7 +5,7 @@ import factory
 
 from ecs.accounts.factories import UserFactory
 from ecs.geo.factories import PointFactory
-from ecs.elections.models import Election, Candidate, Voter, Preference
+from ecs.elections.models import Election, Candidate, Voter, Preference, BRUTE_ALGORITHM, Result
 
 
 class ElectionFactory(factory.DjangoModelFactory):
@@ -55,3 +55,12 @@ class PreferenceFactory(factory.DjangoModelFactory):
             return max(preferences) + 1
         else:
             return 1
+
+
+class ResultFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Result
+
+    election = factory.SubFactory(ElectionFactory)
+    p_parameter = factory.lazy_attribute(lambda i: random.randint(1, 100))
+    algorithm = BRUTE_ALGORITHM
