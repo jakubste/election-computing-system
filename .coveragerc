@@ -2,5 +2,4 @@
 omit =
         *migrations/*
         *wsgi.py*
-
-
+        *settings.py

@@ -6,10 +6,12 @@ from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.test import RequestFactory
 
+from ecs.elections.algorithms.brute_force import BruteForce
+from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import *
 from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory, \
     PointCandidateFactory, PointVoterFactory, ResultFactory
-from ecs.elections.models import Preference
+from ecs.elections.models import Preference, BRUTE_ALGORITHM, Result
 from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView, ResultChartView
 from ecs.utils.unittestcases import TestCase
 
@@ -102,92 +104,115 @@ class ElectionLoadDataFromFileTestCase(TestCase):
         filename = 'test_exceptions1.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(IncorrectTypeOfCandidatesNumberException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(IncorrectTypeOfCandidatesNumberException()), str(response.context['form'].errors))
 
     def test_candidates_name_incorrect_format_exception(self):
         filename = 'test_exceptions2.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(CandidatesNameIncorrectFormatException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(CandidatesNameIncorrectFormatException(2)), str(response.context['form'].errors))
 
     def test_summing_line_format_exception(self):
         filename = 'test_exceptions3.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(SummingLineFormatException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(SummingLineFormatException(5)), str(response.context['form'].errors))
 
     def test_summing_line_type_exception(self):
         filename = 'test_exceptions4.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(SummingLineTypeException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(SummingLineTypeException(5)), str(response.context['form'].errors))
 
     def test_bad_data_format_exception(self):
         filename = 'test_exceptions5.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(BadDataFormatException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(BadDataFormatException()), str(response.context['form'].errors))
 
     def test_preference_order_type_exception(self):
         filename = 'test_exceptions6.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(PreferenceOrderTypeException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(PreferenceOrderTypeException(6)), str(response.context['form'].errors))
 
     def test_preference_order_logic_exception(self):
         filename = 'test_exceptions7.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(PreferenceOrderLogicException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(PreferenceOrderLogicException(6)), str(response.context['form'].errors))
 
     def test_non_positive_number_of_votes_exception(self):
         filename = 'test_exceptions8.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(NonPositiveNumberOfVotesException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(NonPositiveNumberOfVotesException()), str(response.context['form'].errors))
 
     def test_incorrect_votes_number_unique_votes_relation_exception(self):
         filename = 'test_exceptions9.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(IncorrectVotesNumberUniqueVotesRelationException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(IncorrectVotesNumberUniqueVotesRelationException()), str(response.context['form'].errors))
 
     def test_preference_order_length_exception(self):
         filename = 'test_exceptions10.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(PreferenceOrderLengthException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(PreferenceOrderLengthException()), str(response.context['form'].errors))
 
     def test_preference_order_beyond_scope_exception(self):
         filename = 'test_exceptions11.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(PreferenceOrderBeyondScopeException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(PreferenceOrderBeyondScopeException()), str(response.context['form'].errors))
 
     def test_incorrect_preference_order_exception(self):
         filename = 'test_exceptions12.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(IncorrectPreferenceOrderException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(IncorrectPreferenceOrderException()), str(response.context['form'].errors))
 
     def test_number_of_votes_inconsistency_exception(self):
         filename = 'test_exceptions13.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(NumberOfVotesInconsistencyException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(NumberOfVotesInconsistencyException()), str(response.context['form'].errors))
+
+
+class ElectionGenerateDataFormViewTestCase(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+        self.url = reverse('elections:election_generate', args=(self.election.pk,))
+
+    @mock.patch.object(ElectionGenerator, 'generate_elections')
+    def test_form_valid_calls_run_on_algorithm(self, mocked_generate):
+        data = {
+            'candidates_amount': 10,
+            'voters_amount': 10,
+            'candidates_mean_x': 0,
+            'candidates_mean_y': 0,
+            'candidates_sigma': 30,
+            'voters_mean_x': 0,
+            'voters_mean_y': 0,
+            'voters_sigma': 30,
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 302)
+        mocked_generate.assert_called_once()
 
 
 class ElectionChartViewTest(TestCase):
@@ -371,3 +396,27 @@ class ResultChartViewTest(TestCase):
         request = RequestFactory().get(self.url)
         view = ResultChartView(request=request, election=self.url)
         self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))
+
+
+class ResultCreateViewTestCase(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+        self.url = reverse('elections:result_create', args=(self.election.pk,))
+
+    @mock.patch.object(BruteForce, 'run')
+    def test_form_valid_calls_run_on_algorithm(self, mocked_run):
+        winners = [CandidateFactory.create(election=self.election)]
+        mocked_run.return_value = winners
+        data = {
+            'p_parameter': 2,
+            'algorithm': BRUTE_ALGORITHM
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 302)
+        mocked_run.assert_called_once()
+        result = Result.objects.get(election=self.election)
+        self.assertListEqual(
+            list(result.winners.all()),
+            winners
+        )
