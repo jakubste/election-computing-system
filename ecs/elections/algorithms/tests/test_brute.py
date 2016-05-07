@@ -25,7 +25,7 @@ class BruteForceAlgorithmTestCase(TestCase):
         self.algorithm.run(2)
         self.assertEqual(
             mocked_score.call_count,
-            3*3
+            3 * 3
         )
 
     def test_run_returns_winners(self):
@@ -33,4 +33,3 @@ class BruteForceAlgorithmTestCase(TestCase):
             list(self.algorithm.run(2)),
             self.candidates[:2]
         )
-

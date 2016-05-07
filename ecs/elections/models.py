@@ -80,7 +80,6 @@ class Voter(models.Model):
         # create pos_v sequence, but order actually
         # does not matter in our election system:
         voter_preferences = self.preferences.filter(candidate__in=committee).values_list('preference', flat=True)
-
         voter_preferences = map(
             lambda x: candidates_number - x,
             voter_preferences
