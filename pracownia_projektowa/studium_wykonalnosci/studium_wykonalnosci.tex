@@ -74,8 +74,8 @@ Katedra Informatyki
 
 \frametitle{Zadania produktu końcowego}
 \begin{itemize}
-\item Obliczanie wyników wyborów w możliwie najbardziej optymalny sposób
-\item Obliczanie wyników wyborów możliwie najkrótszym czasie
+\item Poprawne obliczanie wyników wyborów w zadanym systemie wyborczym
+\item Obliczanie wyników wyborów w możliwie najkrótszym czasie
 \item Przystępna dla użytkownika prezentacja wyników wyborów
 \end{itemize}
 
@@ -93,7 +93,7 @@ Katedra Informatyki
 \item Generacja z rozkładu normalnego
 \item Graficzna generacja preferencji wyborców
 \end{enumerate}
-\item System oblicza wyniki wyborów dla określonego przez użytkownika parametru  p  lub dla przyjętego z góry zakresu parametru  p
+\item System oblicza wyniki wyborów dla określonych przez użytkownika wartości parametru p
 \end{itemize}
 
 \end{frame}
@@ -108,7 +108,6 @@ Katedra Informatyki
 \item Testy jednostkowe do sprawdzenia poprawności działania kolejnych komponentów projektu
 \item Testy regresywne do sprawdzenia poprawności działania wcześniej dodanych elementów systemu po dodaniu nowych elementów
 \item Testy porównawcze do sprawdzenia skuteczności obliczania wyników wyborów
-\item Testy pisane na bieżąco po dodaniu kolejnych elementów systemu
 \end{itemize}
 
 \end{frame}
@@ -131,10 +130,12 @@ Katedra Informatyki
 
 \frametitle{Wykorzystane technologie}
 \begin{itemize}
-\item Python 2.7.11
-\item Django 1.9.5
-\item Python Imaging Library lub Pillow
+\item Python 2.7
+\item Django 1.9
+\item Bootstrap
+\item JavaScipt (jQuery i Chart.js)
 \item Platforma Heroku do wdrożenia systemu
+\item Ciągła integracja: Travis + Coveralls
 \end{itemize}
 
 \end{frame}
@@ -178,13 +179,50 @@ Katedra Informatyki
 \begin{itemize}
 \item Implementacja algorytmu brute-force
 \item Generacja wyborów z rozkładu normalnego
-\item Wczytywanie wyborów z pliku
-\item Walidacja danych wejściowych z pliku
-\item Migracja generacji wyborów z rozkładu normalnego i wczytywania wyborów z pliki do aplikacji internetowej
+\item Wczytywanie wyborów z pliku wraz z ich walidacją
+\item Webowy interface
+\item Tworzenie wykresów 2D
 \item Konfiguracja wdrożenia systemu na Heroku
 \end{itemize}
 
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Gdzie zobaczyć nasz produkt}
+
+\begin{itemize}
+\item Adres repozytorium: \linebreak
+	\url{https://github.com/jakubste/election-computing-system}
+\item Działająca aplikacja: 
+	\url{https://election-computing-system.herokuapp.com}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\hspace*{-1.1cm}
+\includegraphics[width=\paperwidth]{screenshots/main_page}
+\end{frame}
+
+\begin{frame}
+\hspace*{-1.1cm}
+\includegraphics[width=\paperwidth]{screenshots/election_list}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[height=\paperheight]{screenshots/election_details}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[height=\paperheight]{screenshots/election_results}
+\end{center}
+\end{frame}
+
 
 % ----------------------------------------------------
 
@@ -194,15 +232,16 @@ Katedra Informatyki
 
 \frametitle{Co do zrobienia}
 \begin{itemize}
-\item Migracja liczenia wyników wyborów do aplikacji internetowej
-\item Tworzenie wykresów
 \item Algorytm zachłanny do obliczania wyników wyborów	
 \item Algorytm genetyczny do obliczania wyników wyborów
+\item Polepszenie interfejsu i UX
 \end{itemize}
 
 \end{frame}
 
+
 % ----------------------------------------------------
+
 
 \begin{frame}
 \Huge{\centerline{Dziękujemy za uwagę}}
