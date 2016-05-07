@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.functional import cached_property
 
 from ecs.geo.models import Point
 from ecs.utils.math import ell_p_norm
@@ -64,7 +63,7 @@ class Voter(models.Model):
             Preference.objects.create(
                 candidate=Candidate.objects.get(election=self.election, soc_id=candidate_id),
                 voter=self,
-                preference=preference+1
+                preference=preference + 1
             )
 
     def calculate_committee_score(self, committee, p, candidates_number):
@@ -107,7 +106,18 @@ ALGORITHM_CHOICES = (
 
 
 class Result(models.Model):
+    class Meta:
+        ordering = ['p_parameter']
+
     election = models.ForeignKey(Election, related_name='results')
     p_parameter = models.PositiveIntegerField()
     winners = models.ManyToManyField(Candidate)
     algorithm = models.CharField(choices=ALGORITHM_CHOICES, max_length=1)
+
+    def get_absolute_url(self):
+        return reverse('elections:result_details', args=(self.pk,))
+
+    def __unicode__(self):
+        return u'Result of {} with p={}'.format(
+            self.election, self.p_parameter
+        )

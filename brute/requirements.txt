@@ -1,4 +1,0 @@
-bpython
-mock
-nose
-names
