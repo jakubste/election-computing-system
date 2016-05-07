@@ -1,3 +1,15 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Election Computing System
+% System obliczający i wizualizujący wyniki zgodnie z uogólnieniem systemu k-Borda na podstawie norm ell_p.
+%
+% Prezentacja wykonana na Pracownię Projektową
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
 \documentclass{beamer}
 
 \usepackage[T1]{fontenc}
@@ -15,6 +27,9 @@
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 
+
+% Custom macros
+
 \newcommand{\red}[1]{
 	{ \color{red}{#1} }
 }
@@ -28,13 +43,14 @@
 \definecolor{links}{HTML}{2A1B81}
 \hypersetup{colorlinks,linkcolor=,urlcolor=links}
 
+
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
 \title
-[System obliczający wyniki wyborów]
-{Studium wykonalności i aktualny stan prac}
+[System obliczący wyniki wyborów]
+{System obliczający wyniki wyborów dla uogólnienia systemu k-Borda}
 
 \author
 [T. Kasprzyk, D. Ogiela, J. Stępak]
@@ -48,16 +64,20 @@ Akademia Górniczo-Hutnicza
 Wydział Informatyki, Elektroniki i Telekomunikacji
 
 Katedra Informatyki 
+\newline \newline
+Projekt realizowany pod opieką \\dr. hab. inż. Piotra Faliszewskiego
 
 }
-\date{9 maja 2016}
+\date{4 kwietnia 2016}
+
+%----------------------------------------------------------------------------------------
 
 \begin{document}
 
 \frame{\titlepage}
 
 \begin{frame}
-\frametitle{Plan prezentacji}
+\frametitle{Plan}
 \tableofcontents
 \end{frame}
 
@@ -66,146 +86,200 @@ Katedra Informatyki
 %----------------------------------------------------------------------------------------
 
 %------------------------------------------------
-\section{Studium wykonalności}
+\section{Opis problemu}
 %------------------------------------------------
-\subsection{Wymagania wobec produktu końcowego}
+
+\subsection{Wybory}
 
 \begin{frame}
+\frametitle{Wybory}
+Naszym zadaniem jest obliczenie wyników wyborów.
+Przez wybory możemy rozumieć zarówno „tradycyjne” wybory np. parlamentarne,
+ale także, na przykład, problem wyboru odpowiednich tytułów filmowych do
+systemów rozrywkowych samolotu, aby jak najwięcej pasażerów mogło wybrać
+coś dla siebie.
+\end{frame}
 
-\frametitle{Zadania produktu końcowego}
-\begin{itemize}
-\item Obliczanie wyników wyborów w możliwie najbardziej optymalny sposób
-\item Obliczanie wyników wyborów możliwie najkrótszym czasie
-\item Przystępna dla użytkownika prezentacja wyników wyborów
-\end{itemize}
+%------------------------------------------------
+
+
+\begin{frame}
+\frametitle{Wybory formalnie}
+Wybory to para $E = (C, V)$,
+gdzie $C = \{ c_1, c_2, \ldots, c_m \}$ to zbiór kandydatów,
+a $V = (v_1, v_2, \ldots, v_n)$ to ciąg wyborców.
+Każdy wyborca jest opisany przez swoje $preferencje$,
+które są ciągiem kandydatów w porządku od najbardziej pożądanego
+przez danego wyborcę do najmniej pożądanego. Rozpatrujemy wybory
+komitetów, więc otrzymujemy też liczbę $k$ będącą wielkością wybieranego komitetu.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Przykładowe wybory}
+\begin{exampleblock}{Przykładowe wybory}
+
+
+$ C = \{a, b, c, d, e, \ldots \} $ \\
+$ V = (v_1, v_2, v_3, \ldots, v_n) $ \\ ~ \\
+$ v_1: a > b > c > d > e > \ldots $ \\
+$ v_2: c > d > a > b > f > \ldots $ \\
+$ v_3: \ldots $ \\
+$ \vdots $ \\
+$ v_n: f > g > e > b > a > \ldots $ \\ ~ \\
+$ k = 20 $
+
+
+\end{exampleblock}
+\end{frame}
+
+%------------------------------------------------
+\subsection{Scoring rules}
+
+\begin{frame}
+\frametitle{Metoda Bordy}
+
+Metoda Bordy -
+niech $v$ będzie głosem nad zbiorem kandydatów $C$.
+Wynik wg Bordy kandydata $c \in C$ w $v$ jest równy
+$ ||C|| - pos_v(c) $.
+Wynik $c$ w wyborach jest sumą wyników $c$ dla każdego wyborcy.
+
+\begin{exampleblock}{Wynik metodą Bordy}
+$$
+\beta(i) = m-i, \quad gdzie \ m = ||C||
+$$
+\end{exampleblock}
+
+\begin{exampleblock}{Preferencje wyborcy}
+$$ 
+v_1: \score{m-1}{a} > \score{m-2}{b} > \score{m-3}{c} > \score{m-4}{d} > \ldots
+$$
+\end{exampleblock}
 
 \end{frame}
 
-\begin{frame}
+%------------------------------------------------
 
-\frametitle{Sposób działania produktu końcowego}
-\begin{itemize}
-\item Aplikacja internetowa umożliwiająca zdefiniowanie wyborów
-\item Zdefiniowanie wyborów ma polegać na określeniu kandydatów, preferencji głosujących i rozmiaru zwycięskiego komitetu
-\item Użytkownik posiada różne sposoby zdefiniowania wyborów:
-\begin{enumerate}
-\item Wczytanie pliku w odpowiednim formacie (.soc)
-\item Generacja z rozkładu normalnego
-\item Graficzna generacja preferencji wyborców
-\end{enumerate}
-\item System oblicza wyniki wyborów dla określonego przez użytkownika parametru  p  lub dla przyjętego z góry zakresu parametru  p
-\end{itemize}
+\begin{frame}
+\frametitle{Committee scoring rules}
+
+\begin{exampleblock}{Preferencje wyborcy}
+$$
+v_3: \score{m-1}{g} > \score{m-2}{d} > \score{m-3}{e} > \score{m-4}{b} > \score{m-5}{f} > \score{m-6}{a} > \ldots
+$$
+\end{exampleblock}
+
+Dla wybranego komitetu $W = {a, b, e, f}$ i danego
+wyborcy $v_i$ definiujemy ciąg $ pos_i(W) $ jako
+posortowany ciąg pozycji, jakie zajmują kandydaci w preferencjach wyborcy:
+
+$$pos_{v_3}(W) = (3, 4, 5, 6)$$
+
+\begin{exampleblock}{Wartość komitetu dla wyborcy}
+$$
+f(i_1, \ldots, i_k)
+$$
+\end{exampleblock}
 
 \end{frame}
 
-% ---------------------------------------------------
-\subsection{Strategia testowania}
+%------------------------------------------------
 
 \begin{frame}
+\frametitle{Committee scoring rules}
 
-\frametitle{Rodzaje pisanych testów}
-\begin{itemize}
-\item Testy jednostkowe do sprawdzenia poprawności działania kolejnych komponentów projektu
-\item Testy regresywne do sprawdzenia poprawności działania wcześniej dodanych elementów systemu po dodaniu nowych elementów
-\item Testy porównawcze do sprawdzenia skuteczności obliczania wyników wyborów
-\item Testy pisane na bieżąco po dodaniu kolejnych elementów systemu
-\end{itemize}
+Istnieją systemy wyborcze: \\ ~ \\
+
+\begin{tabular}{ll}
+k-Borda: 			& $f_{kB}(i_1, \ldots, i_k) = \beta(i_1) + \ldots + \beta(i_k)$\\
+Chamberlin–Courant:  & $f_{CC}(i_1, \ldots, i_k) = \beta(i_1)$
+\end{tabular}
 
 \end{frame}
 
-\begin{frame}
+%------------------------------------------------
 
-\frametitle{Ocena poprawności działania produktu}
-\begin{itemize}
-\item Testy porównawcze głównego algorytmu obliczającego wyniki wyborów z algorytmami innego typu
-\item Dla mniejszego rozmiaru danych wejściowych porównanie działania z algorytmem typu brute-force
-\item Dla większego rozmiaru danych wejściowych porównanie działania z innym algorytmem heurystycznym np. algorytmem zachłannym
-\end{itemize}
+\begin{frame}
+\frametitle{Norma $\ell_p$}
+
+\begin{block}{Norma $\ell_p$}
+$$
+\ell_p(x_1, x_2, \ldots, x_n ) = \sqrt[p]{ x_1^p + x_2^p + \ldots + x_n^p }
+$$
+\end{block}
+
+\begin{exampleblock}{}
+$$
+\begin{aligned}
+\ell_1 	\	 &\equiv 	\ \ +  \\
+\ell_\infty 	\  &\equiv 	\ max 
+\end{aligned}
+$$
+\end{exampleblock}
 
 \end{frame}
 
-%---------------------------------------------------
-\subsection{Aspekt technologiczny}
+%------------------------------------------------
 
 \begin{frame}
+\frametitle{System $\ell_p-Borda$}
 
-\frametitle{Wykorzystane technologie}
-\begin{itemize}
-\item Python 2.7.11
-\item Django 1.9.5
-\item Python Imaging Library lub Pillow
-\item Platforma Heroku do wdrożenia systemu
-\end{itemize}
+Rozważmy więc system definiowany następująco:
+
+\begin{exampleblock}{System $\ell_p-Borda$}
+$$
+f_{\ell_p}(i_1, i_2, \ldots, i_k ) = \ell_p( \beta(i_1) + \beta(i_2) + \ldots + \beta(i_k) )
+$$
+\end{exampleblock}
+
+\begin{exampleblock}{}
+$$
+\begin{aligned}
+f_{\ell_1} 	\	 &\equiv 	f_{k-Borda}  \\
+f_{\ell_\infty} 	\  &\equiv 	\ f_{Chamberlin-Courant} 
+\end{aligned}
+$$
+\end{exampleblock}
 
 \end{frame}
 
-\begin{frame}
+%------------------------------------------------
+\section{Projekt inżynierski}
 
-\frametitle{Wybór technologii}
-\begin{itemize}
-\item Doświadczenie części zespołu w pracy z wybraną technologią
-\item Przekonanie o możliwości zrealizowania projektu w wybranej technologii
-\item Zaoszczędzenie czasu na poznawanie nowych technologii
-\item Wydajność
-\end{itemize}
-
-\end{frame}
-
-% ----------------------------------------------------
-
-\subsection{Plan}
+\subsection{Nasze zadanie}
 
 \begin{frame}
-
-\frametitle{Szansa na powodzenie i przewidzenie trudności}
+\frametitle{Nasze zadanie}
 \begin{itemize}
-\item Przekonanie o możliwości zrealizowania harmonogramu prac określonego w wizji i wykonania produktu na czas
-\item Główne problemy przewidywane przy projektowaniu i implementacji głównego algorytmu obliczającego wyniki wyborów – algorytmu genetycznego
-\item Zwiększone nakłady pracy całego zespołu w przypadku napotkania trudności i skupienie całego wysiłku na tym zadaniu
+\item Obliczanie wyników wyborów w systemie $\ell_p-Borda$ jest czasochłonne.
+\item Naszym zadaniem jest znalezienie algorytmu, który pozwoli szybko przybliżać wyniki wyborów.
+\item Do systemu należy dostarczyć pewien interfejs, który będzie pozwalał na wprowadzenie preferencji z otwartych baz (jak \href{http://www.preflib.org/}{PrefLib}) lub generował rozkład wyborców i kandydatów np. w\,oparciu o rozkład naturalny.
 \end{itemize}
-
 \end{frame}
 
-% ----------------------------------------------------
+%------------------------------------------------
 
-\section{Aktualny stan prac}
-
-\subsection{Zrealizowane zadania}
+\subsection{Plan pracy}
 
 \begin{frame}
-
-\frametitle{Co już jest}
+\frametitle{Plan pracy}
 \begin{itemize}
-\item Implementacja algorytmu brute-force
-\item Generacja wyborów z rozkładu normalnego
-\item Wczytywanie wyborów z pliku
-\item Walidacja danych wejściowych z pliku
-\item Migracja generacji wyborów z rozkładu normalnego i wczytywania wyborów z pliki do aplikacji internetowej
-\item Konfiguracja wdrożenia systemu na Heroku
+\item [maj -] Implementacja brute-force.
+\item [maj -] Równolegle praca nad algorytmem, który pozwoli szybko wykonywać obliczenia.
+\item [lipiec -] Implementacja szybszej wersji obliczeń.
+\item [lipiec -] Stworzenie interfejsu, import danych z PrefLib'a, symulowanie wyborów np. z rozkładu normalnego, etc.
 \end{itemize}
-
 \end{frame}
 
-% ----------------------------------------------------
+%------------------------------------------------
 
-\subsection{Zadania do zrealizowania na najbliższe tygodnie}
-
-\begin{frame}
-
-\frametitle{Co do zrobienia}
-\begin{itemize}
-\item Migracja liczenia wyników wyborów do aplikacji internetowej
-\item Tworzenie wykresów
-\item Algorytm zachłanny do obliczania wyników wyborów	
-\item Algorytm genetyczny do obliczania wyników wyborów
-\end{itemize}
-
-\end{frame}
-
-% ----------------------------------------------------
 
 \begin{frame}
 \Huge{\centerline{Dziękujemy za uwagę}}
 \end{frame}
 
-\end{document}
+%----------------------------------------------------------------------------------------
+
+\end{document} 
