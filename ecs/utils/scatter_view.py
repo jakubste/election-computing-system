@@ -6,6 +6,7 @@ class ScatterChartMixin(View):
     datasets_number = 0
     labels = None
     colors = None
+    points_stroke_colors = None
 
     def get_data(self):
         raise NotImplementedError
@@ -23,7 +24,10 @@ class ScatterChartMixin(View):
             return self.colors
 
     def get_points_stroke_colors(self):
-        return ['black' for i in xrange(self.datasets_number)]
+        if not self.points_stroke_colors:
+            return ['black' for i in xrange(self.datasets_number)]
+        else:
+            return self.points_stroke_colors
 
     def get_datasets(self, *args, **kwargs):
         """
@@ -39,7 +43,7 @@ class ScatterChartMixin(View):
                 'label': labels[i],
                 'pointColor': colors[i],
                 'pointStrokeColor': point_stroke_colors[i],
-                'data': [{'x': x, 'y': y} for (x, y) in data[i]]
+                'data': data[i]
             }
             for i in xrange(self.datasets_number)
             ]

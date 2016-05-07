@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'ecs',
     'ecs.accounts',
     'ecs.elections',
+    'ecs.geo',
     'chartjs',
 ]
 
@@ -100,6 +101,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+SHELL_PLUS_POST_IMPORTS = (
+    ('ecs.elections.factories', '*'),
+    ('ecs.geo.factories', '*'),
+    ('ecs.elections.election_generator', 'ElectionGenerator'),
+    ('ecs.elections.algorithms.brute_force', '*'),
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

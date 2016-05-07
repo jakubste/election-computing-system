@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Form, forms
 from django.forms.fields import IntegerField
 
-from ecs.elections.models import Election
+from ecs.elections.models import Election, Result
 from ecs.settings import ELECTION_GENERATOR
 
 
@@ -51,3 +51,20 @@ class ElectionGenerateDataForm(Form):
     def __init__(self, *args, **kwargs):
         self.election = kwargs.pop('election')
         super(ElectionGenerateDataForm, self).__init__(*args, **kwargs)
+
+
+class ResultForm(ModelForm):
+    class Meta:
+        model = Result
+        fields = ['p_parameter', 'algorithm']
+
+    def __init__(self, *args, **kwargs):
+        self.election = kwargs.pop('election')
+        super(ResultForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        result = super(ResultForm, self).save(False)
+        if commit:
+            result.election = self.election
+            result.save()
+        return result

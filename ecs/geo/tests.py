@@ -1,6 +1,6 @@
 from math import sqrt
 
-from ecs.elections.geo.models import Point
+from ecs.geo.models import Point
 from ecs.utils.unittestcases import TestCase
 
 

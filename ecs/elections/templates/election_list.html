@@ -8,7 +8,10 @@
     <table class="table">
         <tr>
             <th>Name</th>
-            <th></th>
+            <th>Candidates</th>
+            <th>Voters</th>
+            <th>Results</th>
+            <th>Actions</th>
         </tr>
         {% for election in elections %}
             <tr>
@@ -16,6 +19,15 @@
                     <a href="{{ election.get_absolute_url }}">
                         {{ election }}
                     </a>
+                </td>
+                <td>
+                    {{ election.candidates.count }}
+                </td>
+                <td>
+                    {{ election.voters.count }}
+                </td>
+                <td>
+                    {{ election.results.count }}
                 </td>
                 <td>
                     <a href="{% url 'elections:election_delete' election.pk %}">
