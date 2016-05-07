@@ -8,14 +8,15 @@ from django.views.generic import ListView
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
+from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
 from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, SummingLineFormatException
-from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm
+from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm, ResultForm
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
-from ecs.elections.models import Election, Candidate, Voter
+from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result
 from ecs.geo.models import Point
 from ecs.utils.scatter_view import ScatterChartMixin
 from ecs.utils.views import LoginRequiredMixin
@@ -85,6 +86,7 @@ class ElectionDetailView(DetailView):
         ctx = super(ElectionDetailView, self).get_context_data(**kwargs)
         if self.object.voters.count() < 500:
             ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
+        ctx['results'] = self.object.results.all()
         return ctx
 
 
@@ -200,8 +202,56 @@ class ElectionChartView(ScatterChartMixin):
     def get_data(self):
         """
         Returns list of lists of points.
-        First list for candidatates, second for voters.
+        First list for candidates, second for voters.
         """
-        candidates = list(Point.objects.filter(candidate__election=self.election).values('x','y'))
-        voters = list(Point.objects.filter(voter__election=self.election).values('x','y'))
+        candidates = list(Point.objects.filter(candidate__election=self.election).values('x', 'y'))
+        voters = list(Point.objects.filter(voter__election=self.election).values('x', 'y'))
         return [candidates, voters]
+
+
+class ResultCreateView(ConfigureElectionMixin, CreateView):
+    form_class = ResultForm
+    template_name = 'result_create.html'
+
+    def form_valid(self, form):
+        result = super(ResultCreateView, self).form_valid(form)
+        algorithm = {
+            BRUTE_ALGORITHM: BruteForce
+        }[form.cleaned_data['algorithm']]
+        algorithm = algorithm(self.election)
+        winners = algorithm.run(form.cleaned_data['p_parameter'])
+        for winner in winners:
+            self.object.winners.add(winner)
+        self.object.save()
+        return result
+
+
+class ResultDetailsView(DetailView):
+    model = Result
+    template_name = 'result_details.html'
+    context_object_name = 'result'
+
+
+class ResultChartView(ScatterChartMixin):
+    datasets_number = 3
+    labels = ['Candidates', 'Voters', 'Winners']
+    colors = ['red', 'lightblue', 'green']
+    points_stroke_colors = ['black', 'white', 'green']
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.result = Result.objects.get(pk=kwargs['pk'])
+            self.election = self.result.election
+        except:
+            raise Http404
+        return super(ResultChartView, self).dispatch(request, *args, **kwargs)
+
+    def get_data(self):
+        """
+        Returns list of lists of points.
+        First list for candidates, second for voters.
+        """
+        candidates = list(Point.objects.filter(candidate__election=self.election).values('x', 'y'))
+        voters = list(Point.objects.filter(voter__election=self.election).values('x', 'y'))
+        winners = list(Point.objects.filter(candidate__in=self.result.winners.all()).values('x', 'y'))
+        return [candidates, voters, winners]

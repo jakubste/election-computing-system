@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 from ecs.geo.models import Point
+from ecs.utils.math import ell_p_norm
 
 
 class Election(models.Model):
@@ -62,8 +63,28 @@ class Voter(models.Model):
             Preference.objects.create(
                 candidate=Candidate.objects.get(election=self.election, soc_id=candidate_id),
                 voter=self,
-                preference=preference+1
+                preference=preference + 1
             )
+
+    def calculate_committee_score(self, committee, p, candidates_number):
+        """
+        Calculate committee score multiplied by vote repeats
+
+        :param candidates_number: number of candidates in election
+        :type candidates_number: int
+        :type committee: list of ecs.elections.models.Candidate
+        :type p: int
+        :rtype: Decimal
+        :return: committee score
+        """
+        # create pos_v sequence, but order actually
+        # does not matter in our election system:
+        voter_preferences = self.preferences.filter(candidate__in=committee).values_list('preference', flat=True)
+        voter_preferences = map(
+            lambda x: candidates_number - x,
+            voter_preferences
+        )
+        return self.repeats * ell_p_norm(voter_preferences, p)
 
 
 class Preference(models.Model):
@@ -73,3 +94,29 @@ class Preference(models.Model):
     candidate = models.ForeignKey(Candidate)
     voter = models.ForeignKey(Voter, related_name='preferences')
     preference = models.IntegerField(null=False)
+
+
+BRUTE_ALGORITHM = 'b'
+GENETIC_ALGORITHM = 'g'
+ALGORITHM_CHOICES = (
+    (BRUTE_ALGORITHM, 'Brute force'),
+    (GENETIC_ALGORITHM, 'Genetic')
+)
+
+
+class Result(models.Model):
+    class Meta:
+        ordering = ['p_parameter']
+
+    election = models.ForeignKey(Election, related_name='results')
+    p_parameter = models.PositiveIntegerField()
+    winners = models.ManyToManyField(Candidate)
+    algorithm = models.CharField(choices=ALGORITHM_CHOICES, max_length=1)
+
+    def get_absolute_url(self):
+        return reverse('elections:result_details', args=(self.pk,))
+
+    def __unicode__(self):
+        return u'Result of {} with p={}'.format(
+            self.election, self.p_parameter
+        )

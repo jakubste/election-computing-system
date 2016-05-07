@@ -6,11 +6,13 @@ from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.test import RequestFactory
 
+from ecs.elections.algorithms.brute_force import BruteForce
+from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import *
 from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory, \
-    PointCandidateFactory, PointVoterFactory
-from ecs.elections.models import Preference
-from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView
+    PointCandidateFactory, PointVoterFactory, ResultFactory
+from ecs.elections.models import Preference, BRUTE_ALGORITHM, Result
+from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView, ResultChartView
 from ecs.utils.unittestcases import TestCase
 
 mock.patch.object = mock.patch.object
@@ -102,92 +104,115 @@ class ElectionLoadDataFromFileTestCase(TestCase):
         filename = 'test_exceptions1.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(IncorrectTypeOfCandidatesNumberException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(IncorrectTypeOfCandidatesNumberException()), str(response.context['form'].errors))
 
     def test_candidates_name_incorrect_format_exception(self):
         filename = 'test_exceptions2.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(CandidatesNameIncorrectFormatException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(CandidatesNameIncorrectFormatException(2)), str(response.context['form'].errors))
 
     def test_summing_line_format_exception(self):
         filename = 'test_exceptions3.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(SummingLineFormatException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(SummingLineFormatException(5)), str(response.context['form'].errors))
 
     def test_summing_line_type_exception(self):
         filename = 'test_exceptions4.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(SummingLineTypeException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(SummingLineTypeException(5)), str(response.context['form'].errors))
 
     def test_bad_data_format_exception(self):
         filename = 'test_exceptions5.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(BadDataFormatException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(BadDataFormatException()), str(response.context['form'].errors))
 
     def test_preference_order_type_exception(self):
         filename = 'test_exceptions6.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(PreferenceOrderTypeException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(PreferenceOrderTypeException(6)), str(response.context['form'].errors))
 
     def test_preference_order_logic_exception(self):
         filename = 'test_exceptions7.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(PreferenceOrderLogicException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(PreferenceOrderLogicException(6)), str(response.context['form'].errors))
 
     def test_non_positive_number_of_votes_exception(self):
         filename = 'test_exceptions8.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(NonPositiveNumberOfVotesException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(NonPositiveNumberOfVotesException()), str(response.context['form'].errors))
 
     def test_incorrect_votes_number_unique_votes_relation_exception(self):
         filename = 'test_exceptions9.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(IncorrectVotesNumberUniqueVotesRelationException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(IncorrectVotesNumberUniqueVotesRelationException()), str(response.context['form'].errors))
 
     def test_preference_order_length_exception(self):
         filename = 'test_exceptions10.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(PreferenceOrderLengthException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(PreferenceOrderLengthException()), str(response.context['form'].errors))
 
     def test_preference_order_beyond_scope_exception(self):
         filename = 'test_exceptions11.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(PreferenceOrderBeyondScopeException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(PreferenceOrderBeyondScopeException()), str(response.context['form'].errors))
 
     def test_incorrect_preference_order_exception(self):
         filename = 'test_exceptions12.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(IncorrectPreferenceOrderException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(IncorrectPreferenceOrderException()), str(response.context['form'].errors))
 
     def test_number_of_votes_inconsistency_exception(self):
         filename = 'test_exceptions13.soc'
         filename = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), 'input_data', filename)
-        view = ElectionLoadDataFormView(election=ElectionFactory.create())
-        self.assertRaises(NumberOfVotesInconsistencyException, view.load_data_from_file, open(filename))
+        response = self.client.post(self.url, {'file': open(filename)})
+        self.assertIn(str(NumberOfVotesInconsistencyException()), str(response.context['form'].errors))
+
+
+class ElectionGenerateDataFormViewTestCase(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+        self.url = reverse('elections:election_generate', args=(self.election.pk,))
+
+    @mock.patch.object(ElectionGenerator, 'generate_elections')
+    def test_form_valid_calls_run_on_algorithm(self, mocked_generate):
+        data = {
+            'candidates_amount': 10,
+            'voters_amount': 10,
+            'candidates_mean_x': 0,
+            'candidates_mean_y': 0,
+            'candidates_sigma': 30,
+            'voters_mean_x': 0,
+            'voters_mean_y': 0,
+            'voters_sigma': 30,
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 302)
+        mocked_generate.assert_called_once()
 
 
 class ElectionChartViewTest(TestCase):
@@ -285,3 +310,113 @@ class ElectionChartViewTest(TestCase):
         request = RequestFactory().get(self.gauss_url)
         view = ElectionChartView(request=request, election=self.file_election)
         self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))
+
+
+class ResultChartViewTest(TestCase):
+    def setUp(self):
+        self.election = ElectionFactory.create()
+        self.candidates = PointCandidateFactory.create_batch(4, election=self.election)
+        self.voters = PointVoterFactory.create_batch(10, election=self.election)
+        self.result = ResultFactory.create(election=self.election)
+        self.result.winners.add(self.candidates[0])
+        self.result.winners.add(self.candidates[1])
+        self.url = reverse('elections:result_chart_data', args=(self.result.pk,))
+
+    def test_get_data_from_gauss(self):
+        request = RequestFactory().get(self.url)
+        view = ResultChartView(
+            request=request,
+            election=self.election, result=self.result
+        )
+        data = view.get_data()
+        candidates = data[0]
+        voters = data[1]
+        winners = data[2]
+        colors = view.get_colors()
+        labels = view.get_labels()
+
+        for dataset in [candidates, voters, winners]:
+            for point in dataset:
+                self.assertTrue(isinstance(point, dict))
+                self.assertIn('x', point)
+                self.assertIn('y', point)
+
+        for text in colors + labels:
+            self.assertTrue(isinstance(text, str))
+
+        self.assertEqual(len(candidates), 4)
+        self.assertEqual(len(voters), 10)
+        self.assertEqual(len(winners), 2)
+
+    @mock.patch.object(ResultChartView, 'get_labels')
+    @mock.patch.object(ResultChartView, 'get_colors')
+    @mock.patch.object(ResultChartView, 'get_points_stroke_colors')
+    @mock.patch.object(ResultChartView, 'get_data')
+    def test_get_datasets(
+            self, mocked_get_data, mocked_get_points_stroke_colors,
+            mocked_get_colors, mocked_get_labels
+    ):
+        mocked_get_labels.return_value = ['label1', 'label2', 'label3']
+        mocked_get_colors.return_value = ['red', 'blue', 'yellow']
+        mocked_get_points_stroke_colors.return_value = ['black', 'black', 'black']
+        mocked_get_data.return_value = [[{'x': 0, 'y': 1}], [{'x': 2, 'y': 3}], [{'x': 4, 'y': 5}]]
+        expected = [
+            {
+                "pointColor": "red",
+                "pointStrokeColor": "black",
+                "data": [{"x": 0, "y": 1}],
+                "label": "label1"
+            },
+            {
+                "pointColor": "blue",
+                "pointStrokeColor": "black",
+                "data": [{"x": 2, "y": 3}],
+                "label": "label2"
+            },
+            {
+                "pointColor": "yellow",
+                "pointStrokeColor": "black",
+                "data": [{"x": 4, "y": 5}],
+                "label": "label3"
+            },
+        ]
+        request = RequestFactory().get(self.url)
+        view = ResultChartView(
+            request=request,
+            election=self.election,
+            result=self.result
+        )
+        datasets = view.get_datasets()
+        self.assertEqual(expected, datasets)
+        response = self.client.get(self.url)
+        response = json.loads(response.content)
+        self.assertEqual(expected, response['data'])
+
+    def test_dispatch_error(self):
+        request = RequestFactory().get(self.url)
+        view = ResultChartView(request=request, election=self.url)
+        self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))
+
+
+class ResultCreateViewTestCase(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+        self.url = reverse('elections:result_create', args=(self.election.pk,))
+
+    @mock.patch.object(BruteForce, 'run')
+    def test_form_valid_calls_run_on_algorithm(self, mocked_run):
+        winners = [CandidateFactory.create(election=self.election)]
+        mocked_run.return_value = winners
+        data = {
+            'p_parameter': 2,
+            'algorithm': BRUTE_ALGORITHM
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 302)
+        mocked_run.assert_called_once()
+        result = Result.objects.get(election=self.election)
+        self.assertListEqual(
+            list(result.winners.all()),
+            winners
+        )

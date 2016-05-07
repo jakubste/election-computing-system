@@ -15,12 +15,12 @@ class PreferenceOrderLengthException(Exception):
 
 class IncorrectPreferenceOrderException(Exception):
     def __str__(self):
-        return "Error of votes' preference order"
+        return "Error of votes preference order"
 
 
 class PreferenceOrderBeyondScopeException(Exception):
     def __str__(self):
-        return "In votes' preference order, one of the candidates' number is beyond expected scope"
+        return "In votes preference order, one of the candidates number is beyond expected scope"
 
 
 class IncorrectVotesNumberUniqueVotesRelationException(Exception):
@@ -43,7 +43,7 @@ class CandidatesNameIncorrectFormatException(Exception):
         self.line_number = line_number
 
     def __str__(self):
-        return "Incorrect format of a line with candidates' name\n" + \
+        return "Incorrect format of a line with candidate name\n" + \
                "Line number in an input file: " + str(self.line_number)
 
 
@@ -70,7 +70,7 @@ class PreferenceOrderTypeException(Exception):
         self.line_number = line_number
 
     def __str__(self):
-        return "Incorrect type of candidates' number in order preference or unique votes\n" + \
+        return "Incorrect type of candidate number in order preference or unique votes\n" + \
                "Line number in an input file: " + str(self.line_number)
 
 

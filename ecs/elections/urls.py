@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'^load_data/(?P<pk>\d+)/$', ElectionLoadDataFormView.as_view(), name='election_load_data'),
     url(r'^generate_data/(?P<pk>\d+)/$', ElectionGenerateDataFormView.as_view(), name='election_generate'),
     url(r'^chart_data/(?P<pk>\d+)/$', ElectionChartView.as_view(), name='chart_data'),
+    url(r'^add_result/(?P<pk>\d+)/$', ResultCreateView.as_view(), name='result_create'),
+    url(r'^result/(?P<pk>\d+)/$', ResultDetailsView.as_view(), name='result_details'),
+    url(r'^chart_data/result/(?P<pk>\d+)/$', ResultChartView.as_view(), name='result_chart_data'),
 ]

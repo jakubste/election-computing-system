@@ -25,6 +25,11 @@ class ScatterViewTestCase(TestCase):
         self.view.colors = colors
         self.assertEqual(self.view.get_colors(), colors)
 
+    def test_get_points_stroke_returns_colors_from_field(self):
+        colors = ['colorA', 'colorB']
+        self.view.points_stroke_colors = colors
+        self.assertEqual(self.view.get_points_stroke_colors(), colors)
+
     def test_get_points_stroke_colors_defaults(self):
         self.view.datasets_number = 2
         self.assertEqual(self.view.get_points_stroke_colors(), ['black', 'black'])
