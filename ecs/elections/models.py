@@ -3,8 +3,10 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils.functional import cached_property
 
 from ecs.geo.models import Point
+from ecs.utils.math import ell_p_norm
 
 
 class Election(models.Model):
@@ -65,6 +67,27 @@ class Voter(models.Model):
                 preference=preference+1
             )
 
+    def calculate_committee_score(self, committee, p, candidates_number):
+        """
+        Calculate committee score multiplied by vote repeats
+
+        :param candidates_number: number of candidates in election
+        :type candidates_number: int
+        :type committee: list of ecs.elections.models.Candidate
+        :type p: int
+        :rtype: Decimal
+        :return: committee score
+        """
+        # create pos_v sequence, but order actually
+        # does not matter in our election system:
+        voter_preferences = self.preferences.filter(candidate__in=committee).values_list('preference', flat=True)
+
+        voter_preferences = map(
+            lambda x: candidates_number - x,
+            voter_preferences
+        )
+        return self.repeats * ell_p_norm(voter_preferences, p)
+
 
 class Preference(models.Model):
     class Meta:
@@ -73,3 +96,18 @@ class Preference(models.Model):
     candidate = models.ForeignKey(Candidate)
     voter = models.ForeignKey(Voter, related_name='preferences')
     preference = models.IntegerField(null=False)
+
+
+BRUTE_ALGORITHM = 'b'
+GENETIC_ALGORITHM = 'g'
+ALGORITHM_CHOICES = (
+    (BRUTE_ALGORITHM, 'Brute force'),
+    (GENETIC_ALGORITHM, 'Genetic')
+)
+
+
+class Result(models.Model):
+    election = models.ForeignKey(Election, related_name='results')
+    p_parameter = models.PositiveIntegerField()
+    winners = models.ManyToManyField(Candidate)
+    algorithm = models.CharField(choices=ALGORITHM_CHOICES, max_length=1)

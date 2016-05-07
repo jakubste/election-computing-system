@@ -8,14 +8,15 @@ from django.views.generic import ListView
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
+from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
 from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, SummingLineFormatException
-from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm
+from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm, ResultForm
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
-from ecs.elections.models import Election, Candidate, Voter
+from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM
 from ecs.geo.models import Point
 from ecs.utils.scatter_view import ScatterChartMixin
 from ecs.utils.views import LoginRequiredMixin
@@ -200,8 +201,28 @@ class ElectionChartView(ScatterChartMixin):
     def get_data(self):
         """
         Returns list of lists of points.
-        First list for candidatates, second for voters.
+        First list for candidates, second for voters.
         """
         candidates = list(Point.objects.filter(candidate__election=self.election).values('x','y'))
         voters = list(Point.objects.filter(voter__election=self.election).values('x','y'))
         return [candidates, voters]
+
+
+class NewResultFormView(ConfigureElectionMixin, CreateView):
+    form_class = ResultForm
+    template_name = 'result_create.html'
+
+    def form_valid(self, form):
+        result = super(NewResultFormView, self).form_valid(form)
+        algorithm = {
+            BRUTE_ALGORITHM: BruteForce
+        }[form.cleaned_data['algorithm']]
+        algorithm = algorithm(self.election)
+        winners = algorithm.run(form.cleaned_data['p_parameter'])
+        for winner in winners:
+            print winner
+            print self.object
+            self.object.winners.add(winner)
+        self.object.save()
+        return result
+

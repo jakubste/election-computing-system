@@ -21,20 +21,6 @@ class Voter(object):
     def __str__(self):
         return '{}x {}'.format(self.repeats, [c.candidate_id for c in self.preference])
 
-    @staticmethod
-    def ell_p_norm(values, p):
-        """
-        Returns ell_p norm of values
-
-        :type values: list of int
-        :type p: int
-        :rtype: Decimal
-        """
-        values = map(lambda x: x ** p, values)
-        value = reduce(lambda x, y: x + y, values)
-        value = Decimal(value) ** Decimal(1.0 / p)
-        return value
-
     def calculate_committee_score(self, committee, p):
         """
         Calculate committee score multiplied by vote repeats

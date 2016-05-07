@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Calculate new result for election "{{ view.election }}"
+{% endblock %}
+
+{% block content %}
+
+    <form action="" method="post" class="form-horizontal">
+
+        {% csrf_token %}
+
+        {% for field in form %}
+            {% include '_field.html' with field=field %}
+        {% endfor %}
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <button type="submit" class="btn btn-primary">Add new result</button>
+            </div>
+        </div>
+
+    </form>
+
+{% endblock %}
