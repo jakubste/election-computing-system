@@ -59,12 +59,14 @@ class Voter(models.Model):
     election = models.ForeignKey(Election, related_name='voters')
 
     def set_preferences_by_ids(self, ids):
+        preferences = []
         for preference, candidate_id in enumerate(ids):
-            Preference.objects.create(
+            preferences.append(Preference(
                 candidate=Candidate.objects.get(election=self.election, soc_id=candidate_id),
                 voter=self,
                 preference=preference + 1
-            )
+            ))
+        Preference.objects.bulk_create(preferences)
 
     def calculate_committee_score(self, committee, p, candidates_number):
         """
