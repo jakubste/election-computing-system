@@ -9,7 +9,7 @@ def ell_p_norm(values, p):
     :type p: int
     :rtype: Decimal
     """
-    values = map(lambda x: x ** p, values)
+    values = [x ** p for x in values]
     value = reduce(lambda x, y: x + y, values)
     value = Decimal(value) ** Decimal(1.0 / p)
     return value

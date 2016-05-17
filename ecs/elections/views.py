@@ -146,7 +146,7 @@ class ElectionLoadDataFormView(ConfigureElectionMixin, FormView):
                     raise BadDataFormatException
                 line = line.split(',', candidates_number)
                 try:
-                    line = map(lambda x: int(x), line)
+                    line = [int(x) for x in line]
                 except ValueError:
                     raise PreferenceOrderTypeException(3 + candidates_number + i)
                 if line[0] <= 0 or line[0] > voters_number:
