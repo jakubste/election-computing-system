@@ -54,7 +54,7 @@ class ConfigureElectionMixin(View):
     def dispatch(self, request, *args, **kwargs):
         try:
             self.election = Election.objects.get(pk=kwargs['pk'])
-        except:
+        except Election.DoesNotExist:
             raise Http404
         if self.election.user != self.request.user:
             raise Http404
@@ -195,7 +195,7 @@ class ElectionChartView(ScatterChartMixin):
     def dispatch(self, request, *args, **kwargs):
         try:
             self.election = Election.objects.get(pk=kwargs['pk'])
-        except:
+        except Election.DoesNotExist:
             raise Http404
         return super(ElectionChartView, self).dispatch(request, *args, **kwargs)
 
@@ -242,7 +242,7 @@ class ResultChartView(ScatterChartMixin):
         try:
             self.result = Result.objects.get(pk=kwargs['pk'])
             self.election = self.result.election
-        except:
+        except Result.DoesNotExist:
             raise Http404
         return super(ResultChartView, self).dispatch(request, *args, **kwargs)
 
