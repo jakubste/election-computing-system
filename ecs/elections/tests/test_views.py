@@ -307,9 +307,10 @@ class ElectionChartViewTest(TestCase):
         self.assertEqual(expected, response['data'])
 
     def test_dispatch_error(self):
-        request = RequestFactory().get(self.gauss_url)
-        view = ElectionChartView(request=request, election=self.file_election)
-        self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))
+        response = self.client.get(
+            self.gauss_url.replace(str(self.gauss_election.pk), '-1')
+        )
+        self.assertEqual(response.status_code, 404)
 
 
 class ResultChartViewTest(TestCase):
@@ -393,9 +394,10 @@ class ResultChartViewTest(TestCase):
         self.assertEqual(expected, response['data'])
 
     def test_dispatch_error(self):
-        request = RequestFactory().get(self.url)
-        view = ResultChartView(request=request, election=self.url)
-        self.assertRaises(Http404, view.dispatch, request=request, args=(-1,))
+        response = self.client.get(
+            self.url.replace(str(self.result.pk), '-1')
+        )
+        self.assertEqual(response.status_code, 404)
 
 
 class ResultCreateViewTestCase(TestCase):
