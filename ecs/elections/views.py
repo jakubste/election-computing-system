@@ -219,7 +219,8 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
             BRUTE_ALGORITHM: BruteForce
         }[form.cleaned_data['algorithm']]
         algorithm = algorithm(self.election)
-        winners = algorithm.run(form.cleaned_data['p_parameter'])
+        time, winners = algorithm.start(form.cleaned_data['p_parameter'])
+        self.object.time = time
         for winner in winners:
             self.object.winners.add(winner)
         self.object.save()

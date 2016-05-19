@@ -56,7 +56,7 @@
                     {% for result in results %}
                         <div class="panel-body">
                             <a href="{{ result.get_absolute_url }}">
-                                <strong>{{ result.p_parameter }} - {{ result.get_algorithm_display }}</strong>
+                                <strong>{{ result.p_parameter }} - {{ result.get_algorithm_display }} - {{ result.time }}</strong>
                             </a>
                         </div>
                     {% endfor %}

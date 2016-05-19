@@ -1,4 +1,5 @@
 import itertools
+from datetime import datetime
 
 
 class Algorithm(object):
@@ -20,6 +21,13 @@ class Algorithm(object):
             self.election.committee_size
         )
         return combinations
+
+    def start(self, p_parameter):
+        start_time = datetime.now()
+        result = self.run(p_parameter)
+        end_time = datetime.now()
+        time = end_time - start_time
+        return time.total_seconds(), result
 
     def run(self, p_parameter):
         """

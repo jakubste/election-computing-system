@@ -111,6 +111,7 @@ class Result(models.Model):
     p_parameter = models.PositiveIntegerField()
     winners = models.ManyToManyField(Candidate)
     algorithm = models.CharField(choices=ALGORITHM_CHOICES, max_length=1)
+    time = models.FloatField(null=True)
 
     def get_absolute_url(self):
         return reverse('elections:result_details', args=(self.pk,))
