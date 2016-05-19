@@ -7,7 +7,7 @@ class BruteForce(Algorithm):
 
     def fetch_preferences(self):
         self.preferences = {}
-        for voter in self.election.voters.all():
+        for voter in self.election.voters.all().prefetch_related('preferences__candidate'):
             self.preferences[voter.pk] = {}
             for preference in voter.preferences.all():
                 self.preferences[voter.pk].update({
