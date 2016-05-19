@@ -330,8 +330,8 @@ class ResultChartViewTest(TestCase):
             election=self.election, result=self.result
         )
         data = view.get_data()
-        candidates = data[0]
-        voters = data[1]
+        voters = data[0]
+        candidates = data[1]
         winners = data[2]
         colors = view.get_colors()
         labels = view.get_labels()
