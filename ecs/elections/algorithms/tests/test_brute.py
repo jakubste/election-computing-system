@@ -20,7 +20,7 @@ class BruteForceAlgorithmTestCase(TestCase):
                 )
         self.algorithm = BruteForce(self.election)
 
-    @mock.patch.object(Voter, 'calculate_committee_score')
+    @mock.patch.object(BruteForce, 'calculate_committee_score_from_prefetched')
     def test_run_calls_calculate_committee_score(self, mocked_score):
         self.algorithm.run(2)
         self.assertEqual(
@@ -33,3 +33,12 @@ class BruteForceAlgorithmTestCase(TestCase):
             list(self.algorithm.run(2)),
             self.candidates[:2]
         )
+
+    def test_start_returns_time_and_winners(self):
+        time, winners = self.algorithm.start(2)
+        winners = list(winners)
+        self.assertEqual(
+            winners,
+            self.candidates[:2]
+        )
+        self.assertGreater(time, 0)
