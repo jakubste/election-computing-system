@@ -54,7 +54,7 @@ class ConfigureElectionMixin(View):
     def dispatch(self, request, *args, **kwargs):
         try:
             self.election = Election.objects.get(pk=kwargs['pk'])
-        except:
+        except Election.DoesNotExist:
             raise Http404
         if self.election.user != self.request.user:
             raise Http404
@@ -146,7 +146,7 @@ class ElectionLoadDataFormView(ConfigureElectionMixin, FormView):
                     raise BadDataFormatException
                 line = line.split(',', candidates_number)
                 try:
-                    line = map(lambda x: int(x), line)
+                    line = [int(x) for x in line]
                 except ValueError:
                     raise PreferenceOrderTypeException(3 + candidates_number + i)
                 if line[0] <= 0 or line[0] > voters_number:
@@ -195,7 +195,7 @@ class ElectionChartView(ScatterChartMixin):
     def dispatch(self, request, *args, **kwargs):
         try:
             self.election = Election.objects.get(pk=kwargs['pk'])
-        except:
+        except Election.DoesNotExist:
             raise Http404
         return super(ElectionChartView, self).dispatch(request, *args, **kwargs)
 
@@ -219,7 +219,8 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
             BRUTE_ALGORITHM: BruteForce
         }[form.cleaned_data['algorithm']]
         algorithm = algorithm(self.election)
-        winners = algorithm.run(form.cleaned_data['p_parameter'])
+        time, winners = algorithm.start(form.cleaned_data['p_parameter'])
+        self.object.time = time
         for winner in winners:
             self.object.winners.add(winner)
         self.object.save()
@@ -234,15 +235,15 @@ class ResultDetailsView(DetailView):
 
 class ResultChartView(ScatterChartMixin):
     datasets_number = 3
-    labels = ['Candidates', 'Voters', 'Winners']
-    colors = ['red', 'lightblue', 'green']
-    points_stroke_colors = ['black', 'white', 'green']
+    labels = ['Voters', 'Candidates', 'Winners']
+    colors = ['lightblue', 'red', 'green']
+    points_stroke_colors = ['white', 'black', 'green']
 
     def dispatch(self, request, *args, **kwargs):
         try:
             self.result = Result.objects.get(pk=kwargs['pk'])
             self.election = self.result.election
-        except:
+        except Result.DoesNotExist:
             raise Http404
         return super(ResultChartView, self).dispatch(request, *args, **kwargs)
 
@@ -253,5 +254,8 @@ class ResultChartView(ScatterChartMixin):
         """
         candidates = list(Point.objects.filter(candidate__election=self.election).values('x', 'y'))
         voters = list(Point.objects.filter(voter__election=self.election).values('x', 'y'))
-        winners = list(Point.objects.filter(candidate__in=self.result.winners.all()).values('x', 'y'))
-        return [candidates, voters, winners]
+        winners = list(
+            Point.objects.filter(candidate__in=self.result.winners.all())
+                         .extra(select={'r': '2'}).values('x', 'y', 'r')
+        )
+        return [voters, candidates, winners]

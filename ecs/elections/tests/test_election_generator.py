@@ -58,8 +58,5 @@ class ElectionGeneratorTestCase(TestCase):
         self.generator.generate_elections()
         for voter in self.election.voters.all():
             preferences = Preference.objects.filter(voter=voter).order_by('preference')
-            preferences = map(
-                lambda preference: voter.position.distance(preference.candidate.position),
-                preferences
-            )
+            preferences = [voter.position.distance(preference.candidate.position) for preference in preferences]
             self.assertTrue(sorted(preferences) == preferences)

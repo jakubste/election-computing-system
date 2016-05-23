@@ -59,12 +59,14 @@ class Voter(models.Model):
     election = models.ForeignKey(Election, related_name='voters')
 
     def set_preferences_by_ids(self, ids):
+        preferences = []
         for preference, candidate_id in enumerate(ids):
-            Preference.objects.create(
+            preferences.append(Preference(
                 candidate=Candidate.objects.get(election=self.election, soc_id=candidate_id),
                 voter=self,
                 preference=preference + 1
-            )
+            ))
+        Preference.objects.bulk_create(preferences)
 
     def calculate_committee_score(self, committee, p, candidates_number):
         """
@@ -80,10 +82,7 @@ class Voter(models.Model):
         # create pos_v sequence, but order actually
         # does not matter in our election system:
         voter_preferences = self.preferences.filter(candidate__in=committee).values_list('preference', flat=True)
-        voter_preferences = map(
-            lambda x: candidates_number - x,
-            voter_preferences
-        )
+        voter_preferences = [candidates_number - x for x in voter_preferences]
         return self.repeats * ell_p_norm(voter_preferences, p)
 
 
@@ -112,6 +111,7 @@ class Result(models.Model):
     p_parameter = models.PositiveIntegerField()
     winners = models.ManyToManyField(Candidate)
     algorithm = models.CharField(choices=ALGORITHM_CHOICES, max_length=1)
+    time = models.FloatField(null=True)
 
     def get_absolute_url(self):
         return reverse('elections:result_details', args=(self.pk,))
