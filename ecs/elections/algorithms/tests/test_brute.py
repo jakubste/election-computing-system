@@ -18,11 +18,12 @@ class BruteForceAlgorithmTestCase(TestCase):
                 PreferenceFactory.create(
                     voter=voter, candidate=candidate
                 )
-        self.algorithm = BruteForce(self.election)
+        self.p_parameter = 2
+        self.algorithm = BruteForce(self.election, self.p_parameter)
 
     @mock.patch.object(BruteForce, 'calculate_committee_score_from_prefetched')
     def test_run_calls_calculate_committee_score(self, mocked_score):
-        self.algorithm.run(2)
+        self.algorithm.run()
         self.assertEqual(
             mocked_score.call_count,
             3
@@ -30,12 +31,12 @@ class BruteForceAlgorithmTestCase(TestCase):
 
     def test_run_returns_winners(self):
         self.assertEqual(
-            list(self.algorithm.run(2)),
+            list(self.algorithm.run()),
             self.candidates[:2]
         )
 
     def test_start_returns_time_and_winners(self):
-        time, winners = self.algorithm.start(2)
+        time, winners = self.algorithm.start()
         winners = list(winners)
         self.assertEqual(
             winners,
