@@ -9,6 +9,7 @@ from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
 from ecs.elections.algorithms.brute_force import BruteForce
+from ecs.elections.algorithms.genetic import GeneticAlgorithm
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
@@ -16,7 +17,7 @@ from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, S
 from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm, ResultForm
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
-from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result
+from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GENETIC_ALGORITHM
 from ecs.geo.models import Point
 from ecs.utils.scatter_view import ScatterChartMixin
 from ecs.utils.views import LoginRequiredMixin
@@ -216,10 +217,11 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
     def form_valid(self, form):
         result = super(ResultCreateView, self).form_valid(form)
         algorithm = {
-            BRUTE_ALGORITHM: BruteForce
+            BRUTE_ALGORITHM: BruteForce,
+            GENETIC_ALGORITHM: GeneticAlgorithm,
         }[form.cleaned_data['algorithm']]
-        algorithm = algorithm(self.election)
-        time, winners = algorithm.start(form.cleaned_data['p_parameter'])
+        algorithm = algorithm(self.election, form.cleaned_data['p_parameter'])
+        time, winners = algorithm.start()
         self.object.time = time
         for winner in winners:
             self.object.winners.add(winner)
