@@ -67,7 +67,7 @@ class GreedyAlgorithm(Algorithm):
         :param v: Voter
         :return: int
         """
-        return actual_voters_satisfaction[v]
+        return actual_voters_satisfaction[v.pk]
 
     def update_voters_satisfaction(self, leading_candidate, voters, actual_voters_satisfaction, candidates_number, p):
         """
