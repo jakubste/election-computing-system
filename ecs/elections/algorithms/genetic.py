@@ -1,4 +1,4 @@
-from random import shuffle, sample
+from random import shuffle, sample, randint
 
 from ecs.elections.algorithms.algorithm import Algorithm
 
@@ -26,6 +26,20 @@ class Individual(object):
         new_committee = sorted(new_committee)
         return Individual(committee=new_committee, algorithm=self.algorithm)
 
+    def mutate(self):
+        if randint(0, 100) > 10:
+            return None
+        candidates = list(self.algorithm.election.candidates.all())
+        new_candidate = None
+        new_committee = list(self.committee)
+        while True:
+            new_candidate = sample(candidates, 1)[0]
+            if new_candidate not in self.committee:
+                break
+        new_committee.remove(sample(self.committee, 1)[0])
+        new_committee.append(new_candidate)
+        return Individual(committee=new_committee, algorithm=self.algorithm)
+
 
 class GeneticAlgorithm(Algorithm):
     preferences = None
@@ -39,14 +53,19 @@ class GeneticAlgorithm(Algorithm):
         pool = [Individual(c, self) for c in pool]
 
         for i in xrange(50):
+            print 'cycle', i, 'from 50'
             ma = sample(pool, count/2)
             mb = sample(pool, count/2)
             for a,b in zip(ma, mb):
                 pool.append(a.cross(b))
+            new = []
+            for ind in pool:
+                new_ind = ind.mutate()
+                if new_ind:
+                    new.append(new_ind)
+            pool = pool + new
             pool = sorted(pool, key=lambda x: x.score, reverse=True)
             pool = pool[:count]
-
-        print 'biggest achieved:', self.biggest
-        print 'algorith result: ', pool[0].score
+            print pool[0].score
 
         return pool[0].committee
