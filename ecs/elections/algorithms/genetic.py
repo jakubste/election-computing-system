@@ -48,7 +48,7 @@ class GeneticAlgorithm(Algorithm):
         combinations = list(self.get_committee_combinations())
         self.fetch_preferences()
 
-        count = 50
+        count = 50 if len(combinations) > 50 else len(combinations)
         pool = sample(combinations, len(combinations))[:count]
         pool = [Individual(c, self) for c in pool]
 
