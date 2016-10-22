@@ -6,6 +6,8 @@ services:
 cache:
   - pip
 install:
+  - pip uninstall numpy -y
+  - pip install -I numpy==1.8.2
   - pip install -r requirements.txt
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres

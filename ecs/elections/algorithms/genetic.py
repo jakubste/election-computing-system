@@ -1,5 +1,7 @@
 from random import shuffle, sample, randint
 
+import scipy.special
+
 from ecs.elections.algorithms.algorithm import Algorithm
 
 
@@ -45,11 +47,22 @@ class GeneticAlgorithm(Algorithm):
     preferences = None
 
     def run(self):
-        combinations = list(self.get_committee_combinations())
         self.fetch_preferences()
 
-        count = 50 if len(combinations) > 50 else len(combinations)
-        pool = sample(combinations, len(combinations))[:count]
+        combinations_count = scipy.special.binom(
+            self.election.candidates.count(),
+            self.election.committee_size
+        )
+        count = 50 if combinations_count > 50 else combinations_count
+
+        pks = self.election.candidates.values_list('pk', flat=True)
+        combinations = []
+        while len(combinations) < count:
+            committee = sample(pks, self.election.committee_size)
+            if committee not in combinations:
+                combinations.append(committee)
+
+        pool = [self.election.candidates.filter(pk__in=pk_list) for pk_list in combinations]
         pool = [Individual(c, self) for c in pool]
 
         for i in xrange(50):
@@ -58,12 +71,12 @@ class GeneticAlgorithm(Algorithm):
             mb = sample(pool, count/2)
             for a,b in zip(ma, mb):
                 pool.append(a.cross(b))
-            new = []
+            print 'cross_ended'
             for ind in pool:
                 new_ind = ind.mutate()
                 if new_ind:
-                    new.append(new_ind)
-            pool = pool + new
+                    pool.append(new_ind)
+            print 'mutation ended'
             pool = sorted(pool, key=lambda x: x.score, reverse=True)
             pool = pool[:count]
             print pool[0].score
