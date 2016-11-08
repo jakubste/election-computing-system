@@ -23,10 +23,11 @@ class GeneticAlgorithmTestCase(TestCase):
 
     @mock.patch.object(Individual, 'mutate')
     def test_run_calls_mutate(self, mocked_mutate):
+        mocked_mutate.return_value = None
         self.algorithm.run()
         self.assertEqual(
             mocked_mutate.call_count,
-            4
+            4*50  # 4 * cycle_count
         )
 
     def test_run_returns_winners(self):

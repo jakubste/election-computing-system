@@ -18,4 +18,4 @@ def binom(n, k):
     while s:
         down *= s
         s -= 1
-    return max(up/down, MAX)
+    return min(up/down, MAX)
