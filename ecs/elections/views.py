@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
+from django.forms.fields import ChoiceField
+from django.forms.widgets import ChoiceInput, Select
 from django.http.response import Http404
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
@@ -88,6 +90,10 @@ class ElectionDetailView(DetailView):
         if self.object.voters.count() < 500:
             ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
         ctx['results'] = self.object.results.all()
+        choices = [(res.pk, str(res)) for res in ctx['results'].reverse()]
+        choices.append((None, '------'))
+        choices.reverse()
+        ctx['results_choice'] = Select(choices=choices).render('results_choice', None)
         return ctx
 
 
