@@ -1,8 +1,9 @@
-from random import shuffle, sample, randint
+from random import sample, randint
 
-import scipy.special
+from datetime import datetime, timedelta
 
 from ecs.elections.algorithms.algorithm import Algorithm
+from ecs.elections.algorithms.helpers import binom
 
 
 class Individual(object):
@@ -13,7 +14,10 @@ class Individual(object):
     def __init__(self, committee, algorithm):
         self.committee = committee
         self.algorithm = algorithm
+        time_a = datetime.now()
         self.score = self.algorithm.calculate_committee_score_from_prefetched(committee)
+        time_b = datetime.now()
+        algorithm.diff += time_b - time_a
 
     def cross(self, other):
         new_committee = []
@@ -48,12 +52,12 @@ class GeneticAlgorithm(Algorithm):
 
     def run(self):
         self.fetch_preferences()
+        self.diff = timedelta()
 
-        combinations_count = scipy.special.binom(
+        count = binom(
             self.election.candidates.count(),
             self.election.committee_size
         )
-        count = 50 if combinations_count > 50 else combinations_count
 
         pks = self.election.candidates.values_list('pk', flat=True)
         combinations = []
@@ -71,14 +75,13 @@ class GeneticAlgorithm(Algorithm):
             mb = sample(pool, count/2)
             for a,b in zip(ma, mb):
                 pool.append(a.cross(b))
-            print 'cross_ended'
             for ind in pool:
                 new_ind = ind.mutate()
                 if new_ind:
                     pool.append(new_ind)
-            print 'mutation ended'
             pool = sorted(pool, key=lambda x: x.score, reverse=True)
             pool = pool[:count]
             print pool[0].score
+        print self.diff
 
         return pool[0].committee
