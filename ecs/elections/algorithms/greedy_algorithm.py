@@ -28,6 +28,7 @@ class GreedyAlgorithm(Algorithm):
             actual_voters_satisfaction[v.pk] = 0
 
         for i in range(self.election.committee_size):
+            print i + 1, "out of", self.election.committee_size, "to be chosen"
             satisfaction_with_leading_candidate = 0
             leading_candidate = None
             for c in candidates_still_fighting:
@@ -40,7 +41,7 @@ class GreedyAlgorithm(Algorithm):
                     values = [satisfaction_of_given_voter, x]
                     satisfaction_of_given_voter_with_given_candidate = ell_p_norm(values, p_parameter)
 
-                    satisfaction_with_given_candidate += satisfaction_of_given_voter_with_given_candidate
+                    satisfaction_with_given_candidate += v.repeats*satisfaction_of_given_voter_with_given_candidate
 
                 if satisfaction_with_given_candidate > satisfaction_with_leading_candidate:
                     leading_candidate = c
