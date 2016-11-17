@@ -1,8 +1,7 @@
 from ecs.elections.algorithms.algorithm import Algorithm
-from ecs.utils.math import ell_p_norm
 
 
-class GreedyAlgorithm(Algorithm):
+class GreedyCC(Algorithm):
     preferences = None
 
     def fetch_preferences(self):
@@ -15,7 +14,6 @@ class GreedyAlgorithm(Algorithm):
                 })
 
     def run(self, p_parameter):
-
         voters = self.election.voters.all()
         candidates_number = self.election.candidates.count()
 
@@ -28,26 +26,27 @@ class GreedyAlgorithm(Algorithm):
             actual_voters_satisfaction[v.pk] = 0
 
         for i in range(self.election.committee_size):
-            print i + 1, "out of", self.election.committee_size, "to be chosen"
-            satisfaction_with_leading_candidate = 0
+            extra_satisfaction_with_leading_candidate = 0
             leading_candidate = None
             for c in candidates_still_fighting:
-                satisfaction_with_given_candidate = 0
+                extra_satisfaction_with_given_candidate = 0
                 for v in voters:
                     x = self.number_of_points_in_preference_order(c, v, candidates_number)
                     satisfaction_of_given_voter = self.get_actual_satisfaction_of_given_voter(v,
                                                                                               actual_voters_satisfaction)
 
-                    values = [satisfaction_of_given_voter, x]
-                    satisfaction_of_given_voter_with_given_candidate = ell_p_norm(values, p_parameter)
+                    if x > satisfaction_of_given_voter:
+                        extra_satisfaction_with_given_candidate += v.repeats * (
+                        x ** p_parameter - satisfaction_of_given_voter ** p_parameter)
 
-                    satisfaction_with_given_candidate += v.repeats*satisfaction_of_given_voter_with_given_candidate
-
-                if satisfaction_with_given_candidate > satisfaction_with_leading_candidate:
+                if extra_satisfaction_with_given_candidate > extra_satisfaction_with_leading_candidate:
                     leading_candidate = c
-                    satisfaction_with_leading_candidate = satisfaction_with_given_candidate
-            self.update_voters_satisfaction(leading_candidate, voters, actual_voters_satisfaction, candidates_number,
-                                            p_parameter)
+                    extra_satisfaction_with_leading_candidate = extra_satisfaction_with_given_candidate
+
+            for v in voters:
+                x = self.number_of_points_in_preference_order(leading_candidate, v, candidates_number)
+                if x > actual_voters_satisfaction[v.pk]:
+                    actual_voters_satisfaction[v.pk] = x
             winning_committee.append(leading_candidate)
             candidates_still_fighting = candidates_still_fighting.exclude(pk=leading_candidate.pk)
 
@@ -70,17 +69,3 @@ class GreedyAlgorithm(Algorithm):
         """
         return actual_voters_satisfaction[v.pk]
 
-    def update_voters_satisfaction(self, leading_candidate, voters, actual_voters_satisfaction, candidates_number, p):
-        """
-
-        :param leading_candidate: Candidate
-        :param voters: QuerySet
-        :param actual_voters_satisfaction: dict{Voter: int}
-        :param candidates_number: int
-        :param p: int
-        :return:
-        """
-        for v in voters:
-            x = self.number_of_points_in_preference_order(leading_candidate, v, candidates_number)
-            values = [actual_voters_satisfaction[v.pk], x]
-            actual_voters_satisfaction[v.pk] = ell_p_norm(values, p)

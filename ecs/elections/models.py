@@ -98,10 +98,12 @@ class Preference(models.Model):
 BRUTE_ALGORITHM = 'b'
 GENETIC_ALGORITHM = 'g'
 GREEDY_ALGORITHM = 'r'
+GREEDY_CC = 'c'
 ALGORITHM_CHOICES = (
     (BRUTE_ALGORITHM, 'Brute force'),
     (GENETIC_ALGORITHM, 'Genetic'),
-    (GREEDY_ALGORITHM, 'Greedy Algorithm')
+    (GREEDY_ALGORITHM, 'Greedy Algorithm'),
+    (GREEDY_CC, 'Greedy CC'),
 )
 
 

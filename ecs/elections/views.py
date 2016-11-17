@@ -10,6 +10,7 @@ from django.views.generic.edit import CreateView, FormView
 
 from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.algorithms.greedy_algorithm import GreedyAlgorithm
+from ecs.elections.algorithms.greedy_cc import GreedyCC
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
@@ -17,7 +18,7 @@ from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, S
 from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm, ResultForm
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
-from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GREEDY_ALGORITHM
+from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GREEDY_ALGORITHM, GREEDY_CC
 from ecs.geo.models import Point
 from ecs.utils.scatter_view import ScatterChartMixin
 from ecs.utils.views import LoginRequiredMixin
@@ -218,7 +219,8 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
         result = super(ResultCreateView, self).form_valid(form)
         algorithm = {
             BRUTE_ALGORITHM: BruteForce,
-            GREEDY_ALGORITHM: GreedyAlgorithm
+            GREEDY_ALGORITHM: GreedyAlgorithm,
+            GREEDY_CC: GreedyCC,
         }[form.cleaned_data['algorithm']]
         algorithm = algorithm(self.election)
         time, winners = algorithm.start(form.cleaned_data['p_parameter'])
