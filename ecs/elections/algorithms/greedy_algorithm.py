@@ -53,6 +53,45 @@ class GreedyAlgorithm(Algorithm):
 
         return tuple(winning_committee)
 
+    # def run(self, p_parameter):
+    #     voters = self.election.voters.all()
+    #     candidates_number = self.election.candidates.count()
+    #
+    #     self.fetch_preferences()
+    #     candidates_still_fighting = self.election.candidates.all()
+    #     winning_committee = []
+    #     actual_voters_satisfaction = {}
+    #
+    #     for v in voters:
+    #         actual_voters_satisfaction[v.pk] = 0
+    #
+    #     for i in range(self.election.committee_size):
+    #         extra_satisfaction_with_leading_candidate = 0
+    #         leading_candidate = None
+    #         for c in candidates_still_fighting:
+    #             extra_satisfaction_with_given_candidate = 0
+    #             for v in voters:
+    #                 x = self.number_of_points_in_preference_order(c, v, candidates_number)
+    #                 satisfaction_of_given_voter = self.get_actual_satisfaction_of_given_voter(v,
+    #                                                                                           actual_voters_satisfaction)
+    #
+    #                 if x > satisfaction_of_given_voter:
+    #                     extra_satisfaction_with_given_candidate += v.repeats * (
+    #                     x ** p_parameter - satisfaction_of_given_voter ** p_parameter)
+    #
+    #             if extra_satisfaction_with_given_candidate > extra_satisfaction_with_leading_candidate:
+    #                 leading_candidate = c
+    #                 extra_satisfaction_with_leading_candidate = extra_satisfaction_with_given_candidate
+    #
+    #         for v in voters:
+    #             x = self.number_of_points_in_preference_order(leading_candidate, v, candidates_number)
+    #             if x > actual_voters_satisfaction[v.pk]:
+    #                 actual_voters_satisfaction[v.pk] = x
+    #         winning_committee.append(leading_candidate)
+    #         candidates_still_fighting = candidates_still_fighting.exclude(pk=leading_candidate.pk)
+    #
+    #     return tuple(winning_committee)
+
     def number_of_points_in_preference_order(self, c, v, candidates_number):
         """
 
