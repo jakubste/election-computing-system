@@ -1,0 +1,129 @@
+\documentclass[pdflatex,11pt]{aghproc}
+% \documentclass{aghdpl}               % przy kompilacji programem latex
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+
+% dodatkowe pakiety
+\usepackage{enumerate}
+\usepackage{listings}
+\lstloadlanguages{TeX}
+
+\lstset{
+  literate={ą}{{\k{a}}}1
+           {ć}{{\'c}}1
+           {ę}{{\k{e}}}1
+           {ó}{{\'o}}1
+           {ń}{{\'n}}1
+           {ł}{{\l{}}}1
+           {ś}{{\'s}}1
+           {ź}{{\'z}}1
+           {ż}{{\.z}}1
+           {Ą}{{\k{A}}}1
+           {Ć}{{\'C}}1
+           {Ę}{{\k{E}}}1
+           {Ó}{{\'O}}1
+           {Ń}{{\'N}}1
+           {Ł}{{\L{}}}1
+           {Ś}{{\'S}}1
+           {Ź}{{\'Z}}1
+           {Ż}{{\.Z}}1
+}
+
+%---------------------------------------------------------------------------
+
+\author{Tomasz Kasprzyk, Daniel Ogiela, Jakub Stępak}
+\shortauthor{T. Kasprzyk, D. Ogiela, J.Stępak}
+
+\titlePL{System obliczający wyniki wyborów dla uogólnienia systemu k-Borda}
+
+\shorttitlePL{Przygotowanie pracy dyplomowej w~systemie \LaTeX} % skrócona wersja tytułu jeśli jest bardzo długi
+
+\thesistypePL{Dokumentacja procesowa}
+
+\supervisorPL{dr hab. inż. Piotr Faliszewski}
+
+\date{2016}
+
+\departmentPL{Katedra Informatyki}
+
+\facultyPL{Wydział Informatyki, Automatyki, Informatyki i Elektroniki}
+
+\setlength{\cftsecnumwidth}{10mm}
+
+%---------------------------------------------------------------------------
+
+\begin{document}
+
+\titlepages
+
+\tableofcontents
+\clearpage
+
+%\include{rozdzial1}
+%\include{rozdzial2}
+%----------------------------------------------------------------------------
+\chapter{Cele projektu}
+\label{cha:cele_projektu}
+
+\chapter{Studium wykonalności}
+\label{cha:studium_wykonalnosci}
+
+\section{Opis stanu istniejącego}
+\label{sec:opis_stanu_istniejacego}
+
+\section{Wymagania dla systemu}
+\label{sec:wymagania_dla_systemu}
+
+\subsection{Metoda obliczania wyników wyborów}
+\label{subsec:metoda_obliczania_wynikow_wyborow}
+
+\subsubsection{Metoda Bordy}
+\label{subsubsec:metoda_bordy}
+
+\subsubsection{Metoda k-Borda}
+\label{subsubsec:metoda_k_borda}
+
+\subsubsection{Uogólnienie - system $\ell_p$ Borda}
+\label{subsubsec:system_ell_p_borda}
+
+\paragraph{Norma $\ell_p$}
+\label{par:norma_ell_p}
+
+\subsection{Format danych wejściowych}
+\label{subsec:format_danych_wejsciowych}
+
+\subsection{Szybkość i dokładność wykonywanych obliczeń}
+\label{subsec:szybkosc_i_dokladnosc_wykonywanych_obliczen}
+
+\section{Wybór frameworku dla aplikacji webowej}
+\label{sec:wybor_frameworku_dla_aplikacji_webowej}
+
+% itd.
+% \appendix
+% \include{dodatekA}
+% \include{dodatekB}
+% itd.
+
+\bibliographystyle{alpha}
+\bibliography{bibliografia}
+%\begin{thebibliography}{1}
+%
+%\bibitem{Dil00}
+%A.~Diller.
+%\newblock {\em LaTeX wiersz po wierszu}.
+%\newblock Wydawnictwo Helion, Gliwice, 2000.
+%
+%\bibitem{Lam92}
+%L.~Lamport.
+%\newblock {\em LaTeX system przygotowywania dokumentów}.
+%\newblock Wydawnictwo Ariel, Krakow, 1992.
+%
+%\bibitem{Alvis2011}
+%M.~Szpyrka.
+%\newblock {\em {On Line Alvis Manual}}.
+%\newblock AGH University of Science and Technology, 2011.cccccc
+%\newblock \\\texttt{http://fm.ia.agh.edu.pl/alvis:manual}.
+%
+%\end{thebibliography}
+
+\end{document}

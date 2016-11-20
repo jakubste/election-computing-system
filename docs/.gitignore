@@ -1,0 +1,14 @@
+*-template/
+*.zip
+
+*.BAK
+
+#LaTeX files
+*.cls.tex
+*.aux
+*.dvi
+*.log
+*.synctex.gz
+*.toc
+
+
