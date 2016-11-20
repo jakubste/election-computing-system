@@ -64,6 +64,14 @@
 %----------------------------------------------------------------------------
 \chapter{Cele projektu}
 \label{cha:cele_projektu}
+Celem projektu jest stworzenie systemu obliczającego wyniki wyborów dla uogólnienia opisanego poniżej systemu k-Borda. 
+Stworzona aplikacja webowa ma pozwalać użytkownikowi na szybkie definiowanie wyborów, jak również importowanie istniejących danych, w celu uzyskania wyników. 
+Jako wybory rozumiemy nie tylko te, w których głosujący wyłaniają swoich przedstawicieli w organach władzy - swoje preferencje można także określić dla, na przykład, filmów jakie chcemy obejrzeć podczas seansu z przyjaciółmi, w jaką grę chcielibyśmy zagrać, jaką restaurację wybrać na rodzinne spotkanie itp.
+Ustalenie preferencji to jedno, ale o tym, kto lub co zostanie wybrane na podstawie preferencji wszystkich głosujących, decyduje również system wyborczy.
+Określając odpowiednie parametry aplikacja ma za zadanie ilustrować jak, w zależności od parametrów, zmieniają się wyniki wyborów, przy tym samym zestawie preferencji.
+W pierwszej kolejności użytkownik określa listę preferencji wyborców. Określając swoje preferencje każdy wyborca porządkuje kandydatów w kolejności od najlepszego do najgorszego. Lista preferencji może zostać wygenerowana losowo, zaimportowana z odpowiednio sformatowanego pliku lub stworzona ręcznie.
+Na wprowadzonych do systemu listach preferencji i ustalonej liczbie k wyboraców użytkownik może wielokrotnie uruchamiać algorytm wyłaniania zwycięzców. Przed każdym uruchomieniem algorytmu ustalany jest parametr p normy $\ell_p$, który w głównej mierze (pomijając listę preferencji wszystkich głosujących) decyduje o wyniku obliczeń.
+
 
 \chapter{Studium wykonalności}
 \label{cha:studium_wykonalnosci}
