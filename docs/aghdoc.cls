@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%	File: aghproc.cls 
+%	File: aghdoc.cls 
 %         
-%	LaTeX Document class option "aghproc" based on
+%	LaTeX Document class option "aghdoc" based on
 %				Marcin Szpyrka's     (mszpyrka@agh.edu.pl)
 %				and
 %			   	Grzegorz J. Nalepa's  (gjn@agh.edu.pl)
@@ -9,11 +9,11 @@
 %	
 %				AGH University of Science and Technology, Kraków, POLAND
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\message{ -------- [aghproc.cls] -------- }       
+\message{ -------- [aghdoc.cls] -------- }       
 
 \newif\ifpdflatex\pdflatexfalse
 \NeedsTeXFormat{LaTeX2e} % 
-\ProvidesClass{aghproc} 
+\ProvidesClass{../aghdoc} % Use this class in .tex files from subdirectories
 \DeclareOption{pdflatex}{\pdflatextrue}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}} 
 \ProcessOptions\LoadClass[a4paper,oneside]{report} 
@@ -63,7 +63,7 @@ im. Stanis\l{}awa Staszica w Krakowie}}}
 {\large \@facultyPL}}\\\vspace*{2mm}
 {\large\textsc{\@departmentPL}}\vspace*{1cm}
 
-\ifpdflatex\includegraphics[scale=0.3]{agh}
+\ifpdflatex\includegraphics[scale=0.7]{agh}
 \else\includegraphics[scale=0.7]{agh}
 \fi
 \vspace*{1cm}
@@ -84,17 +84,18 @@ im. Stanis\l{}awa Staszica w Krakowie}}}
 
 \end{center}
 
-\clearpage \titlepage
+%\clearpage 
+\titlepage
 
-\vspace*{15cm} \vfill
+%\vspace*{15cm} \vfill
 \begin{flushright} 
 \begin{minipage}[!h]{8cm}
 \end{minipage}
 \end{flushright}
 
-\clearpage
+%\clearpage
 
-\setcounter{page}{5}
+\setcounter{page}{2}
 
 }
 
