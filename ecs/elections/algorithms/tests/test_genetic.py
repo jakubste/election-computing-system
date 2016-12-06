@@ -31,7 +31,7 @@ class GeneticAlgorithmTestCase(TestCase):
         )
 
     def test_run_returns_winners(self):
-        self.assertEqual(
+        self.assertItemsEqual(
             list(self.algorithm.run()),
             self.candidates[:2]
         )
@@ -39,7 +39,7 @@ class GeneticAlgorithmTestCase(TestCase):
     def test_start_returns_time_and_winners(self):
         time, winners = self.algorithm.start()
         winners = list(winners)
-        self.assertEqual(
+        self.assertItemsEqual(
             winners,
             self.candidates[:2]
         )
