@@ -11,8 +11,20 @@ $(document).ready(function () {
         });
     }
 
-    $(document).on('change', 'select[name=results_choice]', function (e) {
-        $result_pk = $(e.target).find('option:selected').val();
+
+    var $resultsSlider = $('#results-slider');
+    $resultsSlider.slider({
+        formatter: function(value) {
+            var txt = $resultsSlider.data('results-descriptions').split(',')[value];
+            return 'Current value: ' + txt;
+        }
+    });
+    $resultsSlider.on('change', function (e) {
+        if (e.value.newValue == 0)
+            return;
+
+        $result_pk = $resultsSlider.data('results-pks').split(',')[e.value.newValue - 1];
+
         var source;
         if ($result_pk === '') {
             source = $scatterChart.data('url')
@@ -28,6 +40,8 @@ $(document).ready(function () {
                 animation: false
             });
         });
-    });
+
+    })
+
 
 });
