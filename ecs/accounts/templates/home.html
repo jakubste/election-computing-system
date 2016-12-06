@@ -5,10 +5,28 @@
     Election Computing System
 {% endblock %}
 
+{% block subtitle %}
+    <p>System for Computing Election Results According to Generalized k-Borda System.</p>
+    <br>
+    <p>Engineering thesis created on the Faculty of Computer Science, Electronics and Telecomunications, </p>
+
+    <br>
+    <p>Field of study: Computer Science</p>
+    <p>Supervisor: Piotr Faliszewski, PhD</p>
+    <br>
+
+    <p>Authors: </p>
+    <p>Tomasz Kasprzyk</p>
+    <p>Daniel Ogiela</p>
+    <p>Jakub Stępak</p>
+    <br>
+
+{% endblock %}
+
 {% block content %}
     {% if user.is_authenticated %}
         <p> Logged in as {{ user }}. Click on "Your elections" to start</p>
     {% else %}
-        <p> Logg in or register in order to create elections </p>
+        <p> Log in or register in order to create elections </p>
     {% endif %}
 {% endblock %}
