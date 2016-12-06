@@ -13,4 +13,3 @@ whitenoise
 django-debug-toolbar
 django-chartjs
 mock
-
