@@ -2,11 +2,13 @@
 {% load static %}
 
 {% block title %}
-    Hello world!
+    Election Computing System
 {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
-        <p> Zalogowany jako {{ user }}.</p>
+        <p> Logged in as {{ user }}. Click on "Your elections" to start</p>
+    {% else %}
+        <p> Logg in or register in order to create elections </p>
     {% endif %}
 {% endblock %}
