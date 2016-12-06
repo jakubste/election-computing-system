@@ -14,22 +14,17 @@ $(document).ready(function () {
 
     var $resultsSlider = $('#results-slider');
     $resultsSlider.slider({
-        formatter: function(value) {
-            var txt = $resultsSlider.data('results-descriptions').split(',')[value];
-            return 'Current value: ' + txt;
+        formatter: function (value) {
+            return $resultsSlider.data('results-descriptions').split(',')[value];
         }
     });
     $resultsSlider.on('change', function (e) {
-        if (e.value.newValue == 0)
-            return;
-
-        $result_pk = $resultsSlider.data('results-pks').split(',')[e.value.newValue - 1];
-
         var source;
-        if ($result_pk === '') {
-            source = $scatterChart.data('url')
+        if (e.value.newValue == 0) {
+            source = $scatterChart.data('url');
         } else {
-            source = '/elections/chart_data/result/' + $result_pk + '/'
+            var $resultPk = $resultsSlider.data('results-pks').split(',')[e.value.newValue - 1];
+            source = '/elections/chart_data/result/' + $resultPk + '/'
         }
         $.get(source, function (data) {
             var ctx = $scatterChart.get(0).getContext("2d");

@@ -96,7 +96,7 @@ class ElectionDetailView(DetailView):
         ctx['results_choice'] = Select(choices=choices).render('results_choice', None)
         ctx['results_number'] = self.object.results.count()
         ctx['results_pks'] = ",".join([str(n) for n in self.object.results.values_list('pk', flat=True)])
-        ctx['results_descriptions'] = ",".join(['{} - {}'.format(r.get_algorithm_display(), r.p_parameter) for r in self.object.results.all()])
+        ctx['results_descriptions'] = ",".join(['{}: p = {}'.format(r.get_algorithm_display(), r.p_parameter) for r in self.object.results.all()])
         ctx['results_descriptions'] = 'No result,' + ctx['results_descriptions']
         return ctx
 
