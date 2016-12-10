@@ -1,11 +1,12 @@
-from django.forms import ModelForm, Form, forms
+from django.forms import forms
 from django.forms.fields import IntegerField
 
 from ecs.elections.models import Election, Result, GeneticAlgorithmSettings
 from ecs.settings import ELECTION_GENERATOR
+from ecs.utils.forms import BootstrapModelForm, BootstrapForm
 
 
-class ElectionForm(ModelForm):
+class ElectionForm(BootstrapModelForm):
     class Meta:
         model = Election
         fields = ['name', 'committee_size']
@@ -22,7 +23,7 @@ class ElectionForm(ModelForm):
         return election
 
 
-class ElectionLoadDataForm(Form):
+class ElectionLoadDataForm(BootstrapForm):
     file = forms.FileField(required=True)
 
     def __init__(self, *args, **kwargs):
@@ -30,7 +31,7 @@ class ElectionLoadDataForm(Form):
         super(ElectionLoadDataForm, self).__init__(*args, **kwargs)
 
 
-class ElectionGenerateDataForm(Form):
+class ElectionGenerateDataForm(BootstrapForm):
     candidates_amount = IntegerField(min_value=0, max_value=ELECTION_GENERATOR['MAX_CANDIDATES'], initial=20)
     voters_amount = IntegerField(min_value=0, max_value=ELECTION_GENERATOR['MAX_VOTERS'], initial=20)
 
@@ -53,7 +54,7 @@ class ElectionGenerateDataForm(Form):
         super(ElectionGenerateDataForm, self).__init__(*args, **kwargs)
 
 
-class ResultForm(ModelForm):
+class ResultForm(BootstrapModelForm):
     class Meta:
         model = Result
         fields = ['p_parameter', 'algorithm']
@@ -70,7 +71,7 @@ class ResultForm(ModelForm):
         return result
 
 
-class GeneticAlgorithmForm(ModelForm):
+class GeneticAlgorithmForm(BootstrapModelForm):
     class Meta:
         model = GeneticAlgorithmSettings
         exclude = ['result']

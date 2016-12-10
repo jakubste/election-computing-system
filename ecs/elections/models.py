@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.forms.models import model_to_dict
 
 from ecs.geo.models import Point
 from ecs.utils.math import ell_p_norm

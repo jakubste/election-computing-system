@@ -1,5 +1,7 @@
 from random import sample, randint
 
+from django.conf import settings
+
 from ecs.elections.algorithms.algorithm import Algorithm
 from ecs.elections.algorithms.helpers import binom
 
@@ -69,17 +71,21 @@ class GeneticAlgorithm(Algorithm):
         pool = [Individual(c, self) for c in pool]
 
         for i in xrange(self.cycles):
-            # print 'cycle', i, 'from', self.cycles
-            ma = sample(pool, count/2)
-            mb = sample(pool, count/2)
+            if settings.PRINT_PROGRESS:
+                print 'cycle', i, 'from', self.cycles
+
+            cross_amount = int(count * (self.crossing_probability/100.0))
+            ma = sample(pool, cross_amount)
+            mb = sample(pool, cross_amount)
             for a, b in zip(ma, mb):
                 pool.append(a.cross(b))
+
             for ind in pool:
                 new_ind = ind.mutate()
                 if new_ind:
                     pool.append(new_ind)
+
             pool = sorted(pool, key=lambda x: x.score, reverse=True)
             pool = pool[:count]
-            # print pool[0].score
 
         return pool[0].committee
