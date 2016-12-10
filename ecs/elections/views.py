@@ -4,6 +4,7 @@ from django.db import transaction
 from django.forms.fields import ChoiceField
 from django.forms.widgets import ChoiceInput, Select
 from django.http.response import Http404
+from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
@@ -55,10 +56,7 @@ class ElectionCreateView(LoginRequiredMixin, CreateView):
 
 class ConfigureElectionMixin(View):
     def dispatch(self, request, *args, **kwargs):
-        try:
-            self.election = Election.objects.get(pk=kwargs['pk'])
-        except Election.DoesNotExist:
-            raise Http404
+        self.election = get_object_or_404(Election, pk=kwargs.get('pk'))
         if self.election.user != self.request.user:
             raise Http404
         return super(ConfigureElectionMixin, self).dispatch(request, *args, **kwargs)
@@ -233,6 +231,24 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
             self.object.winners.add(winner)
         self.object.save()
         return result
+
+
+class ResultPermissionsMixin(View):
+    def dispatch(self, request, *args, **kwargs):
+        self.result = get_object_or_404(Result, pk=kwargs.get('pk'))
+        if self.result.election.user != self.request.user:
+            raise Http404
+        return super(ResultPermissionsMixin, self).dispatch(request, *args, **kwargs)
+
+
+class ResultDeleteView(DeleteView, ResultPermissionsMixin):
+    model = Result
+    template_name = 'result_delete.html'
+    context_object_name = 'result'
+    result_to_delete = None
+
+    def get_success_url(self):
+        return reverse('elections:election_details', args=(self.object.election_id,))
 
 
 class ResultDetailsView(DetailView):

@@ -62,6 +62,11 @@
                             <a href="{{ result.get_absolute_url }}">
                                 <strong>{{ result.p_parameter }} - {{ result.get_algorithm_display }} - {{ result.time }}s</strong>
                             </a>
+                            <a href="{% url 'elections:result_delete' result.pk %}" class="result-button">
+                                <button class="btn btn-danger btn-xs">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </a>
                         </div>
                     {% endfor %}
                     <div class="panel-footer">

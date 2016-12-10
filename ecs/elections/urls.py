@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^chart_data/(?P<pk>\d+)/$', ElectionChartView.as_view(), name='chart_data'),
     url(r'^add_result/(?P<pk>\d+)/$', ResultCreateView.as_view(), name='result_create'),
     url(r'^result/(?P<pk>\d+)/$', ResultDetailsView.as_view(), name='result_details'),
+    url(r'^result/(?P<pk>\d+)/delete/$', ResultDeleteView.as_view(), name='result_delete'),
     url(r'^chart_data/result/(?P<pk>\d+)/$', ResultChartView.as_view(), name='result_chart_data'),
 ]
