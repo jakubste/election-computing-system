@@ -233,6 +233,7 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
         self.object.time = time
         for winner in winners:
             self.object.winners.add(winner)
+        self.object.score = self.object.calculate_score()
         self.object.save()
         return result
 
