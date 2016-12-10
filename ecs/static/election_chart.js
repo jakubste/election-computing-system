@@ -11,13 +11,20 @@ $(document).ready(function () {
         });
     }
 
-    $(document).on('change', 'select[name=results_choice]', function (e) {
-        $result_pk = $(e.target).find('option:selected').val();
+
+    var $resultsSlider = $('#results-slider');
+    $resultsSlider.slider({
+        formatter: function (value) {
+            return $resultsSlider.data('results-descriptions').split(',')[value];
+        }
+    });
+    $resultsSlider.on('change', function (e) {
         var source;
-        if ($result_pk === '') {
-            source = $scatterChart.data('url')
+        if (e.value.newValue == 0) {
+            source = $scatterChart.data('url');
         } else {
-            source = '/elections/chart_data/result/' + $result_pk + '/'
+            var $resultPk = $resultsSlider.data('results-pks').split(',')[e.value.newValue - 1];
+            source = '/elections/chart_data/result/' + $resultPk + '/'
         }
         $.get(source, function (data) {
             var ctx = $scatterChart.get(0).getContext("2d");
@@ -28,6 +35,8 @@ $(document).ready(function () {
                 animation: false
             });
         });
-    });
+
+    })
+
 
 });

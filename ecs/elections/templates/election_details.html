@@ -12,9 +12,16 @@
     <p>
         committee size: {{ election.committee_size }}
     </p>
-    <p>
-        results: {{ results_choice }}
-    </p>
+
+    {% if election.is_generated %}
+        <input id="results-slider"
+               data-slider-id='results-slider' type="text"
+               data-slider-min="0" data-slider-max="{{ results_number }}"
+               data-slider-step="1" data-slider-value="0"
+               data-results-pks="{{ results_pks }}"
+               data-results-descriptions="{{ results_descriptions }}"
+        >
+    {% endif %}
 
     {% if not election.is_set_up %}
         <div class="alert alert-info">
