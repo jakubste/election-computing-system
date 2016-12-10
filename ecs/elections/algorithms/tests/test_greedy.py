@@ -43,33 +43,3 @@ class GreedyAlgorithmTestCase(TestCase):
             updated_satisfaction.call_count,
             2
         )
-
-    @mock.patch.object(GreedyAlgorithm, 'number_of_points_in_preference_order')
-    def test_run_calls_number_of_points_in_preference_order(self, points_number):
-        points_number.return_value = 1234
-        self.algorithm.run()
-        self.assertEqual(
-            points_number.call_count,
-            21
-        )
-
-    @mock.patch.object(GreedyAlgorithm, 'get_actual_satisfaction_of_given_voter')
-    def test_run_calls_get_actual_satisfaction_of_given_voter(self, satisfaction):
-        satisfaction.return_value = 1234
-        self.algorithm.run()
-        self.assertEqual(
-            satisfaction.call_count,
-            15
-        )
-
-    @mock.patch.object(GreedyAlgorithm, 'number_of_points_in_preference_order')
-    def test_update_voters_satisfaction_calls_number_of_points_in_preference_order(self, satisfaction_update):
-        satisfaction_update.return_value = 1234
-        self.algorithm.update_voters_satisfaction(leading_candidate=self.candidates[1], voters=self.voters,
-                                                  actual_voters_satisfaction=self.satisfaction,
-                                                  candidates_number=3,
-                                                  p=2)
-        self.assertEqual(
-            satisfaction_update.call_count,
-            3
-        )

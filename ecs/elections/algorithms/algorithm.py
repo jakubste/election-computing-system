@@ -18,6 +18,7 @@ class Algorithm(object):
         self.candidates_number = self.election.candidates.count()
         self.voters = self.election.voters.all()
         self.p_parameter = p_parameter
+        self.preferences = None
 
     def get_committee_combinations(self):
         """
