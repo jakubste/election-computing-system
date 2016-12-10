@@ -1,7 +1,5 @@
 from random import sample, randint
 
-from datetime import datetime, timedelta
-
 from ecs.elections.algorithms.algorithm import Algorithm
 from ecs.elections.algorithms.helpers import binom
 
@@ -14,10 +12,7 @@ class Individual(object):
     def __init__(self, committee, algorithm):
         self.committee = committee
         self.algorithm = algorithm
-        time_a = datetime.now()
         self.score = self.algorithm.calculate_committee_score_from_prefetched(committee)
-        time_b = datetime.now()
-        algorithm.diff += time_b - time_a
 
     def cross(self, other):
         new_committee = []
@@ -33,10 +28,9 @@ class Individual(object):
         return Individual(committee=new_committee, algorithm=self.algorithm)
 
     def mutate(self):
-        if randint(0, 100) > 10:
+        if randint(0, 100) > self.algorithm.mutation_probability:
             return None
-        candidates = list(self.algorithm.election.candidates.all())
-        new_candidate = None
+        candidates = self.algorithm.candidates
         new_committee = list(self.committee)
         while True:
             new_candidate = sample(candidates, 1)[0]
@@ -50,9 +44,14 @@ class Individual(object):
 class GeneticAlgorithm(Algorithm):
     preferences = None
 
+    def __init__(self, *args, **kwargs):
+        self.mutation_probability = kwargs.pop('mutation_probability')
+        self.crossing_probability = kwargs.pop('crossing_probability')
+        self.cycles = kwargs.pop('cycles')
+        super(GeneticAlgorithm, self).__init__(*args, **kwargs)
+
     def run(self):
         self.fetch_preferences()
-        self.diff = timedelta()
 
         count = binom(
             self.election.candidates.count(),
@@ -69,8 +68,8 @@ class GeneticAlgorithm(Algorithm):
         pool = [self.election.candidates.filter(pk__in=pk_list) for pk_list in combinations]
         pool = [Individual(c, self) for c in pool]
 
-        for i in xrange(50):
-            print 'cycle', i, 'from 50'
+        for i in xrange(self.cycles):
+            print 'cycle', i, 'from', self.cycles
             ma = sample(pool, count/2)
             mb = sample(pool, count/2)
             for a,b in zip(ma, mb):
@@ -82,6 +81,5 @@ class GeneticAlgorithm(Algorithm):
             pool = sorted(pool, key=lambda x: x.score, reverse=True)
             pool = pool[:count]
             print pool[0].score
-        print self.diff
 
         return pool[0].committee

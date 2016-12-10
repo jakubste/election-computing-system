@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Form, forms
 from django.forms.fields import IntegerField
 
-from ecs.elections.models import Election, Result
+from ecs.elections.models import Election, Result, GeneticAlgorithmSettings
 from ecs.settings import ELECTION_GENERATOR
 
 
@@ -68,3 +68,23 @@ class ResultForm(ModelForm):
             result.election = self.election
             result.save()
         return result
+
+
+class GeneticAlgorithmForm(ModelForm):
+    class Meta:
+        model = GeneticAlgorithmSettings
+        exclude = ['result']
+
+    def __init__(self, *args, **kwargs):
+        try:
+            self.result = kwargs.pop('result')
+        except KeyError:
+            self.result = None
+        super(GeneticAlgorithmForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        settings_object = super(GeneticAlgorithmForm, self).save(False)
+        if commit:
+            settings_object.result = self.result
+            settings_object.save()
+        return settings_object

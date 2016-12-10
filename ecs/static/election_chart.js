@@ -13,10 +13,17 @@ $(document).ready(function () {
 
 
     var $resultsSlider = $('#results-slider');
+    // http://stackoverflow.com/a/6299576/5349587
+    var ticks = [];
+    var i = 0;
+    while (ticks.push(i++) <= $resultsSlider.data('slider-max')) {}
+
     $resultsSlider.slider({
         formatter: function (value) {
             return $resultsSlider.data('results-descriptions').split(',')[value];
-        }
+        },
+        ticks: ticks,
+        ticks_labels: $resultsSlider.data('results-p-params').split(',')
     });
     $resultsSlider.on('change', function (e) {
         var source;
@@ -35,8 +42,16 @@ $(document).ready(function () {
                 animation: false
             });
         });
+    });
 
-    })
-
+    var $algorithm_selection = $('select#id_algorithm');
+    $algorithm_selection.on('change', function (e) {
+        var $geneticForm = $('#genetic_form');
+        if (e.target.value == 'g') {
+            $geneticForm.show();
+        } else {
+            $geneticForm.hide();
+        }
+    });
 
 });

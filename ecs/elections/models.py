@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from ecs.geo.models import Point
@@ -131,3 +132,19 @@ class Result(models.Model):
         return u'Result of {} with p={}'.format(
             self.election, self.p_parameter
         )
+
+
+class GeneticAlgorithmSettings(models.Model):
+    result = models.OneToOneField(Result)
+    mutation_probability = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=10,
+    )
+    crossing_probability = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=20,
+    )
+    cycles = models.IntegerField(
+        validators=[MinValueValidator(0)],
+        default=50,
+    )
