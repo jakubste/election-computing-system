@@ -75,9 +75,6 @@ class GeneticAlgorithm(Algorithm):
                 print 'cycle', i, 'from', self.cycles
 
             cross_amount = int(count * (self.crossing_probability/100.0))
-            print count
-            print self.crossing_probability/100.0
-            print cross_amount
             ma = sample(pool, cross_amount)
             mb = sample(pool, cross_amount)
             for a, b in zip(ma, mb):
