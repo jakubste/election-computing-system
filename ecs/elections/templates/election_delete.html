@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Delete election
+    Delete election "{{ object }}"
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
 
         <div class="form-group">
             <div style="text-align: center">
-                <button type="submit" class="btn btn-primary">Yes, delete this.</button>
+                <button type="submit" class="btn btn-danger">Yes, delete this.</button>
                 <a href="{% url "elections:election_list" %}">No, cancel.</a>
             </div>
         </div>
