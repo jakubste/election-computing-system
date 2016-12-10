@@ -432,25 +432,16 @@ class ElectionDeleteViewTestCase(TestCase):
         self.wrong_pk = self.other_election.pk + 1
         self.url = reverse('elections:election_delete', args=(self.election.pk,))
 
-    @mock.patch.object(Election, 'delete')
-    def test_request_valid_calls_election_deleted(self, mocked_delete):
+    def test_request_valid_calls_election_deleted(self):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 302)
-        mocked_delete.assert_called_once()
+        self.assertEqual(Election.objects.count(), 1)
 
-    @mock.patch.object(Election, 'delete')
-    def test_request_wrong_user_raises_404_error(self, mocked_delete):
+    def test_request_wrong_user_raises_404_error(self):
         self.url = reverse('elections:election_delete', args=(self.other_election.pk,))
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(mocked_delete.call_count, 0)
-
-    @mock.patch.object(Election, 'delete')
-    def test_request_non_existing_election_raises_404_error(self, mocked_delete):
-        self.url = reverse('elections:election_delete', args=(self.wrong_pk,))
-        response = self.client.post(self.url)
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(mocked_delete.call_count, 0)
+        self.assertEqual(Election.objects.count(), 2)
 
 
 class ResultDeleteViewTestCase(TestCase):
