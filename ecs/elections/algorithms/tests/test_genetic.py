@@ -30,11 +30,7 @@ class GeneticAlgorithmTestCase(TestCase):
     def test_run_calls_mutate(self, mocked_mutate):
         mocked_mutate.return_value = None
         self.algorithm.run()
-        # TODO: "4* formula" will no longer be true after implementing crossing_probability
-        self.assertEqual(
-            mocked_mutate.call_count,
-            4 * self.cycles  # 4 * cycle_count
-        )
+        self.assertGreater(mocked_mutate.call_count, 1)
 
     def test_run_returns_winners(self):
         self.assertItemsEqual(
