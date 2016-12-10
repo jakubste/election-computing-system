@@ -1,0 +1,210 @@
+\documentclass{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+
+\selectlanguage{polish}
+
+\mode<presentation> {
+	\usetheme{Copenhagen}
+}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+\newcommand{\red}[1]{
+	{ \color{red}{#1} }
+}
+
+\newcommand{\score}[2]{
+	\stackrel
+	{\red{#1}}
+	{#2}
+}
+
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title
+[System obliczający wyniki wyborów]
+{System obliczający wyniki wyborów dla uogólnienia systemu k-Borda - aktualny stan prac}
+
+\author
+[T. Kasprzyk, D. Ogiela, J. Stępak]
+{Tomasz Kasprzyk, \ Daniel Ogiela, \ Jakub Stępak}
+
+\institute
+[AGH]
+{
+Akademia Górniczo-Hutnicza
+
+Wydział Informatyki, Elektroniki i Telekomunikacji
+
+Katedra Informatyki 
+
+}
+\date{26 października 2016}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Plan prezentacji}
+\tableofcontents
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+% ----------------------------------------------------
+\section{Zrealizowane zadania}
+% ----------------------------------------------------
+
+\subsection{Obsługiwany format wyborów}
+
+\begin{frame}
+
+\frametitle{Obsługiwany format wyborów}
+\begin{itemize}
+\item Wczytywanie wyborów z pliku w formacie .soc
+\item Generacja wyborów z rozkładu normalnego
+\end{itemize}
+
+\end{frame}
+
+% ----------------------------------------------------
+
+\subsection{Interfejs i wdrożenie systemu}
+
+\begin{frame}
+
+\frametitle{Interfejs i wdrożenie systemu}
+\begin{itemize}
+\item interfejs webowy oparty na Django 1.9
+\item automatyczny interfejs administracyjny
+\item platforma Heroku
+\end{itemize}
+
+\end{frame}
+
+% ----------------------------------------------------
+
+\subsection{Struktura danych w systemie i ich przechowywanie}
+
+\begin{frame}
+
+\frametitle{Struktura danych w systemie i ich przechowywanie}
+\begin{itemize}
+\item obiektowa struktura danych
+\item mapowanie obiektowo-relacyjne za pomocą wbudowanego interfejsu
+\end{itemize}
+
+\end{frame}
+
+% ----------------------------------------------------
+
+\subsection{Implementacja operacji związanych z wyborami}
+
+\begin{frame}
+
+\frametitle{Tworzenie i usuwanie wyborów}
+\begin{itemize}
+\item możliwość wskazania nazwy i liczności zwycięskiego komitetu
+\item możliwość wskazania pliku w odpowiednim formacie
+\item możliwość wskazania parametrów do wygenerowania danych z rozkładu normalnego
+\item stworzenie wykresu
+\item usuwanie całych wyborów 
+\end{itemize}
+
+\end{frame}
+
+% ----------------------------------------------------
+
+\begin{frame}
+
+\frametitle{Dodawanie wyników wyborów}
+\begin{itemize}
+\item możliwość wybrania parametru p
+\item możliwość wskazania algorytmu 
+\end{itemize}
+
+\end{frame}
+
+% ----------------------------------------------------
+
+\begin{frame}
+
+\frametitle{Wyświetlanie wyników wyborów}
+\begin{itemize}
+\item stworzenie w głównym oknie wyborów listy wszystkich rezultatów
+\item możliwość przejścia do szczegółowych wyników wyborów po kliknięciu na link
+\item wyświetlenie wykresu z wynikami i listy zwycięskich nazwisk 
+\end{itemize}
+
+\end{frame}
+
+% ----------------------------------------------------
+
+\begin{frame}
+
+\frametitle{Obliczanie wyników wyborów}
+\begin{itemize}
+\item algorytm brute-force
+\item algorytm zachłanny
+\item algorytm genetyczny
+\end{itemize}
+
+\end{frame}
+
+% ----------------------------------------------------
+
+
+
+% ----------------------------------------------------
+\section{Zadania pozostałe do realizacji}
+% ----------------------------------------------------
+
+\subsection{Co zostało}
+
+\begin{frame}
+
+\frametitle{Co zostało}
+\begin{itemize}
+\item przyspieszenie działania algorytmu genetycznego
+\item testy porównawcze
+\item dokumentacja
+\end{itemize}
+
+\end{frame}
+
+% ----------------------------------------------------
+
+\subsection{Co ewentualnie}
+
+\begin{frame}
+
+\frametitle{Co ewentualnie}
+\begin{itemize}
+\item ulepszenie sposobu wyświetlania wyników wyborów
+\item nowy sposób generowania wyborów
+\item poprawa UX
+\end{itemize}
+
+\end{frame}
+
+% ----------------------------------------------------
+
+\begin{frame}
+\Huge{\centerline{Dziękujemy za uwagę}}
+\end{frame}
+
+\end{document}

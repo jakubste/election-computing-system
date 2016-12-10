@@ -7,7 +7,7 @@ class AlgorithmTestCase(TestCase):
     def setUp(self):
         self.election = ElectionFactory.create(committee_size=2)
         CandidateFactory.create_batch(3, election=self.election)
-        self.algorithm = Algorithm(self.election)
+        self.algorithm = Algorithm(self.election, 1)
 
     def test_get_combinations(self):
         self.assertEqual(
@@ -18,6 +18,5 @@ class AlgorithmTestCase(TestCase):
     def test_run_raises_not_implemented_error(self):
         self.assertRaises(
             NotImplementedError,
-            self.algorithm.run,
-            (2, )
+            self.algorithm.run
         )

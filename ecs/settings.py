@@ -27,7 +27,7 @@ SECRET_KEY = 'f70zd-)!@g!xd3jv7(r0^y@k1cwi7zx8tqc!*3-*(8gl4@t4gb'
 DEBUG = False
 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'election-computing-system.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'election-computing-system.herokuapp.com', 'election-computing-system-jakubste.c9users.io']
 
 
 # Application definition
@@ -60,6 +60,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'ecs.urls'
@@ -147,8 +148,8 @@ DATABASES = {
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ELECTION_GENERATOR = {
-    'MAX_CANDIDATES': 1000,
-    'MAX_VOTERS': 1000,
+    'MAX_CANDIDATES': 50,
+    'MAX_VOTERS': 50,
     'MAX_MEAN': 1000,
     'MAX_SIGMA': 1000
 }

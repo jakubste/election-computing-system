@@ -116,6 +116,17 @@ class Result(models.Model):
     winners = models.ManyToManyField(Candidate)
     algorithm = models.CharField(choices=ALGORITHM_CHOICES, max_length=1)
     time = models.FloatField(null=True)
+    score = models.FloatField(null=True)
+
+    def calculate_score(self):
+        score = 0
+        for voter in self.election.voters.all():
+            score += voter.calculate_committee_score(
+                self.winners.all(),
+                self.p_parameter,
+                self.election.candidates.count()
+            )
+        return score
 
     def get_absolute_url(self):
         return reverse('elections:result_details', args=(self.pk,))

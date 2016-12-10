@@ -31,22 +31,22 @@ class ElectionLoadDataForm(Form):
 
 
 class ElectionGenerateDataForm(Form):
-    candidates_amount = IntegerField(min_value=0, max_value=ELECTION_GENERATOR['MAX_CANDIDATES'], initial=100)
-    voters_amount = IntegerField(min_value=0, max_value=ELECTION_GENERATOR['MAX_VOTERS'], initial=100)
+    candidates_amount = IntegerField(min_value=0, max_value=ELECTION_GENERATOR['MAX_CANDIDATES'], initial=20)
+    voters_amount = IntegerField(min_value=0, max_value=ELECTION_GENERATOR['MAX_VOTERS'], initial=20)
 
     candidates_mean_x = IntegerField(
         min_value=-ELECTION_GENERATOR['MAX_MEAN'], max_value=ELECTION_GENERATOR['MAX_MEAN'], initial=0)
     candidates_mean_y = IntegerField(
         min_value=-ELECTION_GENERATOR['MAX_MEAN'], max_value=ELECTION_GENERATOR['MAX_MEAN'], initial=0)
     candidates_sigma = IntegerField(
-        min_value=0, max_value=ELECTION_GENERATOR['MAX_SIGMA'], initial=300)
+        min_value=0, max_value=ELECTION_GENERATOR['MAX_SIGMA'], initial=30)
 
     voters_mean_x = IntegerField(
         min_value=-ELECTION_GENERATOR['MAX_MEAN'], max_value=ELECTION_GENERATOR['MAX_MEAN'], initial=0)
     voters_mean_y = IntegerField(
         min_value=-ELECTION_GENERATOR['MAX_MEAN'], max_value=ELECTION_GENERATOR['MAX_MEAN'], initial=0)
     voters_sigma = IntegerField(
-        min_value=0, max_value=ELECTION_GENERATOR['MAX_SIGMA'], initial=300)
+        min_value=0, max_value=ELECTION_GENERATOR['MAX_SIGMA'], initial=30)
 
     def __init__(self, *args, **kwargs):
         self.election = kwargs.pop('election')

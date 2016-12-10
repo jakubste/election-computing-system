@@ -1,13 +1,14 @@
 import mock
 
 from ecs.elections.algorithms.brute_force import BruteForce
+from ecs.elections.algorithms.genetic import GeneticAlgorithm, Individual
 from ecs.elections.factories import ElectionFactory, CandidateFactory, VoterFactory, PreferenceFactory
 from ecs.utils.unittestcases import TestCase
 
 mock.patch.object = mock.patch.object
 
 
-class BruteForceAlgorithmTestCase(TestCase):
+class GeneticAlgorithmTestCase(TestCase):
     def setUp(self):
         self.election = ElectionFactory.create(committee_size=2)
         self.candidates = CandidateFactory.create_batch(3, election=self.election)
@@ -18,18 +19,19 @@ class BruteForceAlgorithmTestCase(TestCase):
                     voter=voter, candidate=candidate
                 )
         self.p_parameter = 2
-        self.algorithm = BruteForce(self.election, self.p_parameter)
+        self.algorithm = GeneticAlgorithm(self.election, self.p_parameter)
 
-    @mock.patch.object(BruteForce, 'calculate_committee_score_from_prefetched')
-    def test_run_calls_calculate_committee_score(self, mocked_score):
+    @mock.patch.object(Individual, 'mutate')
+    def test_run_calls_mutate(self, mocked_mutate):
+        mocked_mutate.return_value = None
         self.algorithm.run()
         self.assertEqual(
-            mocked_score.call_count,
-            3
+            mocked_mutate.call_count,
+            4*50  # 4 * cycle_count
         )
 
     def test_run_returns_winners(self):
-        self.assertEqual(
+        self.assertItemsEqual(
             list(self.algorithm.run()),
             self.candidates[:2]
         )
@@ -37,7 +39,7 @@ class BruteForceAlgorithmTestCase(TestCase):
     def test_start_returns_time_and_winners(self):
         time, winners = self.algorithm.start()
         winners = list(winners)
-        self.assertEqual(
+        self.assertItemsEqual(
             winners,
             self.candidates[:2]
         )

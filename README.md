@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/jakubste/election-computing-system.svg?branch=migrate-election-generation)](https://travis-ci.org/jakubste/election-computing-system)
+[![Coverage Status](https://coveralls.io/repos/github/jakubste/election-computing-system/badge.svg?branch=master)](https://coveralls.io/github/jakubste/election-computing-system?branch=master)
+
 # Election Computing System
 
 System for Computing Election Results According to Generalized k-Borda System.
