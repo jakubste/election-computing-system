@@ -69,10 +69,10 @@ class GeneticAlgorithm(Algorithm):
         pool = [Individual(c, self) for c in pool]
 
         for i in xrange(self.cycles):
-            print 'cycle', i, 'from', self.cycles
+            # print 'cycle', i, 'from', self.cycles
             ma = sample(pool, count/2)
             mb = sample(pool, count/2)
-            for a,b in zip(ma, mb):
+            for a, b in zip(ma, mb):
                 pool.append(a.cross(b))
             for ind in pool:
                 new_ind = ind.mutate()
@@ -80,6 +80,6 @@ class GeneticAlgorithm(Algorithm):
                     pool.append(new_ind)
             pool = sorted(pool, key=lambda x: x.score, reverse=True)
             pool = pool[:count]
-            print pool[0].score
+            # print pool[0].score
 
         return pool[0].committee

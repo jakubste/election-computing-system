@@ -19,15 +19,21 @@ class GeneticAlgorithmTestCase(TestCase):
                     voter=voter, candidate=candidate
                 )
         self.p_parameter = 2
-        self.algorithm = GeneticAlgorithm(self.election, self.p_parameter)
+        self.cycles = 10
+        self.algorithm = GeneticAlgorithm(self.election, self.p_parameter, **{
+            'mutation_probability': 10,
+            'crossing_probability': 10,
+            'cycles': self.cycles,
+        })
 
     @mock.patch.object(Individual, 'mutate')
     def test_run_calls_mutate(self, mocked_mutate):
         mocked_mutate.return_value = None
         self.algorithm.run()
+        # TODO: "4* formula" will no longer be true after implementing crossing_probability
         self.assertEqual(
             mocked_mutate.call_count,
-            4*50  # 4 * cycle_count
+            4 * self.cycles  # 4 * cycle_count
         )
 
     def test_run_returns_winners(self):
