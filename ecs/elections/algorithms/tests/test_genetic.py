@@ -22,9 +22,15 @@ class GeneticAlgorithmTestCase(TestCase):
         self.cycles = 10
         self.algorithm = GeneticAlgorithm(self.election, self.p_parameter, **{
             'mutation_probability': 10,
-            'crossing_probability': 10,
+            'crossing_probability': 50,
             'cycles': self.cycles,
         })
+
+    @mock.patch.object(Individual, 'cross')
+    def test_run_calls_cross(self, mocked_cross):
+        mocked_cross.return_value = None
+        self.algorithm.run()
+        self.assertGreater(mocked_cross.call_count, 1)
 
     @mock.patch.object(Individual, 'mutate')
     def test_run_calls_mutate(self, mocked_mutate):
