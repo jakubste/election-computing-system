@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Delete election "{{ object }}"
+    Delete {{ object }}
 {% endblock %}
 
 {% block content %}
@@ -10,12 +10,12 @@
 
         {% csrf_token %}
 
-        <div class="alert alert-danger">Do you really want to delete this elections?</div>
+        <div class="alert alert-danger">Do you really want to delete this result?</div>
 
         <div class="form-group">
             <div style="text-align: center">
                 <button type="submit" class="btn btn-danger">Yes, delete this.</button>
-                <a href="{% url "elections:election_list" %}">No, cancel.</a>
+                <a href="{% url "elections:election_details" result.election.pk %}">No, cancel.</a>
             </div>
         </div>
 
