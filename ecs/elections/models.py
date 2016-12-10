@@ -21,7 +21,7 @@ class Election(models.Model):
 
     def is_set_up(self):
         """
-        Indicates if candidates and voters where added to election.
+        Indicates if candidates and voters were added to election.
         """
         if self.candidates.all() and self.voters.all():
             return True
@@ -30,7 +30,7 @@ class Election(models.Model):
 
     def is_generated(self):
         """
-        Indicates if elections where
+        Indicates if elections were
         generated from normal distribution.
         """
         try:

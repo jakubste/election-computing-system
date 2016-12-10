@@ -1,8 +1,7 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
-from django.forms.fields import ChoiceField
-from django.forms.widgets import ChoiceInput, Select
+from django.forms.widgets import Select
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView
@@ -12,9 +11,9 @@ from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
 from ecs.elections.algorithms.brute_force import BruteForce
+from ecs.elections.algorithms.genetic import GeneticAlgorithm
 from ecs.elections.algorithms.greedy_algorithm import GreedyAlgorithm
 from ecs.elections.algorithms.greedy_cc import GreedyCC
-from ecs.elections.algorithms.genetic import GeneticAlgorithm
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
@@ -22,8 +21,8 @@ from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, S
 from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm, ResultForm
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
-from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GREEDY_ALGORITHM, GREEDY_CC
 from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GENETIC_ALGORITHM
+from ecs.elections.models import GREEDY_ALGORITHM, GREEDY_CC
 from ecs.geo.models import Point
 from ecs.utils.scatter_view import ScatterChartMixin
 from ecs.utils.views import LoginRequiredMixin
@@ -97,7 +96,8 @@ class ElectionDetailView(DetailView):
         ctx['results_choice'] = Select(choices=choices).render('results_choice', None)
         ctx['results_number'] = self.object.results.count()
         ctx['results_pks'] = ",".join([str(n) for n in self.object.results.values_list('pk', flat=True)])
-        ctx['results_descriptions'] = ",".join(['{}: p = {}'.format(r.get_algorithm_display(), r.p_parameter) for r in self.object.results.all()])
+        ctx['results_descriptions'] = ",".join(
+            ['{}: p = {}'.format(r.get_algorithm_display(), r.p_parameter) for r in self.object.results.all()])
         ctx['results_descriptions'] = 'No result,' + ctx['results_descriptions']
         return ctx
 
@@ -231,7 +231,6 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
             BRUTE_ALGORITHM: BruteForce,
             GREEDY_ALGORITHM: GreedyAlgorithm,
             GREEDY_CC: GreedyCC,
-            BRUTE_ALGORITHM: BruteForce,
             GENETIC_ALGORITHM: GeneticAlgorithm,
         }[form.cleaned_data['algorithm']]
         algorithm = algorithm(self.election, form.cleaned_data['p_parameter'])
@@ -290,7 +289,6 @@ class ResultChartView(ScatterChartMixin):
         candidates = list(Point.objects.filter(candidate__election=self.election).values('x', 'y'))
         voters = list(Point.objects.filter(voter__election=self.election).values('x', 'y'))
         winners = list(
-            Point.objects.filter(candidate__in=self.result.winners.all())
-                         .extra(select={'r': '2'}).values('x', 'y', 'r')
+            Point.objects.filter(candidate__in=self.result.winners.all()).extra(select={'r': '2'}).values('x', 'y', 'r')
         )
         return [voters, candidates, winners]

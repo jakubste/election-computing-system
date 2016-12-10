@@ -13,7 +13,7 @@ class GreedyCC(Algorithm):
                     preference.candidate.pk: preference.preference
                 })
 
-    def run(self, p_parameter):
+    def run(self):
         voters = self.election.voters.all()
         candidates_number = self.election.candidates.count()
 
@@ -32,12 +32,12 @@ class GreedyCC(Algorithm):
                 extra_satisfaction_with_given_candidate = 0
                 for v in voters:
                     x = self.number_of_points_in_preference_order(c, v, candidates_number)
-                    satisfaction_of_given_voter = self.get_actual_satisfaction_of_given_voter(v,
-                                                                                              actual_voters_satisfaction)
+                    satisfaction_of_given_voter = \
+                        self.get_actual_satisfaction_of_given_voter(v, actual_voters_satisfaction)
 
                     if x > satisfaction_of_given_voter:
                         extra_satisfaction_with_given_candidate += v.repeats * (
-                        x - satisfaction_of_given_voter)
+                            x - satisfaction_of_given_voter)
 
                 if extra_satisfaction_with_given_candidate > extra_satisfaction_with_leading_candidate:
                     leading_candidate = c
@@ -54,18 +54,18 @@ class GreedyCC(Algorithm):
 
     def number_of_points_in_preference_order(self, c, v, candidates_number):
         """
-
-        :param v: Voter, c: Candidate, candidates_number: int
+        :param c: Candidate
+        :param candidates_number: int
+        :param v: Voter
         :return: int
         """
-
         return candidates_number - self.preferences[v.pk][c.pk]
 
-    def get_actual_satisfaction_of_given_voter(self, v, actual_voters_satisfaction):
+    @staticmethod
+    def get_actual_satisfaction_of_given_voter(v, actual_voters_satisfaction):
         """
-
+        :param actual_voters_satisfaction:
         :param v: Voter
         :return: int
         """
         return actual_voters_satisfaction[v.pk]
-

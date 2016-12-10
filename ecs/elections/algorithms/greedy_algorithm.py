@@ -14,7 +14,7 @@ class GreedyAlgorithm(Algorithm):
                     preference.candidate.pk: preference.preference
                 })
 
-    def run(self, p_parameter):
+    def run(self):
 
         voters = self.election.voters.all()
         candidates_number = self.election.candidates.count()
@@ -35,19 +35,19 @@ class GreedyAlgorithm(Algorithm):
                 satisfaction_with_given_candidate = 0
                 for v in voters:
                     x = self.number_of_points_in_preference_order(c, v, candidates_number)
-                    satisfaction_of_given_voter = self.get_actual_satisfaction_of_given_voter(v,
-                                                                                              actual_voters_satisfaction)
+                    satisfaction_of_given_voter = \
+                        self.get_actual_satisfaction_of_given_voter(v, actual_voters_satisfaction)
 
                     values = [satisfaction_of_given_voter, x]
-                    satisfaction_of_given_voter_with_given_candidate = ell_p_norm(values, p_parameter)
+                    satisfaction_of_given_voter_with_given_candidate = ell_p_norm(values, self.p_parameter)
 
-                    satisfaction_with_given_candidate += v.repeats*satisfaction_of_given_voter_with_given_candidate
+                    satisfaction_with_given_candidate += v.repeats * satisfaction_of_given_voter_with_given_candidate
 
                 if satisfaction_with_given_candidate > satisfaction_with_leading_candidate:
                     leading_candidate = c
                     satisfaction_with_leading_candidate = satisfaction_with_given_candidate
             self.update_voters_satisfaction(leading_candidate, voters, actual_voters_satisfaction, candidates_number,
-                                            p_parameter)
+                                            self.p_parameter)
             winning_committee.append(leading_candidate)
             candidates_still_fighting = candidates_still_fighting.exclude(pk=leading_candidate.pk)
 
@@ -55,16 +55,18 @@ class GreedyAlgorithm(Algorithm):
 
     def number_of_points_in_preference_order(self, c, v, candidates_number):
         """
-
-        :param v: Voter, c: Candidate, candidates_number: int
+        :param c: Candidate
+        :param candidates_number: int
+        :param v: Voter
         :return: int
         """
 
         return candidates_number - self.preferences[v.pk][c.pk]
 
-    def get_actual_satisfaction_of_given_voter(self, v, actual_voters_satisfaction):
+    @staticmethod
+    def get_actual_satisfaction_of_given_voter(v, actual_voters_satisfaction):
         """
-
+        :param actual_voters_satisfaction: int
         :param v: Voter
         :return: int
         """
@@ -72,7 +74,6 @@ class GreedyAlgorithm(Algorithm):
 
     def update_voters_satisfaction(self, leading_candidate, voters, actual_voters_satisfaction, candidates_number, p):
         """
-
         :param leading_candidate: Candidate
         :param voters: QuerySet
         :param actual_voters_satisfaction: dict{Voter: int}
