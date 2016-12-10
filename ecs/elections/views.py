@@ -235,6 +235,25 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
         return result
 
 
+class ResultDeleteView(DeleteView):
+    model = Result
+    template_name = 'result_deletion.html'
+    context_object_name = 'result'
+    result_to_delete = None
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.result_to_delete = Result.objects.get(pk=kwargs['pk'])
+        except Result.DoesNotExist:
+            raise Http404
+        if self.result_to_delete.election.user != self.request.user:
+            raise Http404
+        return super(ResultDeleteView, self).dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('elections:election_details', args=(self.result_to_delete.election_id,))
+
+
 class ResultDetailsView(DetailView):
     model = Result
     template_name = 'result_details.html'
