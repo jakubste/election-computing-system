@@ -19,16 +19,16 @@ class GreedyAlgorithmTestCase(TestCase):
                 PreferenceFactory.create(
                     voter=voter, candidate=candidate
                 )
-        self.algorithm = GreedyAlgorithm(self.election)
+        self.algorithm = GreedyAlgorithm(self.election, 2)
 
     def test_run_returns_winners(self):
         self.assertEqual(
-            list(self.algorithm.run(2)),
+            list(self.algorithm.run()),
             self.candidates[:2]
         )
 
     def test_start_returns_time_and_winners(self):
-        time, winners = self.algorithm.start(2)
+        time, winners = self.algorithm.start()
         winners = list(winners)
         self.assertEqual(
             winners,
@@ -38,7 +38,7 @@ class GreedyAlgorithmTestCase(TestCase):
 
     @mock.patch.object(GreedyAlgorithm, 'update_voters_satisfaction')
     def test_run_calls_update_voters_satisfaction(self, updated_satisfaction):
-        self.algorithm.run(2)
+        self.algorithm.run()
         self.assertEqual(
             updated_satisfaction.call_count,
             2
@@ -47,7 +47,7 @@ class GreedyAlgorithmTestCase(TestCase):
     @mock.patch.object(GreedyAlgorithm, 'number_of_points_in_preference_order')
     def test_run_calls_number_of_points_in_preference_order(self, points_number):
         points_number.return_value = 1234
-        self.algorithm.run(2)
+        self.algorithm.run()
         self.assertEqual(
             points_number.call_count,
             21
@@ -56,7 +56,7 @@ class GreedyAlgorithmTestCase(TestCase):
     @mock.patch.object(GreedyAlgorithm, 'get_actual_satisfaction_of_given_voter')
     def test_run_calls_get_actual_satisfaction_of_given_voter(self, satisfaction):
         satisfaction.return_value = 1234
-        self.algorithm.run(2)
+        self.algorithm.run()
         self.assertEqual(
             satisfaction.call_count,
             15
