@@ -429,6 +429,7 @@ class ResultDeleteViewTestCase(TestCase):
         self.user = self.login()
         self.election = ElectionFactory.create(user=self.user)
         self.result_to_delete = ResultFactory.create(election=self.election)
+        self.other_result = ResultFactory.create()
         self.url = reverse('elections:result_delete', args=(self.result_to_delete.pk,))
 
     def test_request_valid_calls_result_deleted(self):
@@ -436,12 +437,6 @@ class ResultDeleteViewTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_request_wrong_user_raises_404_error(self):
-        self.url = reverse('elections:result_delete', args=(self.result_to_delete.pk,))
-
-        other_user = UserFactory.create()
-        other_user.set_password('secret')
-        other_user.save()
-        self.client.login(username=other_user.username, password='secret')
-
+        self.url = reverse('elections:result_delete', args=(self.other_result.pk,))
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 404)
