@@ -422,3 +422,20 @@ class ResultCreateViewTestCase(TestCase):
             list(result.winners.all()),
             winners
         )
+
+
+class ResultDeleteViewTestCase(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+        self.result_to_delete = ResultFactory.create(election=self.election)
+        self.url = reverse('elections:result_delete', args=(self.result_to_delete.pk,))
+
+    def test_request_valid_calls_result_deleted(self):
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_request_invalid_result_id_raises_404_error(self):
+        self.url = reverse('elections:result_delete', args=(self.result_to_delete.pk + 1,))
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 404)
