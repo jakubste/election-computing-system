@@ -440,6 +440,12 @@ class ElectionDeleteViewTestCase(TestCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 404)
 
+    def test_request_already_deleted_election(self):
+        self.url = reverse('elections:election_delete', args=(self.election.pk,))
+        self.client.post(self.url)
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 404)
+
 
 class ResultDeleteViewTestCase(TestCase):
     def setUp(self):
