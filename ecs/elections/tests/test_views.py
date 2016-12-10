@@ -10,7 +10,7 @@ from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import *
 from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory, \
-    PointCandidateFactory, PointVoterFactory, ResultFactory
+    PointCandidateFactory, PointVoterFactory, ResultFactory, UserFactory
 from ecs.elections.models import Preference, BRUTE_ALGORITHM, Result
 from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView, ResultChartView
 from ecs.utils.unittestcases import TestCase
@@ -435,7 +435,13 @@ class ResultDeleteViewTestCase(TestCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 302)
 
-    def test_request_invalid_result_id_raises_404_error(self):
-        self.url = reverse('elections:result_delete', args=(self.result_to_delete.pk + 1,))
+    def test_request_wrong_user_raises_404_error(self):
+        self.url = reverse('elections:result_delete', args=(self.result_to_delete.pk,))
+
+        other_user = UserFactory.create()
+        other_user.set_password('secret')
+        other_user.save()
+        self.client.login(username=other_user.username, password='secret')
+
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 404)
