@@ -37,7 +37,7 @@ class GreedyCC(Algorithm):
 
                     if x > satisfaction_of_given_voter:
                         extra_satisfaction_with_given_candidate += v.repeats * (
-                        x ** p_parameter - satisfaction_of_given_voter ** p_parameter)
+                        x - satisfaction_of_given_voter)
 
                 if extra_satisfaction_with_given_candidate > extra_satisfaction_with_leading_candidate:
                     leading_candidate = c
