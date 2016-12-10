@@ -23,7 +23,7 @@ $(document).ready(function () {
         if (e.value.newValue == 0) {
             source = $scatterChart.data('url');
         } else {
-            var $resultPk = $resultsSlider.data('results-pks').split(',')[e.value.newValue - 1];
+            var $resultPk = $resultsSlider.data('results-pks').toString().split(',')[e.value.newValue - 1];
             source = '/elections/chart_data/result/' + $resultPk + '/'
         }
         $.get(source, function (data) {
