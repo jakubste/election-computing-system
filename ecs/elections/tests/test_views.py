@@ -11,7 +11,7 @@ from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import *
 from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory, \
     PointCandidateFactory, PointVoterFactory, ResultFactory, UserFactory
-from ecs.elections.models import Preference, BRUTE_ALGORITHM, Result
+from ecs.elections.models import Preference, BRUTE_ALGORITHM, Result, Election
 from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView, ResultChartView
 from ecs.utils.unittestcases import TestCase
 
@@ -429,22 +429,28 @@ class ElectionDeleteViewTestCase(TestCase):
         self.user = self.login()
         self.election = ElectionFactory.create(user=self.user)
         self.other_election = ElectionFactory.create()
+        self.wrong_pk = self.other_election.pk + 1
         self.url = reverse('elections:election_delete', args=(self.election.pk,))
 
-    def test_request_valid_calls_election_deleted(self):
+    @mock.patch.object(Election, 'delete')
+    def test_request_valid_calls_election_deleted(self, mocked_delete):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 302)
+        mocked_delete.assert_called_once()
 
-    def test_request_wrong_user_raises_404_error(self):
+    @mock.patch.object(Election, 'delete')
+    def test_request_wrong_user_raises_404_error(self, mocked_delete):
         self.url = reverse('elections:election_delete', args=(self.other_election.pk,))
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 404)
+        self.assertEqual(mocked_delete.call_count, 0)
 
-    def test_request_already_deleted_election(self):
-        self.url = reverse('elections:election_delete', args=(self.election.pk,))
-        self.client.post(self.url)
+    @mock.patch.object(Election, 'delete')
+    def test_request_non_existing_election_raises_404_error(self, mocked_delete):
+        self.url = reverse('elections:election_delete', args=(self.wrong_pk,))
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 404)
+        self.assertEqual(mocked_delete.call_count, 0)
 
 
 class ResultDeleteViewTestCase(TestCase):
