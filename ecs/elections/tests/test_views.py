@@ -10,8 +10,8 @@ from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import *
 from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory, \
-    PointCandidateFactory, PointVoterFactory, ResultFactory
-from ecs.elections.models import Preference, BRUTE_ALGORITHM, Result
+    PointCandidateFactory, PointVoterFactory, ResultFactory, UserFactory
+from ecs.elections.models import Preference, BRUTE_ALGORITHM, Result, Election
 from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView, ResultChartView
 from ecs.utils.unittestcases import TestCase
 
@@ -422,3 +422,41 @@ class ResultCreateViewTestCase(TestCase):
             list(result.winners.all()),
             winners
         )
+
+
+class ElectionDeleteViewTestCase(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+        self.other_election = ElectionFactory.create()
+        self.wrong_pk = self.other_election.pk + 1
+        self.url = reverse('elections:election_delete', args=(self.election.pk,))
+
+    def test_request_valid_calls_election_deleted(self):
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Election.objects.count(), 1)
+
+    def test_request_wrong_user_raises_404_error(self):
+        self.url = reverse('elections:election_delete', args=(self.other_election.pk,))
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Election.objects.count(), 2)
+
+
+class ResultDeleteViewTestCase(TestCase):
+    def setUp(self):
+        self.user = self.login()
+        self.election = ElectionFactory.create(user=self.user)
+        self.result_to_delete = ResultFactory.create(election=self.election)
+        self.other_result = ResultFactory.create()
+        self.url = reverse('elections:result_delete', args=(self.result_to_delete.pk,))
+
+    def test_request_valid_calls_result_deleted(self):
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_request_wrong_user_raises_404_error(self):
+        self.url = reverse('elections:result_delete', args=(self.other_result.pk,))
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 404)

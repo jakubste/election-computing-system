@@ -14,6 +14,12 @@
             {% include '_field.html' with field=field %}
         {% endfor %}
 
+        <div id="genetic_form" style="display: none">
+            {% for field in genetic_form %}
+                {% include '_field.html' with field=field %}
+            {% endfor %}
+        </div>
+
         <div class="form-group">
             <div class="col-xs-offset-2 col-xs-10">
                 <button type="submit" class="btn btn-primary">Add new result</button>

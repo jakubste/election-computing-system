@@ -4,6 +4,7 @@ from django.db import transaction
 from django.forms.fields import ChoiceField
 from django.forms.widgets import ChoiceInput, Select
 from django.http.response import Http404
+from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
@@ -16,7 +17,8 @@ from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
 from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, SummingLineFormatException
-from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm, ResultForm
+from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm, ResultForm, \
+    GeneticAlgorithmForm
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GENETIC_ALGORITHM
@@ -55,10 +57,7 @@ class ElectionCreateView(LoginRequiredMixin, CreateView):
 
 class ConfigureElectionMixin(View):
     def dispatch(self, request, *args, **kwargs):
-        try:
-            self.election = Election.objects.get(pk=kwargs['pk'])
-        except Election.DoesNotExist:
-            raise Http404
+        self.election = get_object_or_404(Election, pk=kwargs.get('pk'))
         if self.election.user != self.request.user:
             raise Http404
         return super(ConfigureElectionMixin, self).dispatch(request, *args, **kwargs)
@@ -94,6 +93,14 @@ class ElectionDetailView(DetailView):
         choices.append((None, '------'))
         choices.reverse()
         ctx['results_choice'] = Select(choices=choices).render('results_choice', None)
+        ctx['results_number'] = self.object.results.count()
+        ctx['results_pks'] = ",".join([str(n) for n in self.object.results.values_list('pk', flat=True)])
+        ctx['results_p_params'] = "," + ",".join(
+            [str(n) for n in self.object.results.values_list('p_parameter', flat=True)]
+        )
+        ctx['results_descriptions'] = "No result," + ",".join(
+            ['{}: p = {}'.format(r.get_algorithm_display(), r.p_parameter) for r in self.object.results.all()]
+        )
         return ctx
 
 
@@ -220,19 +227,59 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
     form_class = ResultForm
     template_name = 'result_create.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = super(ResultCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            ctx['genetic_form'] = GeneticAlgorithmForm(self.request.POST)
+        else:
+            ctx['genetic_form'] = GeneticAlgorithmForm()
+        return ctx
+
     def form_valid(self, form):
         result = super(ResultCreateView, self).form_valid(form)
+
+        algorithm_kwargs = {}
+        if form.cleaned_data['algorithm'] == GENETIC_ALGORITHM:
+            genetic_form = GeneticAlgorithmForm(self.request.POST, result=self.object)
+            if not genetic_form.is_valid():
+                return self.form_invalid(form)
+            algorithm_kwargs.update(genetic_form.cleaned_data)
+
         algorithm = {
             BRUTE_ALGORITHM: BruteForce,
             GENETIC_ALGORITHM: GeneticAlgorithm,
         }[form.cleaned_data['algorithm']]
-        algorithm = algorithm(self.election, form.cleaned_data['p_parameter'])
+        algorithm = algorithm(self.election, form.cleaned_data['p_parameter'], **algorithm_kwargs)
         time, winners = algorithm.start()
         self.object.time = time
         for winner in winners:
             self.object.winners.add(winner)
+        self.object.score = self.object.calculate_score()
         self.object.save()
+
+        if form.cleaned_data['algorithm'] == GENETIC_ALGORITHM:
+            # noinspection PyUnboundLocalVariable
+            genetic_form.save()
+
         return result
+
+
+class ResultPermissionsMixin(View):
+    def dispatch(self, request, *args, **kwargs):
+        self.result = get_object_or_404(Result, pk=kwargs.get('pk'))
+        if self.result.election.user != self.request.user:
+            raise Http404
+        return super(ResultPermissionsMixin, self).dispatch(request, *args, **kwargs)
+
+
+class ResultDeleteView(DeleteView, ResultPermissionsMixin):
+    model = Result
+    template_name = 'result_delete.html'
+    context_object_name = 'result'
+    result_to_delete = None
+
+    def get_success_url(self):
+        return reverse('elections:election_details', args=(self.object.election_id,))
 
 
 class ResultDetailsView(DetailView):

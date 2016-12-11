@@ -19,19 +19,27 @@ class GeneticAlgorithmTestCase(TestCase):
                     voter=voter, candidate=candidate
                 )
         self.p_parameter = 2
-        self.algorithm = GeneticAlgorithm(self.election, self.p_parameter)
+        self.cycles = 10
+        self.algorithm = GeneticAlgorithm(self.election, self.p_parameter, **{
+            'mutation_probability': 10,
+            'crossing_probability': 50,
+            'cycles': self.cycles,
+        })
+
+    @mock.patch.object(Individual, 'cross')
+    def test_run_calls_cross(self, mocked_cross):
+        mocked_cross.return_value = None
+        self.algorithm.run()
+        self.assertGreater(mocked_cross.call_count, 1)
 
     @mock.patch.object(Individual, 'mutate')
     def test_run_calls_mutate(self, mocked_mutate):
         mocked_mutate.return_value = None
         self.algorithm.run()
-        self.assertEqual(
-            mocked_mutate.call_count,
-            4*50  # 4 * cycle_count
-        )
+        self.assertGreater(mocked_mutate.call_count, 1)
 
     def test_run_returns_winners(self):
-        self.assertEqual(
+        self.assertItemsEqual(
             list(self.algorithm.run()),
             self.candidates[:2]
         )
@@ -39,7 +47,7 @@ class GeneticAlgorithmTestCase(TestCase):
     def test_start_returns_time_and_winners(self):
         time, winners = self.algorithm.start()
         winners = list(winners)
-        self.assertEqual(
+        self.assertItemsEqual(
             winners,
             self.candidates[:2]
         )
