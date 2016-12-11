@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from ecs.elections.algorithms.algorithm import Algorithm
 from ecs.utils.math import ell_p_norm
 
@@ -15,8 +17,8 @@ class GreedyAlgorithm(Algorithm):
             actual_voters_satisfaction[v.pk] = 0
 
         for i in range(self.election.committee_size):
-            # TODO: if settings.PRINT_PROGRESS after merge
-            print i + 1, "out of", self.election.committee_size, "to be chosen"
+            if settings.PRINT_PROGRESS:
+                print i + 1, "out of", self.election.committee_size, "to be chosen"
 
             satisfaction_with_leading_candidate = 0
             leading_candidate = None
