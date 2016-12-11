@@ -154,6 +154,8 @@ ELECTION_GENERATOR = {
     'MAX_SIGMA': 1000
 }
 
+PRINT_PROGRESS = False
+
 try:
     from local_settings import *
 except:

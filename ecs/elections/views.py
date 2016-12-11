@@ -18,7 +18,8 @@ from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
 from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, SummingLineFormatException
-from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm, ResultForm
+from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGenerateDataForm, ResultForm, \
+    GeneticAlgorithmForm
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GENETIC_ALGORITHM
@@ -96,9 +97,12 @@ class ElectionDetailView(DetailView):
         ctx['results_choice'] = Select(choices=choices).render('results_choice', None)
         ctx['results_number'] = self.object.results.count()
         ctx['results_pks'] = ",".join([str(n) for n in self.object.results.values_list('pk', flat=True)])
-        ctx['results_descriptions'] = ",".join(
-            ['{}: p = {}'.format(r.get_algorithm_display(), r.p_parameter) for r in self.object.results.all()])
-        ctx['results_descriptions'] = 'No result,' + ctx['results_descriptions']
+        ctx['results_p_params'] = "," + ",".join(
+            [str(n) for n in self.object.results.values_list('p_parameter', flat=True)]
+        )
+        ctx['results_descriptions'] = "No result," + ",".join(
+            ['{}: p = {}'.format(r.get_algorithm_display(), r.p_parameter) for r in self.object.results.all()]
+        )
         return ctx
 
 
@@ -225,21 +229,42 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
     form_class = ResultForm
     template_name = 'result_create.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = super(ResultCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            ctx['genetic_form'] = GeneticAlgorithmForm(self.request.POST)
+        else:
+            ctx['genetic_form'] = GeneticAlgorithmForm()
+        return ctx
+
     def form_valid(self, form):
         result = super(ResultCreateView, self).form_valid(form)
+
+        algorithm_kwargs = {}
+        if form.cleaned_data['algorithm'] == GENETIC_ALGORITHM:
+            genetic_form = GeneticAlgorithmForm(self.request.POST, result=self.object)
+            if not genetic_form.is_valid():
+                return self.form_invalid(form)
+            algorithm_kwargs.update(genetic_form.cleaned_data)
+
         algorithm = {
             BRUTE_ALGORITHM: BruteForce,
             GREEDY_ALGORITHM: GreedyAlgorithm,
             GREEDY_CC: GreedyCC,
             GENETIC_ALGORITHM: GeneticAlgorithm,
         }[form.cleaned_data['algorithm']]
-        algorithm = algorithm(self.election, form.cleaned_data['p_parameter'])
+        algorithm = algorithm(self.election, form.cleaned_data['p_parameter'], **algorithm_kwargs)
         time, winners = algorithm.start()
         self.object.time = time
         for winner in winners:
             self.object.winners.add(winner)
         self.object.score = self.object.calculate_score()
         self.object.save()
+
+        if form.cleaned_data['algorithm'] == GENETIC_ALGORITHM:
+            # noinspection PyUnboundLocalVariable
+            genetic_form.save()
+
         return result
 
 
