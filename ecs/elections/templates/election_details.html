@@ -14,13 +14,16 @@
     </p>
 
     {% if election.is_generated %}
-        <input id="results-slider"
-               data-slider-id='results-slider' type="text"
-               data-slider-min="0" data-slider-max="{{ results_number }}"
-               data-slider-step="1" data-slider-value="0"
-               data-results-pks="{{ results_pks }}"
-               data-results-descriptions="{{ results_descriptions }}"
-        >
+        <div id="results-slider-wrapper">
+            <input id="results-slider"
+                data-slider-id='results-slider' type="text"
+                data-slider-min="0" data-slider-max="{{ results_number }}"
+                data-slider-step="1" data-slider-value="0"
+                data-results-pks="{{ results_pks }}"
+                data-results-p-params="{{ results_p_params }}"
+                data-results-descriptions="{{ results_descriptions }}"
+            >
+        </div>
     {% endif %}
 
     {% if not election.is_set_up %}
@@ -58,17 +61,18 @@
         <h2>Available results</h2>
 
         {% regroup results by p_parameter as p_list %}
-
+        <div class="row"><div class="col-md-10 col-md-push-1">
         <table class="table">
             <thead class="bg-primary">
             <tr>
-                <th>p parameter</th>
-                <th>Algorithm</th>
-                <th>Time</th>
-                <th data-toggle="tooltip" title="This value should be compared only between results with the same p parameter!">
+                <th class="col-md-1">p param</th>
+                <th class="col-md-2">Algorithm</th>
+                <th class="col-md-2">Time</th>
+                <th class="col-md-2" data-toggle="tooltip" title="This value should be compared only between results with the same p parameter!">
                     Committee score <span class="glyphicon glyphicon-info-sign"></span>
                 </th>
-                <th>Actions</th>
+                <th class="col-md-3">Algorithm parameters</th>
+                <th class="col-md-2">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -76,7 +80,7 @@
 
                 {% for result in results_group.list %}
                     <tr {% if forloop.parentloop.counter|divisibleby:2 %}class="bg-warning"{% endif %}>
-                        <th scope="row">{{ result.p_parameter }}</th>
+                        <th style="text-align: center" scope="row">{{ result.p_parameter }}</th>
                         <td>{{ result.get_algorithm_display }}</td>
                         <td>
                             {% if result.winners.count %}
@@ -90,6 +94,21 @@
                                 {{ result.score|floatformat:2 }}
                             {% else %}
                                 -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if result.geneticalgorithmsettings %}
+                                <div class="algorithm-settings">
+                                    <div class="algorithm-settings-single" data-toggle="tooltip" title="Cycles count">
+                                        <i class="fa fa-repeat" aria-hidden="true"></i> {{ result.geneticalgorithmsettings.cycles }}
+                                    </div>
+                                    <div class="algorithm-settings-single" data-toggle="tooltip" title="Mutation probability in %">
+                                        <i class="fa fa-code-fork" aria-hidden="true"></i> {{ result.geneticalgorithmsettings.mutation_probability }}
+                                    </div>
+                                    <div class="algorithm-settings-single" data-toggle="tooltip" title="Crossing probability in %">
+                                        <i class="fa fa-venus-mars" aria-hidden="true"></i> {{ result.geneticalgorithmsettings.crossing_probability }}
+                                    </div>
+                                </div>
                             {% endif %}
                         </td>
                         <td>
@@ -109,6 +128,8 @@
             {% endfor %}
             </tbody>
         </table>
+        </div></div>
+
 
         <a href="{% url 'elections:result_create' election.pk %}">
             <button class="btn btn-success">
