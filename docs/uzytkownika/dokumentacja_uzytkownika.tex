@@ -245,32 +245,60 @@ Poniżej można zobaczyć spis dostępnych rozstrzygnięć wyborów oraz odnośn
 
 Poniżej, jeśli liczba wyborców nie jest na tyle duża, że utrudniałoby to używanie strony przez zbytnie obciążenie przeglądarki, widać listing wyborców. Szczególnie przydatny do sprawdzenia czy poprawnie zostały wczytane dane z plików .soc. W przypadku danych z rozkładu normalnego jego przydatność jest ograniczona.
 
-
-\subsection{TROLL LINE - EVERYONE BELOW WAS TROLLED}
-\label{subsec:system_ell_p_borda}
-
-Zanim wprowadzone zostanie pojęcie uogólnionego systemu k-Borda warto przypomnieć wzór na normę $\ell_p$
-
-\subsubsection{Norma $\ell_p$}
-\label{subsubsection:norma_ell_p}
+\newpage
+\section{Dodawanie wyniku}
+\label{sec:dodawaniewyniku}
 
 
+\includegraphics[width=0.8\textwidth]{pics/new-result.png}
 
-Wówczas, w uogólnionej wersji metody k-Borda, funkcja zadowolenia $f_{kB}$ zostaje uzależniona również od parametru $p$ z powyższego wzoru. Norma liczona jest z wyników według Bordy, $\beta(i)$. Wzór uogólniony funkcji zadowolenia przyjmuje zatem postać:\\
-$f_{\ell_pB}(p,(i_11,\dots,i_k))=p[(i1)]p+[(i2)]p+...+[(ik)]p$
+\includegraphics[width=0.8\textwidth]{pics/new-result-genetic.png}
+
+\newpage
+\section{Porównywanie wyników}
+\label{sec:porownywaniewynikow}
+
+\subsection{Używanie wykresu do porównywania wyników}
+\label{subsec:pornawykresie}
+
+\includegraphics[width=0.8\textwidth]{pics/results-on-chart.png}
+
+\newpage
+\subsection{Zestawienie wyników w tabeli}
+\label{subsec:tabelazwynikami}
+
+\includegraphics[width=0.8\textwidth]{pics/results-on-table.png}
 
 
-Systemy  k-Borda i Cahmberlin’a-Courant’a są szczególnymi przypadkami zdefiniowanego powyżej systemu $\ell_p$- Borda:\\
-Dla $p = 1$, $l_1$\\
-$f_{\ell_pB}(1,(i_1, \dots ,i_k)) = \beta(i_1) + \beta(i_2) + \dots + \beta(ik) = f_{kB}(i_11, \dots,i_k)$\\
-Dla $p= \infty$,  $l_{\infty}={max}$\\
-$f_{\ell_pB}(\infty,(i_1, \dots ,i_k))=\lim\limits_{p \to \infty} \sqrt[p]{\beta\left[(i_1)\right]^p+\beta\left[(i_2)\right]^p+ \dots +\left[\beta(i_k)\right]^p}=\max{\beta(i_1),\beta(i_2),\dots,\beta(i_k)} = \beta(i_1)=f_{CC}$
+\newpage
+\section{Szczegóły wyniku}
+\label{sec:szczegolywyniku}
 
-\section{Szybkość i dokładność wykonywanych obliczeń}
-\label{sec:szybkosc_i_dokladnosc_wykonywanych_obliczen}
+\includegraphics[width=0.8\textwidth]{pics/result-details.png}
 
-\chapter{Opis modułów}
-\label{cha:opis_modulow}
+
+\newpage
+\section{Kasowanie wyników}
+\label{sec:kasowaniewynikow}
+
+\includegraphics[width=0.8\textwidth]{pics/delete-result.png}
+
+
+\section{Kasowanie wyborów}
+\label{sec:kasowaniewyborow}
+
+\includegraphics[width=0.8\textwidth]{pics/delete-elections.png}
+
+
+
+\chapter{Podsumowanie}
+\label{cha:podsumowanie}
+
+
+
+\chapter{Spis rysunków}
+\label{cha:rysunki}
+
 
 
 \bibliographystyle{alpha}
