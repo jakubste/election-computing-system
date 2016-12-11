@@ -2,7 +2,6 @@ from ecs.elections.algorithms.algorithm import Algorithm
 
 
 class GreedyCC(Algorithm):
-
     def run(self):
         voters = self.election.voters.all()
 
@@ -16,7 +15,7 @@ class GreedyCC(Algorithm):
 
         for i in range(self.election.committee_size):
             extra_satisfaction_with_leading_candidate = 0
-            leading_candidate = None
+            leading_candidate = candidates_still_fighting[0]
 
             for c in candidates_still_fighting:
                 extra_satisfaction_with_given_candidate = 0
