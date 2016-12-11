@@ -16,3 +16,7 @@
     width: 60px;
     float: left;
 }
+
+.form-group label {
+    margin-top: 7px;
+}
