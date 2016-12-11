@@ -74,7 +74,7 @@ System umożliwia obliczenie wyników wyborów w uogólnionym systemie wyborczym
 
 Działającą aplikację można przetestować na stronie: \\ \url{https://election-computing-system.herokuapp.com}. 
 
-Ze względu na ograniczenia na ilość rekordów w bazie danych narzucone przez darmową wersji Heroku, nie będzie można dodać tam zbyt „dużych” wyborów (ograniczona jest liczba głosujących i kandydatów). Aby korzystać z pełnych możliwości aplikacji, należy uruchomić ją na własnym komputerze. Dalsza część tego rozdziału opisuje jak to wykonać.
+Ze względu na ograniczenia na ilość rekordów w bazie danych narzucone przez darmową wersję Heroku, nie będzie można dodać tam zbyt „dużych” wyborów (ograniczona jest liczba głosujących i kandydatów). Aby korzystać z pełnych możliwości aplikacji, należy uruchomić ją na własnym komputerze. Dalsza część tego rozdziału opisuje jak to wykonać.
 
 \section{Przygotowanie środowiska}
 \label{sec:srodowisko}
@@ -294,7 +294,16 @@ Poniżej, jeśli liczba wyborców nie jest na tyle duża, że utrudniałoby to u
 \chapter{Podsumowanie}
 \label{cha:podsumowanie}
 
+Twórcy systemu dążyli do zapewnienia dwóch podstawowych dogodności dla użytkowników. Pierwszą z nich była przystępna forma prezentacji wyników a drugą intuicyjna nawigacja po stronie.
 
+\section{Prezentacja wyników}
+Odpowiednia forma prezentacji wyników była sprawą nieodzowną dla dobrego działania systemu. Poza wymiarem estetycznym umożliwia zaobserwowanie sposobu zmieniania się wyników wyborów w zależności od parametrów przekazanych algorytmowi. W celu udogodnienia porównywania różnych wyników wyborów zaimplementowano suwak, który pozwala na proste przechodzenie między kolejnymi wykresami. W trakcie przechodzenia między wykresami punkty nie zmieniają swojego położenia na ekranie, dlatego wyraźnie widać każdą zmianę pomiędzy danymi wynikami wyborów.
+ 
+Innym udogodnieniem, które zostało wprowadzone jest sposób wyświetlania tabeli z czasami działania algorytmów oraz zadowoleniami jakie osiągnęły algorytmy. Poza estetyczną prezentacją tabeli, wyniki grupowane są według parametru p - wyniki dla tego samego parametru p są obok siebie. Ponadto tło grupy wyników jest pokolorowane w taki sposób, aby sąsiednie grupy miały inne tło. Dzięki takim zabiegom w prosty sposób można zlokalizować grupy wyników dla tego samego parametru p.
+
+\section{Nawigacja po stronie}
+
+Zarządzanie swoimi wyborami i ich wynikami było drugim aspektem, nad którym pochylili się twórcy aplikacji. Dążono do możliwie intuicyjnego interfejsu, który w łatwy sposób pozwoliłby na wykonywanie usług zapewnianych przez system. Przyciski zatwierdzające dane operacje odróżniają się od innych elementów strony przez co są łatwo widoczne. Ciąg operacji, które wykonuje użytkownik w celu wykonania danej akcji jest możliwie prosty i intuicyjny. Wyniki wyborów i same wybory są zgrupowane oddzielnie. Wyraźnie odróżnione są elementy klikalne i możliwe tylko do wyświetlenia.
 
 \chapter{Spis rysunków}
 \label{cha:rysunki}
