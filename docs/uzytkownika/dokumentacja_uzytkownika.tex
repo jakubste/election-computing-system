@@ -1,9 +1,10 @@
-%\documentclass[pdflatex,11pt]{../aghdoc}
-\documentclass{../aghdoc}               % przy kompilacji programem latex
+\documentclass[pdflatex,11pt]{../aghdoc}
+%\documentclass{../aghdoc}               % przy kompilacji programem latex
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 
 % dodatkowe pakiety
+\usepackage{hyperref}
 \usepackage{enumerate}
 \usepackage{listings}
 \lstloadlanguages{TeX}
@@ -95,7 +96,7 @@ $ git clone git@github.com:jakubste/election-computing-system.git
 lub ściągnąć jako ZIP bezpośrednio z GitHuba i rozpakować w wybranym miejscu.
 
 \subsection{Biblioteki}
-\label{subsec:repo}
+\label{subsec:biblioteki}
 
 Do instalacji bibliotek zaleca się używanie mechanizmu \texttt{virtualenv}, który separuje środowiska uruchomieniowe dla poszczególnych projektów. Autorzy projektu zalecają też dla wygody wykorzystanie \texttt{virtualenvwrapper}'a. Do instalacji bibliotek można użyć programu \texttt{pip}.
 Informacje o wymaganych bibliotekach są zawarte w pliku \texttt{requirements.txt}.
@@ -148,22 +149,104 @@ powinna pojawić się strona podobna do tej:
 \includegraphics[width=0.8\textwidth]{pics/first_view.png}
 
 
-\subsection{Metoda k-Borda}
-\label{subsec:metoda_k_borda}
-
-Rozszerzenie metody Bordy. Wynik, zamiast dla jednego kandydata, obliczany jest dla ciągu kandydatów. $f_{kB}$- funkcja zadowolenia z komitetu. Ciąg $(i_1,\dots, i_k)$- ciąg pozycji kandydatów
-
-\paragraph{Przyklad}
-$C={c_1,c_2,c_3,c_4}$ - zbiór kandydatów, 
-$v=(c_2,c_1,c_4,c_3)$ - głos
-Niech $k = 2$ (wybory $2$ spośród $4$)
-$w=(c_4,c_3)$
-Najpierw określamy pozycje kandydatów z komitetu $w$ w $v$:
-$pos_v(w)=(3,4)$, zatem wynik komitetu w dla głosu v wynosi
-$f_{kB}(3,4) = (3) + (4) = ||C|| - 3 ) + ( ||C|| - 4 ) = 1 + 0 = 1$
+\chapter{Instrukcja obsługi systemu}
+\label{cha:obsluga}
 
 
-\subsection{Uogólnienie - system $\ell_p$ Borda}
+\section{Rejestracja}
+\label{sec:rejestracja}
+
+Aby korzystać z systemu, należy utworzyć konto. W tym celu należy z menu wybrać opcję rejestracji i uzupełnić formularz:
+
+\includegraphics[width=0.8\textwidth]{pics/register.png}
+
+\newpage
+\section{Logowanie}
+\label{sec:logowanie}
+
+W celu zalogowania się na wcześniej utworzone konto należy wybrać z menu opcję logowania i wypełnić formularz:
+
+\includegraphics[width=0.8\textwidth]{pics/login.png}
+
+
+\section{Strona główna}
+\label{sec:stronaglowna}
+
+Po zalogowaniu użytkownik widzi stronę główną z opisem systemu:
+
+\includegraphics[width=0.8\textwidth]{pics/mainpage.png}
+
+
+\newpage
+\section{Lista wyborów}
+\label{sec:electionslist}
+
+Po wybraniu z menu listy wyborów użytkownik ma możliwość zobaczenia listy swoich wyborów:
+
+\includegraphics[width=0.8\textwidth]{pics/elections-list.png}
+
+Stąd użytkownik ma możliwość przejścia do tworzenia nowych wyborów.
+
+
+\section{Tworzenie wyborów}
+\label{sec:electionscreate}
+
+Aby utworzyć nowe wybory należy podać ich nazwę oraz określić rozmiar komitetu do którego przeprowadzamy wybory:
+
+\includegraphics[width=0.8\textwidth]{pics/elections-new.png}
+
+\newpage
+\section{Określenie kandydatów i wyborców}
+\label{sec:electionsnewlycreated}
+
+Po utworzeniu wyborów należy określić biorących udział w wyborach kandydatów oraz wyborców.
+
+\includegraphics[width=0.8\textwidth]{pics/elections-config.png}
+
+Użytkownik ma do wyboru dwie opcje:
+\begin{itemize}
+\item wczytać dane z pliku w formacie .soc określonym przez \href{http://www.preflib.org/}{PrefLib},
+\item wygenerować losowy układ wyborców w oparciu o rozkład naturalny.
+\end{itemize}
+
+
+\subsection{Wczytanie danych z pliku}
+\label{subsec:wczytaniezpliku}
+
+Aby wczytać dane dotyczące wyborów z pliku należy wybrać odpowiednią opcję a następnie wskazać plik z danymi:
+
+\includegraphics[width=0.8\textwidth]{pics/load-from-file.png}
+
+Przykładowe pliki z danymi można pobrać ze strony projektu \href{http://www.preflib.org/data/packs/index.php#soc}{PrefLib}. Pośród tych plików można m.in. znaleźć rzeczywiste preferencje studentów naszego kierunku w wyborach przedmiotów obieralnych.
+
+\newpage
+\subsection{Generacja danych z rozkładu normalnego}
+\label{subsec:generowaniedanych}
+
+Aby wygenerować dane losowe na podstawie rozkładu normalnego należy wybrać odpowiednią opcję, a następnie uzupełnić formularz:
+\includegraphics[width=0.8\textwidth]{pics/generate-distribution.png}
+
+W formularzu należy określić liczbę kandydatów i głosujących, punkt centralny, wokół którego będą skupione ich „poglądy” oraz sigmę, czyli średni „rozstrzał” poglądów.
+
+Koncepcyjnie ten sposób generacji danych odzwierciedla mapę poglądów politycznych. Porządek preferencji kandydatów wśród wyborców określa ich odległość euklidesowa w układzie współrzędnych.
+
+W dalszej części instrukcji będziemy posługiwali się częściej przykładem z wyborami wygenerowanymi w ten sposób.
+
+
+\section{Szczegóły wyborów}
+\label{sec:szczegolywyborow}
+
+Po wczytaniu danych pokaże się ekran z szczegółami wyborów:
+\includegraphics[width=0.8\textwidth]{pics/newlycreated.png}
+
+Wykres będzie widoczny tylko w przypadku wyborów wygenerowanych z rozkładu normalnego.
+
+Poniżej można zobaczyć spis dostępnych rozstrzygnięć wyborów oraz odnośnik do formularza dodawania nowego wyniku.
+
+Poniżej, jeśli liczba wyborców nie jest na tyle duża, że utrudniałoby to używanie strony przez zbytnie obciążenie przeglądarki, widać listing wyborców. Szczególnie przydatny do sprawdzenia czy poprawnie zostały wczytane dane z plików .soc. W przypadku danych z rozkładu normalnego jego przydatność jest ograniczona.
+
+
+\subsection{TROLL LINE - EVERYONE BELOW WAS TROLLED}
 \label{subsec:system_ell_p_borda}
 
 Zanim wprowadzone zostanie pojęcie uogólnionego systemu k-Borda warto przypomnieć wzór na normę $\ell_p$
@@ -171,7 +254,6 @@ Zanim wprowadzone zostanie pojęcie uogólnionego systemu k-Borda warto przypomn
 \subsubsection{Norma $\ell_p$}
 \label{subsubsection:norma_ell_p}
 
-$\ell_p(x_1,x_2,\dots, x_n) = \sqrt[p]{x_1^p+x_2^p+\dots+x_n^p},$ 
 
 
 Wówczas, w uogólnionej wersji metody k-Borda, funkcja zadowolenia $f_{kB}$ zostaje uzależniona również od parametru $p$ z powyższego wzoru. Norma liczona jest z wyników według Bordy, $\beta(i)$. Wzór uogólniony funkcji zadowolenia przyjmuje zatem postać:\\
@@ -183,9 +265,6 @@ Dla $p = 1$, $l_1$\\
 $f_{\ell_pB}(1,(i_1, \dots ,i_k)) = \beta(i_1) + \beta(i_2) + \dots + \beta(ik) = f_{kB}(i_11, \dots,i_k)$\\
 Dla $p= \infty$,  $l_{\infty}={max}$\\
 $f_{\ell_pB}(\infty,(i_1, \dots ,i_k))=\lim\limits_{p \to \infty} \sqrt[p]{\beta\left[(i_1)\right]^p+\beta\left[(i_2)\right]^p+ \dots +\left[\beta(i_k)\right]^p}=\max{\beta(i_1),\beta(i_2),\dots,\beta(i_k)} = \beta(i_1)=f_{CC}$
-
-\section{Format danych wejściowych}
-\label{sec:format_danych_wejsciowych}
 
 \section{Szybkość i dokładność wykonywanych obliczeń}
 \label{sec:szybkosc_i_dokladnosc_wykonywanych_obliczen}
