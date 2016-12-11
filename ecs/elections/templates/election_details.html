@@ -13,7 +13,7 @@
         committee size: {{ election.committee_size }}
     </p>
 
-    {% if election.is_generated %}
+    {% if election.is_generated and election.results.count %}
         <div id="results-slider-wrapper">
             <input id="results-slider"
                 data-slider-id='results-slider' type="text"
@@ -85,6 +85,13 @@
             </tr>
             </thead>
             <tbody>
+            {% if not election.results.count %}
+                <tr>
+                    <td colspan="6" class="bg-info" style="text-align: center;">
+                        No result avaiable. To add first result press button below!
+                    </td>
+                </tr>
+            {% endif %}
             {% for results_group in p_list %}
 
                 {% for result in results_group.list %}
@@ -160,8 +167,7 @@
                             <div class="panel-body">
                                 <strong>{{ voter.repeats }}</strong>x
                                 {% for preference in voter.preferences.all %}
-                                    {{ preference.preference }}&nbsp;-&nbsp;{{ preference.candidate }}&nbsp;[
-                                    {{ preference.candidate.soc_id }}]{% if not forloop.last %},{% endif %}
+                                    {{ preference.preference }}&nbsp;-&nbsp;{{ preference.candidate }}&nbsp;[{{ preference.candidate.soc_id }}]{% if not forloop.last %},{% endif %}
                                 {% endfor %}
                             </div>
                         {% endfor %}
