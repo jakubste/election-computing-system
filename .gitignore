@@ -126,4 +126,4 @@ ENV/
 *.nav
 *.vrb
 *.snm
-
+*.tex.bak
