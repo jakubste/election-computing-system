@@ -31,7 +31,8 @@ and that I am aware of the rules of the Penal Code referring to criminal liabili
 
 % PROCESSING OPTIONS
 \ProcessOptions
-\LoadClass[a4paper,twoside]{article}
+\LoadClass[a4paper]{article}
+% \LoadClass[a4paper, twoside]{article} - dwustronne drukowanie (zamiast liniji wyżej)
 
 
 \RequirePackage{setspace}
@@ -54,7 +55,7 @@ and that I am aware of the rules of the Penal Code referring to criminal liabili
 }
 
 
-\geometry{bindingoffset=10mm, lmargin=20mm, rmargin=20mm, tmargin=25mm, bmargin=25mm, foot=10mm, head=10mm}
+\geometry{bindingoffset=10mm, lmargin=15mm, rmargin=25mm, tmargin=25mm, bmargin=25mm, foot=10mm, head=10mm}
 
 
 \renewcommand{\baselinestretch}{1.1}
@@ -141,11 +142,13 @@ and that I am aware of the rules of the Penal Code referring to criminal liabili
 \pagestyle{fancy}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
 \renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
 \fancyhf{}
 \fancyhead{}
 
 \fancyhead[LE]{\bfseries \thepage}
 \fancyhead[RO]{\bfseries \thepage}
+\cfoot{\@title}
 
 \frenchspacing
 \sloppy

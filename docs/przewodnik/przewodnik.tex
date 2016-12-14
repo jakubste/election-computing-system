@@ -2,8 +2,8 @@
 \documentclass[polish,11pt]{aghthesis}
 \usepackage[utf8]{inputenc}
 \usepackage{url}
-%\usepackage{amssymb}
 \usepackage{amsfonts}
+\usepackage{caption}
 
 \author{Tomasz Kasprzyk, Daniel Ogiela\\ Jakub Stępak}
 
@@ -26,7 +26,6 @@
 \section{Wizja produktu}
 
 %--------------------------Podrozdział Opis problemu ---------------------------------------
-
 \subsection{Opis problemu}
 Projekt dotyczy obliczania wyników wyborów. Wybory i sposób wyłaniania zwycięzców są
 ściśle określone. Wybory można opisać jako parę $(C, V)$, gdzie $C = \left\{c_1, c_2, ... , c_m\right\}$ stanowi zbiór kandydatów, a $V = \left\{v_1, v_2, ... , v_n\right\}$ to ciąg wyborców. Każdy z wyborców posiada swoje preferencje wyborcze, które są opisane przez ciąg kandydatów ze zbioru $C$. Długość ciągu kandydatów wynosi $m$, a kandydaci są uporządkowani od najbardziej preferowanego do najmniej preferowanego. Ponadto określony jest rozmiar $k$ zwycięskiego komitetu, który określa liczbę kandydatów, którzy zwyciężyli w wyborach.
@@ -49,10 +48,11 @@ zadowolenie danego wyborcy ze zwycięskiego komitetu. W celu zwięzłego zdefini
 funkcji celu wprowadza się pojęcie ciągu pozycji, które określa dla danego wyborcy pozycje
 wszystkich zwycięskich kandydatów z jego preferencji. Ciąg pozycji jest posortowany
 rosnąco - pozycja najbardziej preferowanego kandydata spośród zwycięzców na początku
-ciągu, pozycja najmniej preferowanego kandydata spośród zwycięzców na końcu ciągu. \\  \\
-Przykład \\ 
+ciągu, pozycja najmniej preferowanego kandydata spośród zwycięzców na końcu ciągu.
+\clearpage
+\noindent
+\emph{Przykład} \\ 
 Dla następujących preferencji:
-
 \begin{center}
 \includegraphics[width=0.8\textwidth]{pics/positions.png}
 \end{center}
@@ -75,15 +75,21 @@ $$\ell_p(x_1,x_2,\dots, x_n) = \sqrt[p]{x_1^p+x_2^p+\dots+x_n^p}$$
 , gdzie $x_1, x_2, ..., x_n \in \mathbb{R}, p \in \mathbb{N}$ \\ \\
 Dla skrajnych przypadków, gdy $p = 1$ i gdy $p \to \infty$ norma $\ell_p$ przyjmuje odpowiednio postać sumy: $$l_1(x_1, x_2,\dots, x_n) = x_1 + x_2 +\dots+ x_n$$ oraz postać operatora maksimum: $$l_\infty(x_1, x_2,\dots, x_n) = max(x_1, x_2,\dots, x_n)$$
 \\ Mając zdefiniowaną normę $\ell_p$ można określić funkcję satysfakcji będącą tematem pracy. $$f_{{\ell_p}-Borda}(i_1, i_2, ..., i_k) = \ell_p(\beta(i_1), \beta(i_2), ..., \beta(i_k)) = \sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+\dots+[\beta(i_k)]^p}$$
+\clearpage
 Funkcja jest uogólnieniem systemu $k-Borda$. Jeżeli za $p$ przyjęta zostanie wartość $1$,
 zdefiniowana funkcja przyjmuje postać funkcji satysfakcji dla zwykłego systemu $k-Borda$. Dla $p$ dążącego do nieskończoności funkcja przyjmuje postać funkcji satysfakcji dla systemu
 $Chamberlin-Courant’a$.
 
 % ------------------------------------------------------------------------------------------
 
+%--------------------------Podrozdział Możliwości ------------------------------------------
 \subsection{Możliwości}
 Obliczanie wyników wyborów dla systemu $\ell_p-Borda$ metodą typu brute-force jest
 czasochłonne. Już dla stosunkowo niewielkich rozmiarem danych, algorytm jest nieużyteczny. Dlatego głównym zadaniem projektu jest zaprojektowanie i implementacja algorytmów heurystycznych, które możliwie dokładnie i możliwie szybko obliczają wyniki wyborów. Ponadto do zadań zespołu należy próba oceny działania stworzonych algorytmów heurystycznych.
+
+% ------------------------------------------------------------------------------------------
+
+%--------------------------Motywacja do stworzenia projektu --------------------------------
 \subsection{Motywacja do stworzenia projektu}
 Jednym z głównym celów realizacji projektu jest chęć poznania różnych sposobów tworzenia
 algorytmów heurystycznych oraz zastosowanie ich do rozwiązania problemów w
@@ -101,6 +107,7 @@ nie muszą dotyczyć ludzi, a mogą polegać na selekcji innych rzeczy. Można z
 wybory na filmy, które zostaną odtworzone w trakcie podróży samolotem, czy podczas
 seansu z rodziną i znajomymi. Mogą to być wybory na miejsca wspólnego wypadu znajomych na weekend. Wszędzie, gdzie ma sens zastosowanie preferencji (ułożenie
 rzeczy od najbardziej do najmniej pożądanej) można wykorzystać stworzony system.
+
 Dzięki stworzonemu systemowi według określonych wymagań, możliwe jest nie tylko
 szybkie obliczenie wyborów na bazie wprowadzonych do systemu preferencji. Możliwe jest
 sterowaniem sposobem obliczania wyborów według pożądanej reprezentatywności
@@ -109,6 +116,7 @@ znajdzie wśród nich takiego, którego bardzo lubi, ale też taki, którego bar
 może zwycięzcy mają być tacy, że większość wyborców co prawda nie znajdzie wśród nich
 bardzo pożądanego kandydata, ale jednocześnie nie znajdzie takiego, którego bardzo nie
 lubi. Możliwy jest również wybór pośredni między wskazanymi dwoma rozwiązaniami.
+
 Przykładowo, jeżeli użytkownik chce wybrać kilka filmów do wspólnego seansu z
 przyjaciółmi i rodziną, to może zdecydować między różnymi opcjami. Jedną z opcji jest taki
 wybór, aby wśród wybranych filmów każdy ze znajomych znalazł film, który mu bardzo
@@ -116,7 +124,11 @@ odpowiada, lecz jednocześnie znalazły się takie, które większości znajomyc
 odpowiadają. Druga możliwość to taka, w której wybrane zostaną filmy, które większości
 znajomych ani za bardzo nie odpowiadają, ani za bardzo nie przeszkadzają. Pozostałymi
 możliwościami są opcje pośrednie między wskazanymi.
+\clearpage
 
+% ------------------------------------------------------------------------------------------
+
+%--------------------------Podrozdział Użytkownicy -----------------------------------------
 \subsection{Użytkownicy}
 Potencjalnymi użytkownikami systemu mogą być osoby i organizacje, które potrzebują
 systemu wybierania kilku elementów spośród puli wszystkich elementów w taki sposób, aby
@@ -126,6 +138,9 @@ czasu podróży poprzez wybór odpowiednich filmów czy potraw. Ponadto system m
 służyć pojedynczym osobom w celu wyboru odpowiedniej formy spędzania wolnego czasu w
 grupie znajomych.
 
+% ------------------------------------------------------------------------------------------
+
+%--------------------------Podrozdział Usługi dostarczane przez system ---------------------
 \subsection{Usługi dostarczanie przez system}
 
 \subsubsection{Usługi wymagane}
@@ -148,14 +163,229 @@ projektowaniu i tworzeniu algorytmów obliczających wyniki wyborów. System mus
 wczytywać pewien format pliku wejściowego definiującego wybory, który niekoniecznie jest prosty i intuicyjny w tworzeniu. Jeżeli ta dodatkowa usługa zostałaby zrealizowana, ułatwiłaby użytkowanie systemu i poprawiła zadowolenie użytkowników z korzystania z systemu
 \end{itemize}
 
+% ------------------------------------------------------------------------------------------
+
 %-------------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------------
 \section{Studium wykonalności}
   
 \subsection{Opis wymagań}
 
+\subsubsection{Wymagania funkcjonalne}
+Poniżej zamieszczona jest lista najważniejszych wymagań w postaci kolejnych tabel. Tabela składa się z trzech pól opisujących dane wymaganie: \textit{Nazwa, Opis} i \textit{Uzasadnienie}. Pole \textit{Nazwa} jest nazwą usługi dostarczanej przez system, pole \textit{Opis} szczegółowo opisuje w jaki sposób jest realizowane dane wymaganie, a pole \textit{Uzasadnienie} podaje powód dlaczego w taki, a nie inny sposób wymaganie zostało zrealizowane i postawione.
+\newpage
+\begin{table}
+%\centering
+\begin{tabular}{|c|p{12.5cm}|}
+\hline
+\textbf{Nazwa} & Zdefiniowanie wyborów \\ 
+\hline 
+\textbf{Opis} & System oferuje różne sposoby zdefiniowania i wprowadzenia wyborów
+do systemu. Pierwszym i podstawowym jest możliwość określania
+wyborów w pliku formatu $.soc$. Sposób określania w nim kandydatów
+oraz głosów wyborców jest ściśle określony. W pierwszej linii pliku
+znajduje się liczba kandydatów do zwycięskiego komitetu. W kolejnych
+liniach znajdują się numery i nazwy kandydatów. Następnie jest linia z
+informacją o liczbie głosujących, liczbie policzonych głosów oraz liczbie
+głosów unikalnych. W ostatnim bloku pliku znajdują się linie z
+informacją o preferencjach głosów unikalnych. Każda linia składa się z
+liczby powtórzeń danego głosu oraz preferencji określonej dla tego
+głosu, która ma postać ciągu numerów kandydatów od najbardziej do
+najmniej pożądanego. Po stworzeniu opisanego pliku system umożliwia
+wskazanie pliku z systemu plików.
 
+Drugim sposobem definiowania wyborów oferowanym przez system
+jest generowanie wyborów z rozkładu normalnego. W tym celu
+kandydaci i wyborcy są reprezentowani jako punkty płaszczyźnie.
+Preferencje wyborców obliczane są na bazie odległości euklidesowych
+do poszczególnych kandydatów na płaszczyźnie. Aby wygenerować
+wybory użytkownik podaje w formularzu parametry potrzebne do
+generacji wyborów zgodnie z rozkładem normalnym. Uzupełnia pola
+dotyczące: liczby kandydatów, średniej wartości współrzędnej $x$ dla
+wyborców, średniej wartości współrzędnej x dla kandydatów, średniej
+wartości współrzędnej $y$ dla wyborców, średniej wartości współrzędnej
+$y$ dla kandydatów, odchylenia standardowego wyborców oraz
+odchylenia standardowego kandydatów. \\ 
+\hline 
+\textbf{Uzasadnienie} & Definicja wyborów za pomocą pliku formatu $.soc$ zapewnia spełnienie
+podstawowej usługi oferowanej przez system - wprowadzenia wyborów
+do systemu. Uzasadnieniem dla konieczności generacji wyborów z
+rozkładu normalnego jest możliwość atrakcyjnej i klarownej wizualizacji
+wyborów i wyników wyborów. Wizualizacja w ten sposób wyników
+wyborów umożliwia między innymi ocenienie jakości stworzonych
+algorytmów i porównanie ich.\\ 
+\hline 
+\end{tabular}
+\caption{Zdefiniowanie wyborów} 
+\end{table}
 
+\begin{table}
+%\centering
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{Nazwa} & Obliczanie wyników wyborów \\ 
+\hline 
+\textbf{Opis} & System oferuje kilka algorytmów heurystycznych obliczających wyniki
+wyborów. Algorytmy bazują na różnym paradygmacie tworzenia ich.
+Jeden z paradygmatów to programowanie zachłanne, a drugi to
+programowanie genetyczne. Algorytmy dają przybliżone rozwiązania
+problemu pod względem jego dokładności. Użytkownik przy tworzeniu
+nowego wyniku dla zdefiniowanych wyborów może w prosty sposób
+wybrać jeden z algorytmów. \\ 
+\hline 
+\textbf{Uzasadnienie} & Kilka stworzonych algorytmów i różne podejście do tworzenia ich,
+umożliwia ocenę jakości algorytmów na bazie zestawienia wyników
+obliczonych wyborów. Ponadto stworzenie różnych algorytmów pozwoli
+na dogłębniejsze poznanie sposobów tworzenia algorytmów
+heurystycznych, jak również samej tematyki pracy, jaką były różne
+sposoby wyboru zwycięskiego komitetu.\\ 
+\hline 
+\end{tabular}
+\caption{Obliczanie wyników wyborów} 
+\end{table}
+
+\begin{table}
+%\centering
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{Nazwa} & Wersja algorytmu zachłannego $Greedy - CC$ \\ 
+\hline 
+\textbf{Opis} & Implementacja algorytmu zachłannego dla szczególnego przypadku
+(parametr $p \to \infty$) \\ 
+\hline 
+\textbf{Uzasadnienie} & Dla stosunkowo "dużych" wartości parametru $p$ wykonywanie operacji
+pierwiastkowania i potęgowania stanowi niepotrzebny narzut czasowy.
+W tym przypadku operację obliczania normy $\ell_p$ można zastąpić
+wyznaczaniem maksimum dla pojedynczych wyników kandydatów z
+komitetu, dla którego liczono by normę $\ell_p$.
+Korzyści jakie płyną z takiej modyfikacji to nie tylko skrócenie czasu
+obliczeń, ale także ustalanie od jakiej wartości parametru $p$ komitet
+wygrywający jest zgodny z wynikiem otrzymanym dla systemu
+$Chamberlin-Courant’a$.\\ 
+\hline 
+\end{tabular} 
+\caption{Wersja algorytmu zachłannego $Greedy - CC$}
+\end{table}
+
+\begin{table}
+%\centering
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{Nazwa} & Prezentacja wyników wyborów \\ 
+\hline 
+\textbf{Opis} & System oferuje dwa sposoby prezentacji wyników wyborów. Pierwszy z
+nich, to proste wskazanie kandydatów i wypisanie nazw kandydatów w
+widocznym panelu. Ta forma prezentacji dotyczy wyników wyborów,
+które zdefiniowane zostały za pomocą pliku formatu $.soc$.
+
+Druga forma prezentacji wyników wyborów dotyczy wyborów wygenerowanych z
+rozkładu normalnego. Wizualizacja polega na narysowaniu wykresu
+$2D$, na którym punkty reprezentujące kandydatów ze zwycięskiego
+komitetu są wyraźnie wyróżnione na tle kandydatów, którzy nie dostali
+się do zwycięskiego komitetu. Dla wyborów generowanych z rozkładu normalnego system również oferuje wypisanie nazw zwycięzców w dobrze widocznym panelu.\\ 
+\hline 
+\textbf{Uzasadnienie} & Prezentacja wyników wyborów w postaci wykresu $2D$ z wyraźnie
+zaznaczonymi zwycięzcami i przegranymi, którzy są reprezentowani
+jako punkty, pozwala na porównanie w prosty sposób wyników
+wyborów dla różnych wartości parametru $p$. Taka forma wizualizacji
+jest jednocześnie wizualnie atrakcyjna.
+Prezentacja wyników dla wyborów zdefiniowanych z pliku formatu $.soc$
+ogranicza się jedynie do wypisania zwycięzców, ponieważ kandydaci
+nie są reprezentowani jako punkty i tym samym nie mają
+współrzędnych w tej odmianie wyborów.\\ 
+\hline 
+\end{tabular} 
+\caption{Prezentacja wyników wyborów}
+\end{table}
+
+\clearpage
+\subsubsection{Wymagania niefunkcjonalne}
+Wymagania niefunkcjonalne podzielono na wymagania produktowe i wymagania organizacyjne. Poniżej zamieszczono tabele analogiczne do tych z wymagań funkcjonalnych dla odpowiednich typów wymagań niefunkcjonalnych.
+
+\begin{center}
+\textbf{Wymagania produktowe}
+\end{center}
+{
+\centering
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{Nazwa} & Obliczanie wyników wyborów w satysfakcjonującym czasie \\ 
+\hline 
+\textbf{Opis} & Ponieważ dla już stosunkowo małych danych metoda brute-force
+rozwiązywania opisanego problemu nie daje rezultatów w
+satysfakcjonującym czasie, więc to wymaganie niefunkcjonalne jest
+kluczowe w tym projekcie. Zastosowanie algorytmów heurystycznych
+wychodzi naprzeciw temu wymaganiu. Algorytmy powinny dawać
+rozwiązania w zadowalającym czasie dla możliwie dużych danych. \\ 
+\hline 
+\textbf{Uzasadnienie} & Czas działania algorytmu powinien się mieścić w możliwym do
+zaakceptowania przedziale czasu ze względu na konieczność jego
+użyteczności.\\ 
+\hline 
+\end{tabular}
+\captionof{table}{Obliczanie wyników wyborów w satysfakcjonującym czasie}
+}
+
+\begin{center}
+\textbf{Wymagania organizacyjne}
+\end{center}
+{
+\centering
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{Nazwa} & Dotrzymanie terminów na przedstawienie poszczególnych elementów
+pracy \\ 
+\hline 
+\textbf{Opis} & Kolejne elementy pracy, które należało przedstawiać w umówionych
+terminach to: wizja produktu, studium wykonalności, prototyp oraz tuż
+przed końcem projektu: produkt końcowy wraz z dokumentacją. \\ 
+\hline 
+\textbf{Uzasadnienie} & Terminy są dostosowane do trybu wykonywania pracy inżynierskiej,
+który jest ustalany przez władze uczelni.\\ 
+\hline 
+\end{tabular}
+\captionof{table}{Obliczanie wyników wyborów w satysfakcjonującym czasie}
+}
+
+\subsection{Strategia testowania}
+Podstawowym rodzajem testów pisanych w trakcie tworzenia systemu były testy
+jednostkowe. Były one dodawane na bieżąco od razu przy dodawaniu kolejnych
+funkcjonalności systemu. 
+
+Ponadto w celu zagwarantowania poprawności działania wcześniej dodanych
+funkcjonalności po dodaniu nowych skorzystano z ciągłej integracji. Do tego celu
+wykorzystano serwis Travis Cl skonfigurowany do repozytorium kodu. Przy każdej zmianie
+kodu źródłowego w repozytorium dokonywane było automatyczne włączenie testów
+jednostkowych.  
+
+Do oceny poprawności obliczanych wyników wyborów przez stworzone algorytmu,
+przeprowadzono testy porównawcze. Zestawiano wyniki wyborów obliczonych przez różne
+algorytmy dla tych samych danych wejściowych. Ponadto porównywano wykresy wyników
+wyborów z oczekiwanymi rezultatami.
+\clearpage
+
+\subsection{Aspekt technologiczny}
+Do stworzenia systemu wykorzystano język $Python 2.7$. Produkt postanowiono wykonać w
+postaci aplikacji webowej. Aplikację internetową oparto na frameworku pythonowym $Django
+1.9$. Do tworzenia stron internetowych użyto frameworku $Bootstrap$. Do wdrożenia systemu
+wykorzystano platformę $Heroku$.
+
+Wybrano taki stos technologiczny ze względu na doświadczenie części zespołu pracy z nim.
+Wiedza na temat tych narzędzi przekonywała zespół o możliwości zrealizowania projektu w
+tej technologii.
+
+\subsection{Analiza ryzyka}
+Głównym zagrożeniem dla realizacji produktu mogły być problemy ze stworzeniem
+wystarczająco dobrego algorytmu heurystycznego dla opisanego problemu. Ze względu na
+niewielkie doświadczenie zespołu w tej dziedzinie taka sytuacja mogła wystąpić. Głównym
+zabezpieczeniem na wypadek takiego scenariusza było stosunkowo szybkie stworzenie
+bazy całego systemu i możliwość wczesnego skupienia się na algorytmach heurystycznych.
+
+Innym, dużo mniejszym zagrożeniem dla projektu mógł być brak skoordynowania prac
+poszczególnych członków zespołu. Ponieważ dla członków zespołu projekt inżynierski był
+tylko jednym z wielu zajęć w czasie trwania projektu, mogła wystąpić sytuacja kiedy ze
+względu na natężenie innych obowiązków, dany członek zespołu nie mógłby wykonać
+koniecznej pracy w odpowiednim czasie.
 
 % o ile to mozliwe prosze uzywac odwolan \cite w konkretnych miejscach a nie \nocite
 
