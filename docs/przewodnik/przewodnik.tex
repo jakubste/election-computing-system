@@ -4,6 +4,7 @@
 \usepackage{url}
 \usepackage{amsfonts}
 \usepackage{caption}
+\usepackage{enumitem}
 
 \author{Tomasz Kasprzyk, Daniel Ogiela\\ Jakub Stępak}
 
@@ -175,7 +176,7 @@ wczytywać pewien format pliku wejściowego definiującego wybory, który niekon
 Poniżej zamieszczona jest lista najważniejszych wymagań w postaci kolejnych tabel. Tabela składa się z trzech pól opisujących dane wymaganie: \textit{Nazwa, Opis} i \textit{Uzasadnienie}. Pole \textit{Nazwa} jest nazwą usługi dostarczanej przez system, pole \textit{Opis} szczegółowo opisuje w jaki sposób jest realizowane dane wymaganie, a pole \textit{Uzasadnienie} podaje powód dlaczego w taki, a nie inny sposób wymaganie zostało zrealizowane i postawione.
 \newpage
 \begin{table}
-%\centering
+\centering
 \begin{tabular}{|c|p{12.5cm}|}
 \hline
 \textbf{Nazwa} & Zdefiniowanie wyborów \\ 
@@ -220,7 +221,7 @@ algorytmów i porównanie ich.\\
 \end{table}
 
 \begin{table}
-%\centering
+\centering
 \begin{tabular}{|c|p{10cm}|}
 \hline
 \textbf{Nazwa} & Obliczanie wyników wyborów \\ 
@@ -243,9 +244,11 @@ sposoby wyboru zwycięskiego komitetu.\\
 \end{tabular}
 \caption{Obliczanie wyników wyborów} 
 \end{table}
+\clearpage
 
-\begin{table}
-%\centering
+%\begin{table}
+{
+\centering
 \begin{tabular}{|c|p{10cm}|}
 \hline
 \textbf{Nazwa} & Wersja algorytmu zachłannego $Greedy - CC$ \\ 
@@ -264,11 +267,13 @@ wygrywający jest zgodny z wynikiem otrzymanym dla systemu
 $Chamberlin-Courant’a$.\\ 
 \hline 
 \end{tabular} 
-\caption{Wersja algorytmu zachłannego $Greedy - CC$}
-\end{table}
-
-\begin{table}
-%\centering
+\captionof{table}{Wersja algorytmu zachłannego $Greedy - CC$}
+}
+%\end{table}
+\vspace{\baselineskip}
+%\begin{table}
+{
+\centering
 \begin{tabular}{|c|p{10cm}|}
 \hline
 \textbf{Nazwa} & Prezentacja wyników wyborów \\ 
@@ -295,13 +300,14 @@ nie są reprezentowani jako punkty i tym samym nie mają
 współrzędnych w tej odmianie wyborów.\\ 
 \hline 
 \end{tabular} 
-\caption{Prezentacja wyników wyborów}
-\end{table}
+\captionof{table}{Prezentacja wyników wyborów}
+}
+%\end{table}
 
-\clearpage
+%\clearpage
 \subsubsection{Wymagania niefunkcjonalne}
 Wymagania niefunkcjonalne podzielono na wymagania produktowe i wymagania organizacyjne. Poniżej zamieszczono tabele analogiczne do tych z wymagań funkcjonalnych dla odpowiednich typów wymagań niefunkcjonalnych.
-
+\clearpage
 \begin{center}
 \textbf{Wymagania produktowe}
 \end{center}
@@ -365,8 +371,8 @@ wyborów z oczekiwanymi rezultatami.
 \clearpage
 
 \subsection{Aspekt technologiczny}
-Do stworzenia systemu wykorzystano język $Python 2.7$. Produkt postanowiono wykonać w
-postaci aplikacji webowej. Aplikację internetową oparto na frameworku pythonowym $Django
+Do stworzenia systemu wykorzystano język $Python \ 2.7$. Produkt postanowiono wykonać w
+postaci aplikacji webowej. Aplikację internetową oparto na frameworku pythonowym $Django \
 1.9$. Do tworzenia stron internetowych użyto frameworku $Bootstrap$. Do wdrożenia systemu
 wykorzystano platformę $Heroku$.
 
@@ -386,6 +392,246 @@ poszczególnych członków zespołu. Ponieważ dla członków zespołu projekt i
 tylko jednym z wielu zajęć w czasie trwania projektu, mogła wystąpić sytuacja kiedy ze
 względu na natężenie innych obowiązków, dany członek zespołu nie mógłby wykonać
 koniecznej pracy w odpowiednim czasie.
+
+\section{Wybrane aspekty realizacji}
+\subsection{Lista modułów}
+Moduły przedstawione są w postaci przyporządkowania do modułów usług, za które w
+systemie odpowiedzialny jest dany moduł. Część opisanych czynności jest wykonywana
+poprzez współpracę różnych modułów.
+
+\noindent
+\begin{enumerate}[leftmargin=0.5cm]
+\item Moduł administracji kont
+	\begin{itemize}
+	\item logowanie
+	\item wylogowanie
+	\item rejestracja
+	\end{itemize}
+\item Moduł zarządzania wyborami
+	\begin{itemize}
+	\item wyświetlenie listy wszystkich wyborów
+	\item wyświetlenie listy wszystkich wyników dla danych wyborów
+	\item stworzenie nowych wyborów
+	\item stworzenie nowego wyniku
+	\item usunięcie wyborów
+	\item usunięcie wyniku
+	\end{itemize}
+\item Moduł wizualizacji wyborów i wyników wyborów
+	\begin{itemize}
+	\item wizualizacja wyborów wygenerowanych zgodnie z rozkładem normalnym
+	\item wizualizacja wyników wyborów dla wyborów wygenerowanych zgodnie z rozkładem
+normalnym
+	\end{itemize}
+\item Moduł generacji i wczytywania wyborów
+	\begin{itemize}
+	\item generacja wyborów z rozkładu normalnego
+	\item wczytywanie wyborów z pliku formatu $.soc$
+	\end{itemize}
+\item Moduł obliczania wyników wyborów
+	\begin{itemize}
+	\item obliczanie wyników wyborów za pomocą różnych algorytmów
+	\end{itemize}
+\item Moduł URL Resolver
+	\begin{itemize}
+	\item przekazywanie żądań otrzymywanych przez klienta do odpowiednich modułów
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Diagram komunikacji}
+\begin{center}
+\centerline{\includegraphics[scale=0.7]{pics/Diagram_Komunikacji.png}}
+\captionof{figure}{Diagram komunikacji}
+\end{center}
+
+\subsubsection{Opis diagramu}
+Na diagramie oprócz przytoczonych modułów znajdują się przeglądarka internetowa oraz
+baza danych. W celu wykonania swoich usług moduły współpracują z tymi dodatkowymi
+komponentami diagramu. Wszystkie moduły wykorzystują wewnętrzne mechanizmy $Django$,
+dlatego znajdują się wewnątrz dużego obszaru oznaczonego jako $Django$. Największym
+modułem spośród wszystkich modułów jest moduł zarządzania wyborami. Współpracuje on
+z innymi modułami w celu wykonania niektórych swoich zadań. Zleca on między innymi
+obliczenie wyników wyborów modułowi obliczania wyników wyborów przy wykonywaniu
+zadania stworzenia nowego wyniku. Najbardziej odosobnionym modułem jest moduł
+administracji kont, który nie współpracuje z innymi modułami. Jedynie moduł URL Resolver
+kieruje odpowiednie żądania do tego modułu i jest to jedyna komunikacja związania z
+modułem administracji kont. Większość modułów w celu realizacji swoich zadań komunikuje
+się z bazą danych. Dokładny opis diagramu ze ścieżkami przejść znajduje się w dokumentacji
+technicznej.
+
+\section{Organizacja pracy}
+\subsection{Metodyka pracy}
+Tworzenie systemu będącego realizacją tego projektu inżynierskiego można uznać za
+proces ewolucyjnego tworzenia oprogramowania. Klient na początku projektu określił
+wymagania w bardzo ogólny sposób. Tworzony system miał za zadanie obliczać wyniki
+wyborów dla zdefiniowanego przez klienta systemu wyborczego za pomocą algorytmów
+heurystycznych. W miarę postępu projektu, wymagania były precyzowane na bazie częstego
+kontaktu z klientem i potrzeb rozwijanego systemu. Powstawały kolejne wersje systemu aż
+do osiągnięcia systemu końcowego.
+
+\subsection{Podział prac}
+W ramach realizacji projektu przydzielano prace do poszczególnych członków zespołu.
+\vspace{\baselineskip} \\
+Tomasz Kasprzyk
+\begin{itemize}
+\item czynność1
+\end{itemize}
+Daniel Ogiela
+\begin{itemize}
+\item czynność1
+\end{itemize}
+Jakub Stępak
+\begin{itemize}
+\item czynność1
+\end{itemize}
+
+\subsection{Narzędzia do zarządzania projektem}
+Do przydzielania zadań członkom zespołu i ustalania ich terminów wykorzystano aplikację
+internetową $Trello$. Do przechowywania kodu źródłowego oprogramowania wykorzystano
+serwis internetowy $GitHub$. W celu zdalnego kontaktowania się pomiędzy członkami zespołu
+korzystano z oprogramowania $Slack$. Korzystano z aplikacji $Google Docs$ do tworzenia
+roboczej wersji dokumentacji. Do przygotowywania diagramów do dokumentacji
+wykorzystano aplikację $draw.io$.
+
+\subsection{Opis kolejnych wersji systemu}
+\subsubsection{Wersja 1.}
+Pierwsza wersja systemu była uruchamiana z poziomu konsoli Pythona. Aplikacja
+przyjmowała za argumenty parametr $p$ konieczny do obliczania normy $\ell_p$ oraz plik z
+rozszerzeniem $.soc$ definiujący wybory. Aplikacja potrafiła obliczyć wyniki wyborów dla
+małych danych za pomocą algorytmu typu brute-force. Pierwsza wersja systemu nie spełniała wymagań stawianych systemowi. Powstała w celu dookreślenia wymagań.
+
+\subsubsection{Wersja 2.}
+Druga wersja systemu to aplikacja webowa skonfigurowana na platformie $Heroku$. Aplikacja
+posiadała funkcjonalności poprzedniej wersji systemu oraz miała dodany szereg nowych
+funkcjonalności. Pozwalała na zarządzanie kontami użytkowników. Każdy użytkownik mógł
+mieć swoje konto i mógł zarządzać swoimi wyborami. Miał możliwość tworzenia wyborów,
+usuwania wyborów, dodawania nowych wyników wyborów czy wyświetlania zwycięzców.
+Ponadto użytkownik mógł generować wybory zgodnie z rozkładem normalnym według
+podanych parametrów. Dla tak stworzonych wyborów użytkownik miał możliwość wyświetlić
+wykresy $2D$, na których kandydaci i wyborcy byli reprezentowani za pomocą punktów. Ta
+wersja stanowiła bazę dla kolejnych wersji systemu.
+
+\subsubsection{Wersja 3.}
+Trzecia wersja systemu dodała do funkcjonalności pierwsze wersje algorytmów
+heurystycznych. Użytkownik mógł obliczać wyniki wyborów za pomocą algorytmu
+zachłannego i genetycznego. System pozwalał na uzyskanie wyników wyborów dla
+większych danych i dawał wizualnie zadowalające rezultaty.
+
+\subsubsection{Wersja 4 - końcowa.}
+Końcowa wersja systemu usprawniła wcześniejsze algorytmy heurystyczne oraz dodała do
+funkcjonalności jeszcze jeden algorytm heurystyczny, który skutecznie i szybko obliczał
+wyniki wyborów dla odpowiednio dużego parametru $p$. Dodano ponadto liczne
+funkcjonalności poprawiające łatwość i intuicyjność korzystania z aplikacji. System pozwalał
+na przeglądanie wyników danych wyborów za pomocą suwaka oraz na usuwanie
+pojedynczych wyników. Do każdego elementu listy rezultatów dodano informację o wyniku
+punktowym. Ponadto poprawiono wygląd strony.
+
+\section{Opisy algorytmów heurystycznych}
+\subsection{Algorytm zachłanny}
+Algorytm aproksymuje wyniki wyborów na bazie funkcji satysfakcji systemu $\ell_p-Borda$ .
+Działa w ten sposób, że główna pętla algorytmu w każdej iteracji wybiera jednego kandydata
+do zwycięskiego komitetu. Jeżeli dany kandydat zostanie wybrany w którejś pętli do
+zwycięskiego komitetu, na pewno znajdzie się wśród ostatecznych zwycięzców. Kolejni
+kandydaci dobierani są w ten sposób do komitetu, że badane jest ile poszczególni, jeszcze
+niewybrani kandydaci wnoszą zadowolenia wyborców do wcześniej wybranych zwycięzców.
+Ten z kandydatów, który wnosi najwięcej zadowolenia wyborców wygrywa daną iterację i
+tym samym wchodzi do zwycięskiego komitetu. 
+
+To ile wnosi dany kandydat do ogólnego zadowolenia wyborców ustalane jest na bazie
+wspomnianej na początku funkcji satysfakcji. Wykorzystuje się ją do ustalenia pojedynczego zadowolenia danego wyborcy z komitetu złożonego z wybranych we wcześniejszych
+iteracjach kandydatów oraz badanego kandydata. Tak otrzymywane pojedyncze
+zadowolenia dla wszystkich wyborców sumuje się. Kandydat, którego suma będzie w danej
+iteracji największa, wygrywa tą iterację i wchodzi do zwycięskiego komitetu. Główna pętla
+algorytm trwa aż cały komitet zostanie uzupełniony.
+
+\subsection{Algorytm zachłanny według zasady Chamberlin-Courant’a}
+Na początku należy zaznaczyć, że ten algorytm nie aproksymuje wyników wyborów na bazie
+funkcji satysfakcji systemu $\ell_p-Borda$, która jest głównym tematem projektu. Wyniki są
+aproksymowane za pomocą funkcji satysfakcji $Chamberlin-Courant’a$ (szczegółowy opis w
+rozdziale \textit{Opis problemu}), która jest szczególnym przypadkiem funkcji satysfakcji systemu $\ell_p-Borda$ dla $p \to \infty$. W związku z tym na działanie tego algorytmu nie wpływa parametr $p$, który jest jedną z danych wejściowych do obliczania wyników wyborów. Jest to najważniejsza różnica między tym, a powyżej opisanym algorytmem, który różnicuje swoje działanie w zależności od parametru $p$.
+
+Działanie tego algorytmu jest właściwie identyczne jak opisanego powyżej. W algorytmie
+występuje główna pętla, która w każdej iteracji wybiera jednego kandydata. W danej iteracji
+dobierany jest najlepszy kandydat pod względem dodanego dodatkowego ogólnego
+zadowolenia wyborców. Dodatkowe zadowolenie jest obliczane za pomocą funkcji satysfakcji $Chamberlin-Courant’a$. Dość istotna różnica między tym a powyżej opisanym algorytmem jest
+taka, że pojedyncze zadowolenie wyborcy na danym etapie algorytmu może być zwiększone
+tylko wtedy, gdy badany kandydat jest wyżej w preferencji wyborcy od każdego z wcześniej
+wybranych kandydatów. Ta różnica wynika z wykorzystania innej funkcji satysfakcji.
+
+\subsection{Algorytm genetyczny}
+
+\section{Efekt końcowy}
+\subsection{Oczekiwane rezultaty}
+Wyniki wyborów pomimo takich samych preferencji wyborców powinny się różnić w
+zależności od parametru $p$, który jest argumentem funkcji satysfakcji określonej dla
+uogólnienia systemu $k-Borda$. Charakterystyczne są dwa skrajne przypadki, w których
+parametr $p$ przyjmuje wartość $1$ oraz kiedy dąży do nieskończoności. Dla pierwszego
+przypadku funkcja satysfakcji przyjmuje postać: $$f_{k-Borda}(i_1, i_2, ..., i_k) = \beta(i_1) + \beta(i_2) + ... + \beta(i_k) 
+$$Jest ona zgodna z regułą $k-Borda$ i jest sumą przydzielonych punktów według punktacji
+Bordy na poszczególnych kandydatów ze zwycięskiego komitetu. Przy zastosowaniu tego
+systemu do wyznaczenia zwycięskiego komitetu, wyniki wyborów średnio satysfakcjonują
+wyborców pod względem reprezentatywności. Zwycięzcy kandydaci dobrani są w ten
+sposób, że dla większości wyborców nie są oni ani bardzo pożądani, ani przesadnie
+odrzucający. Umiejscowieni są zazwyczaj w środku preferencji i w ten sposób dla większości
+wyborców nie są zadowalającym reprezentantem i nie różnią się zbytnio. W modelu, w
+którym zarówno kandydaci, jak i wyborcy przedstawieni są jako punkty na płaszczyźnie,
+punkty reprezentujące zwycięzców oscylują w środku spektrum poglądów. Większość wyborców nie ma swojego wyraźnego reprezentanta, lecz jednocześnie wśród zwycięzców nie ma takiego, który byłby przez nich wyraźnie odrzucany. 
+
+Dla drugiego skrajnego przypadku funkcja satysfakcji przyjmuje postać: $$f_{CC}(i_1, i_2, ..., i_k) = \beta(i_1)$$Jest ona zgodna z regułą $Chamberlin-Courant’a$ i na jej wartość wpływają tylko punkty przydzielone według punktacji Bordy na najwyżej umieszczonego w preferencjach wyborczych kandydata spośród zwycięskiego komitetu. W przeciwieństwie do przypadku dla $p$ wynoszącego $1$, wyniki wyborów obliczane według tego systemu sprzyjają zasadzie reprezentatywności. Większość wyborców będzie miała wśród członków zwycięskiego komitetu swojego wyraźnego reprezentanta, którego umieściła wysoko w preferencjach wyborczych. Jednocześnie wśród zwycięzców będą tacy, którzy wyraźnie nie odpowiadają większości wyborców. W modelu opisanym wyżej, punkty reprezentujące zwycięzców wyborów będą rozproszone po całym spektrum poglądów. Wśród pewnej klasy wyborców, którzy zgromadzeni są blisko pewnego zestawu poglądów, znajdzie się co najmniej jeden zwycięzca, który najbardziej odpowiada ich poglądom.
+
+Pomiędzy skrajnymi przypadkami znajdują się stany pośrednie, które w zależności od
+parametru $p$ i specyfiki samych wyborów (liczba i rozmieszczenie kandydatów, liczba i
+rozmieszczenie wyborców) powinny być bardziej lub mniej zbliżone do stanów skrajnych dla
+$p$ równego $1$ i dla $p \to \infty$. Stosując model, w którym kandydaci i wyborcy są przedstawieni
+jako punkty na płaszczyźnie, w miarę wzrostu parametru $p$ rozproszenie punktów
+reprezentujących zwycięzców powinno się zwiększać aż do osiągnięcia pewnej granicznej
+wartości parametru $p$. Dla wartości parametrów $p$ większych od tej granicznej wartości, wyniki
+wyborów się już nie zmieniają.
+
+\subsection{Prezentacja i jakość wyników}
+\subsubsection{Prezentacja tabeli z wszystkimi wynikami dla danych wyborów}
+Poniżej tabela z czasami i zadowoleniem wyborców z wyników wyborów obliczonych za
+pomocą różnych algorytmów. Testowane wybory wygenerowano z rozkładu normalnego.
+Zawierają 30 kandydatów, 50 wyborców oraz komitet zwycięski liczący 15 kandydatów.
+Wyniki obliczono dla różnych wartości parametru $p$. Tabela generowana i wyświetlana przez system.
+%\clearpage
+
+\begin{center}
+\centerline{\includegraphics[scale=0.6]{pics/score_table.png}}
+\captionof{figure}{Wyniki wyborów w postaci wyświetlonej przez system tabeli}
+\end{center}
+
+System wyświetla wyniki w taki sposób, aby wyniki wyborów wygenerowanych dla tego samego parametru $p$ były zgrupowane razem. W tym celu wyniki wyborów dla tego samego parametru $p$ występują obok siebie oraz mają inny kolor tła od sąsiednich wyników dla innego parametru $p$. Warto zwrócić uwagę, że w miarę wzrostu parametru $p$ wartość zadowolenia wyborców z komitetów maleje. Wynika to specyfiki funkcji satysfakcji dla systemu $\ell_p-Borda$. Porównywanie między sobą wartości zadowoleń z danego komitetu dla różnych wartości parametru $p$ raczej mija się z celem.  
+
+\subsubsection{Prezentacja szczegółowych wyników wyborów}
+Na kolejnych grafikach przedstawiono szczegółowe wyniki wyborów w postaci wykresów $2D$. Wybory wygenerowano z rozkładu
+normalnego. Wyborcy i kandydaci są w nich przedstawiani jako punkty na płaszczyźnie. Wybory składają się z 30 kandydatów, 100 wyborców oraz komitetu
+zwycięskiego liczącego 10 kandydatów. Wyświetlone wyniki obliczano za pomocą algorytmu
+zachłannego dla rosnących parametrów $p$.
+\begin{center}
+\centerline{\includegraphics[scale=0.65]{pics/p1.png}}
+\captionof{figure}{Wyniki wyborów dla $p$ = 1}
+\clearpage
+\centerline{\includegraphics[scale=0.65]{pics/p5.png}}
+\captionof{figure}{Wyniki wyborów dla $p$ = 5}
+\centerline{\includegraphics[scale=0.65]{pics/p20.png}}
+\captionof{figure}{Wyniki wyborów dla $p$ = 20}
+\end{center}
+
+Na wykresach można zaobserwować stopniowe rozpraszanie się zwycięskich kandydatów
+dla zwiększającej się wartości parametru $p$.
+
+\section{Testy porównawcze}
+\subsection{Czasy działania algorytmów}
+\begin{center}
+\centerline{\includegraphics[scale=0.65]{pics/czas_dzialania.png}}
+\captionof{figure}{Czas działania algorytmów w zależności od parametru $p$}
+\end{center}
+Na wykresie zaprezentowano czasy działania różnych algorytmów w zależności od
+dobranego parametru $p$. Testy przeprowadzono dla wyborów zawierających $30$
+kandydatów, $50$ wyborców oraz komitet zwycięski liczący $15$ kandydatów. Algorytm
+zachłanny według zasady $Chamberlin-Courant’a$ nie zmienia swojego czasu obliczeń, gdyż działanie
+algorytmu nie zależy od parametru $p$ . Najszybciej działa algorytm zachłanny według zasady
+$Chamberlin-Courant’a$, drugi w kolejności jest algorytm zachłanny zależny od parametru $p$ , a najwolniejszy jest algorytm genetyczny.
 
 % o ile to mozliwe prosze uzywac odwolan \cite w konkretnych miejscach a nie \nocite
 
