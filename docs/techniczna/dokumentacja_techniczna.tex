@@ -1,4 +1,4 @@
-\documentclass[pdflatex,11pt]{../aghdoc}
+\documentclass[pdflatex,11pt]{../aghdoc_version2}
 % \documentclass{../aghdoc}               % przy kompilacji programem latex
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
@@ -49,6 +49,13 @@
 \facultyPL{Wydział Informatyki, Elektroniki i Telekomunikacji}
 
 \setlength{\cftsecnumwidth}{10mm}
+
+% umożliwienie żeby domyślnie dokument nie robił wcięć poza wybranymi (\indent w tym miejscu)
+
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
 
 %---------------------------------------------------------------------------
 
@@ -111,13 +118,219 @@ $f_{\ell_pB}(\infty,(i_1, \dots ,i_k))=\lim\limits_{p \to \infty} \sqrt[p]{\beta
 
 \section{Format danych wejściowych}
 \label{sec:format_danych_wejsciowych}
+Pojedynczy plik składa się z następującego formatu:\\
+\texttt{<liczba kandydatów> \\
+1, <nazwa kandydata> \\
+2, <nazwa kandydata> \\
+… \\
+<liczba kandydatów>, <nazwa kandydata> \\
+<liczba głosujących>, <liczba głosów policzonych>, <liczba unikalnych głosów> \\
+<liczba powtórzeń głosu>, <głos> \\
+… \\
+<liczba powtórzeń głosu>, <głos>}
 
-\section{Szybkość i dokładność wykonywanych obliczeń}
-\label{sec:szybkosc_i_dokladnosc_wykonywanych_obliczen}
+\chapter{Architektura Django}
+$Django$ to framework webowy napisany w $Pythonie$. Dostarcza wysokopoziomowych
+abstrakcji pozwalających na szybkie i wygodne pisanie przejrzystych aplikacji. \\ \\
+Jego architektura koncepcyjnie przypomina wzorzec architektoniczny $Model-View-Controller$,
+jednak jak przyznają sami twórcy [ref], $Django$ nie do końca wpasowuje się w klasyczne
+ujęcie $MVC$. \\ \\
+$Django$ dostarcza mapowania obiekto-relacyjnego, dzięki którym całość modeli można ująć
+w $Pythonie$. Wygodny $ORM$ zazwyczaj wystarcza do obsługi bazy danych, jednak zawsze
+istnieje możliwość użycia bezpośrednio $SQL$. \\ \\
+Widoki w $Django$ spełniają dwojaką funkcję - służą zarówno przekazaniu danych do
+wyświetlenia, jak i ich modyfikacji. W wyświetleniu danych użytkownikowi pośredniczą
+szablony ($templates$), które "opakowują" przekazane dane do postaci $HTMLa$, który może
+wyświetlić przeglądarka internetowa. Dzięki temu wybór danych, jakie mają zostać pokazane
+użytkownikowi jest oddzielony od samego sposobu ich prezentacji. \\ \\
+Za kontroler z klasycznego $MVC$ można uznać sam framework dostarczający wspomnianej
+obsługi bazy danych czy mapowania adresów URL do poszczególnych widoków.
 
 \chapter{Opis modułów}
 \label{cha:opis_modulow}
 
+\section{Moduł administracji kont}
+\subsection{Opis ogólny}
+Moduł odpowiedzialny za zarządzanie kontami użytkowników. Umożliwia czynności
+logowania, wylogowania oraz rejestracji. Nie współpracuje z innymi modułami. Korzysta
+jedynie z bazy danych w celu weryfikacji użytkowników.
+
+\subsection{Komponenty programowe}
+Komponenty programowe dla tego modułu znajdują się w pakiecie $ecs.accounts$ \\ \\
+{
+\centering
+\begin{tabular}{|c|c|c|}
+\hline 
+\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\ 
+\hline 
+widoki & klasa $LoginView$ & logowanie \\ 
+\cline{2-3} 
+ & klasa $RegisterView$ & rejestracja \\ 
+\hline 
+szablony & $login.html$ & logowanie \\ 
+\cline{2-3} 
+ & $register.html$ & rejestracja \\ 
+\hline 
+formularze & klasa $LoginForm$ & logowanie \\ 
+\cline{2-3} 
+ & klasa $RegistrationForm$ & rejestracja \\ 
+\hline 
+\end{tabular} 
+}
+
+\section{Moduł zarządzania wyborami}
+\subsection{Opis ogólny}
+Moduł odpowiedzialny za administrację wyborami i ich wynikami. Umożliwia podstawowe
+operacje na wyborach i ich wynikach oraz nawigację między nimi. Pozwala na wyświetlenie
+listy wszystkich wyborów i ich wyników, stworzenie nowych wyborów lub wyniku, czy
+usunięcie wyborów. W celu wykonania niektórych zadań współpracuje z modułem obliczania
+wyników wyborów oraz modułem wizualizacji wyborów i ich wyników. Jest to najbardziej
+rozbudowany moduł.
+
+\subsection{Komponenty programowe}
+% \usepackage{array} is required
+\begin{tabular}{|c|c|p{5cm}|}
+\hline 
+\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\ 
+\hline 
+widoki & klasa $ElectionListView$ & wyświetlenie listy wszystkich wyborów \\ 
+\cline{2-3} 
+ & klasa $ElectionCreateView$ & stworzenie wyborów \\ 
+\cline{2-3} 
+ & klasa $ElectionDeleteView$ & usunięcie wyborów \\ 
+\cline{2-3} 
+ & klasa $ElectionDetailView$ & wyświetlenie informacji szczegółowych o
+danych wyborach \\ 
+\cline{2-3} 
+ & klasa $ResultCreateView$ & stworzenie wyniku dla danych wyborów -
+wyświetlenie formularza określającego
+parametry wyniku \\ 
+\cline{2-3} 
+ & klasa $ResultDetailsView$ & wyświetlenie danego wyniku danych
+wyborów \\ 
+\cline{2-3} 
+ & klasa $ResultDeleteView$ & usuwanie pojedynczego wyniku wyborów \\ 
+\hline 
+szablony & $election_list.html$ & wyświetlenie listy wszystkich wyborów,
+usunięcie wyborów - strona sukcesu
+wyświetlana po usunięciu wyborów \\ 
+\cline{2-3} 
+ & $election_create.html$ & stworzenie wyborów \\ 
+\cline{2-3} 
+ & $election_details.html$ & stworzenie wyborów - strona sukcesu
+wyświetlana po stworzeniu wyborów,
+wyświetlenie informacji szczegółowych o
+danych wyborach \\ 
+\cline{2-3} 
+ & $election_delete.html$ & usunięcie wyborów \\ 
+\cline{2-3} 
+ & $result_create.html$ & stworzenie nowego wyniku wyborów -
+strona z formularzem \\ 
+\cline{2-3} 
+ & $result_details.html$ & wyświetlenie danego wyniku danych
+wyborów \\ 
+\cline{2-3} 
+ & $result_delete.html$ & potwierdzenie usunięcia rezultatu \\ 
+\hline 
+formularze & klasa $ElectionForm$ & stworzenie wyborów \\ 
+\cline{2-3}
+ & klasa $ResultForm$ & stworzenie wyniku dla danych wyborów -
+formularz określający parametry wyniku \\
+\hline 
+\end{tabular} 
+
+\section{Moduł wizualizacji wyborów i wyników wyborów}
+\subsection{Opis ogólny}
+Moduł odpowiedzialny za stworzenie wykresu $2D$ wizualizującego wybory i jego wyniki.
+Wizualizacja dotyczy tylko wyborów wygenerowanych z rozkładu normalnego. Wyborcy i
+kandydaci są reprezentowani jako punkty na płaszczyźnie. Punkty reprezentujące wyborców
+i kandydatów mają na wykresie odmienne kolory. Na wykresie wyników wyborów punkty
+reprezentujące zwycięzców wyborów są powiększone. Moduł współpracuje z modułem
+zarządzania wyborów, który zleca mu zadanie wizualizacji wyborów lub jego wyników. W
+celu wykonania zadania moduł wizualizacji wyborów i wyników wyborów pobiera dane z
+bazy danych.
+
+\subsection{Komponenty programowe}
+\begin{tabular}{|c|c|p{5cm}|}
+\hline 
+\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\ 
+\hline 
+widoki & klasa $ScatterChartMixin$ & pobranie danych potrzebnych do
+wygenerowania wykresów (punkty, tytuł
+wykresu, serii danych), dziedziczy po
+klasie $View$ \\ 
+\cline{2-3} 
+ & klasa $ElectionChartView$ & wizualizacja wyborów, klasa dziedziczy
+po klasie $ScatterChartMixin$, pobranie
+współrzędnych kandydatów i wyborców \\ 
+\cline{2-3} 
+ & klasa $ResultChartView$ & wizualizacja wyników wyborów, klasa
+dziedziczy po klasie $ScatterChartMixin$,
+pobranie współrzędnych kandydatów,
+wyborców oraz zwycięzców \\ 
+\hline 
+\end{tabular} 
+
+\section{Moduł generacji i wczytywania wyborów}
+\subsection{Opis ogólny}
+Moduł odpowiedzialny za generację wyborów z rozkładu normalnego oraz wczytywanie
+wyborów z pliku formatu $.soc$. Moduł współpracuje z modułem zarządzania wyborami,
+któremu zleca po wykonaniu swoich zadań, stworzenie i wysłanie użytkownikowi
+odpowiedniej strony internetowej. Moduł zapewnia wygenerowanie wyborów z rozkładu normalnego według wskazanych parametrów oraz walidację danych przy wczytywaniu
+wyborów z pliku. Po stworzeniu wyborów moduł komunikuje się z bazą danych w celu
+utrwalenia wyborów.
+
+\subsection{Komponenty programowe}
+\begin{tabular}{|c|c|p{5cm}|}
+\hline 
+\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\ 
+\hline 
+Widoki & klasa $ElectionLoadDataFormView$ & wczytanie wyborów z pliku \\ 
+\cline{2-3} 
+ & klasa
+$ElectionGenerateDataFormView$ & generacja wyborów z rozkładu
+normalnego \\ 
+\hline 
+Szablony & $election_load_data.html$ & strona z formularzem do
+wskazania pliku \\ 
+\cline{2-3} 
+ & $election_generate_data.html$ & strona z formularzem do
+wskazania parametrów wyborów i
+rozkładu normalnego \\ 
+\cline{2-3} 
+ & $election_details.html$ & strona wyświetlana po
+poprawnym wczytaniu danych z
+pliku \\ 
+\hline 
+Formularze & klasa $ElectionLoadDataForm$ & wczytanie z pliku \\ 
+\hline 
+\end{tabular} 
+
+\section{Moduł obliczania wyników wyborów}
+\subsection{Opis ogólny}
+Moduł odpowiedzialny za obliczanie wyników wyborów. Zapewnia różne algorytmy do
+wykonania zadania. Użytkownik ma wybór między algorytmem genetycznym, dwoma
+algorytmami zachłannymi oraz algorytmem typu brute-force. Moduł współpracuje z modułem
+zarządzania wyborami, który zleca mu wykonanie zadania.
+\subsection{Komponenty programowe}
+Wszystkie komponenty programowe dotyczące modułu obliczania wyników wyborów
+zawierają się w pakiecie $ecs.elections.algorithms$. \\
+Klasy odpowiedzialne za poszczególne algorytmy:
+\begin{itemize}
+\item $BruteForce$ - odpowiedzialna za algorytm typu brute-force
+\item $GreedyAlgorithm$ - odpowiedzialna za algorytm zachłanny zależny od parametru $p$
+\item $GreedyCC$ - odpowiedzialna za algorytm zachłanny niezależny od parametru $p$
+\item $GeneticAlgorithm$ - odpowiedzialna za algorytm genetyczny
+\end{itemize}
+
+\section{Moduł URL Resolver}
+\subsection{Opis ogólny}
+Moduł odpowiedzialny za przekazywanie żądań otrzymywanych przez klienta do
+odpowiednich modułów.
+
+\subsection{Komponenty programowe}
+Przyporządkowania żądań użytkownika do odpowiednich modułów (adresów URL do
+widoków) znajdują się w pliku $ecs.elections.urls.py$.
 
 \bibliographystyle{alpha}
 \bibliography{bibliografia}
