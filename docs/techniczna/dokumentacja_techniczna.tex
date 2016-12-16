@@ -686,6 +686,154 @@ osobników
 \captionof{figure}{Diagram ERD}
 \end{center}
 
+\chapter{Algorytmy}
+\section{Algorytm zachłanny}
+\subsection{Idea algorytmu}
+Idea algorytmu polega na dołączaniu kolejnego kandydata do zwycięskiego komitetu w
+każdej iteracji. W związku z tym główna pętla algorytmu ma tyle iteracji, ile liczy rozmiar zwycięskiego komitetu. Jeżeli któryś z kandydatów został wybrany w danej iteracji jest
+pewne, iż znajdzie się on w zwycięskim komitecie. Wybór kandydata w danej iteracji
+dokonywany jest w sposób zachłanny. Spośród kandydatów, którzy jeszcze nie zostali
+wybrani do zwycięskiego komitetu, dołącza do zwycięzców ten, który razem z wcześniej
+wybranymi kandydatami tworzy komitet o największym uznaniu wśród wyborców. Mając
+więc na danym etapie algorytmu komitet złożony z $k$ zwycięzców, w kolejnej iteracji
+poszukiwany jest $k+1$-szy kandydat spośród pozostałych. Ma on stworzyć komitet liczący
+$k+1$ członków, który jest najlepszy wśród wszystkich innych możliwości.W każdej iteracji
+algorytmu wybierany jest kandydat, który najwięcej dodaje do aktualnego poziomu
+zadowolenia wyborców. Stąd można uznać opisany algorytm jako zachłanny.
+
+\subsection{Funkcja zadowolenia}
+Aktualny poziom zadowolenia wyborców na danym etapie algorytmu określany jest za
+pomocą uprzednio zdefiniowanego uogólnienia systemu $k-Bordy$. Satysfakcja pojedynczego
+wyborcy z komitetu liczącego na danym etapie algorytmu $k$ zwycięzców,określana jest za
+pomocą funkcji: $$f_{{\ell_p}-Borda}(i_1, i_2, ..., i_k) = \sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+\dots+[\beta(i_k)]^p}$$ Funkcja bazuje na normie $\ell_p$ oraz punktacji $k-Bordy$. Dokładne informacje na temat funkcji
+umieszczone są w rozdziale \textit{Dziedzina problemu}. Ogólne zadowolenie wyborców z komitetu
+jest obliczane jako suma pojedynczych zadowoleń wszystkich wyborców. Algorytm działa w
+ten sposób, że przed wyborem pierwszego zwycięzcy, poziom zadowolenia wyborców
+wynosi $0$, gdyż zadowolenie każdego pojedynczego wyborcy wynosi $0$ - zadowolenie z
+komitetu liczącego $0$ osób zgodnie z powyższą funkcją wynosi $0$. W pierwszej iteracji
+wybierany jest pierwszy zwycięzca w ten sposób, żeby suma pojedynczych zadowoleń
+wszystkich wyborców z jednoosobowego komitetu była największa. W kolejnej iteracji
+dobierany jest do wybranego wcześniej komitetu jednoosobowego drugi zwycięzca w ten
+sposób, by suma pojedynczych zadowoleń wszystkich wyborców z dwuosobowego komitetu
+była największa. W drugiej iteracji algorytmu brane więc pod uwagę są tylko wybrane
+komitety dwuosobowe - takie, które składają się z wcześniej wybranego zwycięzcy i
+dobranego wciąż jeszcze walczącego o zwycięstwo kandydata. W trzeciej iteracji do
+wybranego wcześniej komitetu dwuosobowego dobierany jest trzeci zwycięzca w ten
+sposób, by suma pojedynczych zadowoleń wszystkich wyborców z trzyosobowego komitetu
+była największa. Podobnie jak w drugiej iteracji, pod uwagę brane są tylko wybrane komitety
+trzyosobowe - takie, które składają się z wcześniej wybranego komitetu dwuosobowego i
+dobranego wciąż jeszcze walczącego o zwycięstwo kandydata. W kolejnych iteracjach
+algorytmu, kandydaci dobierani są w sposób analogiczny. Kandydaci dobierani są aż do
+osiągnięcia określonego rozmiaru komitetu. Poziom zadowolenia wyborców po każdej
+iteracji algorytmu rośnie.
+
+\subsection{Szczegóły implementacji}
+Algorytm zaimplementowany jest w klasie $GreedyAlgorithm$ znajdującej się w pakiecie
+$ecs.elections.algorithms.greedy\_algorithm$. Główna pętla algorytmu znajduje się w metodzie
+$run$. Przed główną pętlą programu do pamięci operacyjnej pobrane są obiekty z bazy danych
+reprezentujące kandydatów, wyborców oraz preferencje wyborców. Ponadto odpowiednio
+uzupełniane są struktury danych reprezentujące aktualne zadowolenie wyborców z wybranych kandydatów, aktualny skład zwycięskiego komitetu oraz kandydatów wciąż
+walczących o zwycięstwo, którzy stanowią wszystkich kandydatów bez tych, którzy już
+zostali wybrani do zwycięskiego komitetu. Początkowo poziom zadowolenia każdego
+wyborcy wynosi $0$, skład zwycięskiego komitetu jest pusty, a kandydaci wciąż walczący o
+zwycięstwo stanowią zbiór wszystkich kandydatów. \\ \\
+W głównej pętli algorytmu znajdują się dwie wewnętrzne pętle. Bardziej zewnętrzna pętla
+iteruje po wciąż walczących o zwycięstwo kandydatach, bardziej wewnętrzna pętla iteruje po
+wszystkich wyborcach. Wskazane dwie wewnętrzne pętle mają na celu wyłonienie
+najlepszego kandydata spośród jeszcze niewybranych kandydatów do zwycięskiego
+komitetu. Dzieje się to poprzez obliczenie poziomu zadowolenia wyborców z komitetu
+złożonego z kandydatów już wcześniej wybranych (na początku komitet zwycięski jest pusty)
+wraz z dodatkowo dobranym kandydatem wcześniej niewybranym. Obliczany jest poziom
+zadowolenia dla każdego możliwego dobrania (iteracja po kandydatach jeszcze
+niewybranych) i ostatecznie w danej iteracji głównej pętli algorytmu do zwycięskiego
+komitetu, dołączany jest kandydat, który wraz z wcześniej wybranymi kandydatami stanowi
+największy poziom zadowolenia wyborców. W algorytmie najlepszy kandydat w danej iteracji
+dobierany jest w ten sposób, że wskazany jest aktualny lider spośród kandydatów jeszcze
+niewybranych wraz z poziomem satysfakcji wyborców z komitetu utworzonego z tego lidera i
+z wcześniej wybranych kandydatów. Jeżeli poziom satysfakcji wyborców z komitetu z innym
+niewybranym jeszcze kandydatem okaże się większy od tego z aktualnym liderem, aktualny
+lider zostaje zmieniony a poziom satysfakcji zostaje aktualizowany. Ostatecznie w danej
+iteracji głównej pętli algorytmu, do zwycięskiego komitetu dołączany zostaje lider po
+zakończeniu iteracji po wszystkich jeszcze niewybranych kandydatach. Ponieważ poziom
+zadowolenia z komitetu ustalany jest jako suma pojedynczych zadowoleń wszystkich
+wyborców, w celu obliczenia funkcji satysfakcji dla komitetu złożonego z wcześniej
+wybranych kandydatów wraz z dobranym kandydatem wcześniej niewybranym, następuje
+iteracja po wszystkich wyborcach. Dla każdego wyborcy oceniane jest pojedyncze
+zadowolenie z komitetu i dodawane do sumy zadowolenia wszystkich wyborców.
+Pojedyncze zadowolenie liczone jest w ten sposób, że wyciągana jest punktacja badanego
+kandydata według punktacji k-Bordy, a następnie liczona jest norma $\ell_p$ z aktualnego
+zadowolenia danego wyborcy (z wcześniej wybranych kandydatów) i punktów $k-Bordy$
+przyznanych dla badanego kandydata. Po wybraniu zwycięzcy, ostatnim krokiem w głównej
+pętli algorytmu jest aktualizacja struktur danych reprezentujących aktualny stan algorytmu.
+Do zwycięskiego komitetu zostaje dołączony wybrany w danej iteracji kandydat, przy
+jednoczesnym usunięciu go ze zbioru kandydatów jeszcze niewybranych. Aktualizowane
+zostają również pojedyncze satysfakcje wszystkich wyborców w oparciu o wybranego w
+danej iteracji kandydata, który w tym momencie staje się zwycięzcą.
+
+\subsection{Pseudokod}
+\begin{center}
+\centerline{\includegraphics[scale=0.9]{pics/pseudocode_greedy_algorithm.png}}
+\captionof{figure}{Pseudokod algorytmu zachłannego}
+\end{center}
+
+\section{Algorytm zachłanny według zasady Chamberlin-Courant’a}
+Algorytm ten nie aproksymuje wyników wyborów na bazie funkcji satysfakcji opisującej
+system $\ell_p-Borda$, ale na szczególnym przypadku tej funkcji gdy $p \to \infty$. W związku z tym parametr $p$ nie wpływa na działanie algorytmu.
+
+\subsection{Idea algorytmu}
+Algorytm został zaproponowany przez Lu i Boutilier’a. Idea jest taka sama jak dla
+pierwszego algorytmu zachłannego. W każdej iteracji głównej pętli algorytmu do
+zwycięskiego komitetu dobrany zostaje jeden kandydat. Zwycięzca w danej iteracji zostaje
+dobrany według postępowania zachłannego. Wygrywa kandydat, który najwięcej dodaje do
+ogólnego poziomu zadowolenia wyborców. Różnica w stosunku do pierwszego algorytmu
+zachłannego polega na innej funkcji zadowolenia, na bazie której inaczej obliczane są
+pojedyncze zadowolenia wyborców i tym samym inaczej obliczane jest ogólne zadowolenie
+wyborców z danego komitetu, które jest sumą pojedynczych satysfakcji wszystkich
+wyborców. W regule $Chamberlin-Courant’a$ położony jest nacisk na regułę reprezentacji proporcjonalnej. Każdy wyborca reprezentowany jest przez jednego, wyraźnego kandydata i
+tylko punkty tego kandydata wpływają na wartość pojedynczego zadowolenia wyborcy z
+danego komitetu. Jest to szczególny przypadek uogólnienia systemu $k-Bordy$, w którym $p \to \infty$. Jednak dla odpowiednio dużych wartości parametru $p$ opisana heurystyka dobrze
+sprawdza się dla uogólnienia systemu $k-Bordy$.
+
+\subsection{Funkcja zadowolenia}
+Aktualny poziom zadowolenia wyborców na danym etapie algorytmu określany jest za
+pomocą funkcji satysfakcji $Chamberlin-Courant’a$: $$f_{CC}(i_1, i_2, ..., i_k) = \beta(i_1) $$ Jest ona skrajnym przypadkiem dla uogólnienia systemu $k-Borda$, kiedy $p \to \infty$. Zgodnie z tą
+funkcją, pojedyncze zadowolenie danego wyborcy z komitetu może wzrosnąć tylko w
+przypadku, gdy do komitetu dołączany zostaje kandydat, któremu dany wyborca przydzielił
+więcej punktów $k-Bordy$ od punktów aktualnego reprezentanta. Jeżeli taki kandydat zostanie
+dołączony do zwycięzców, to on staje się reprezentantem dla danego wyborcy w aktualnym
+stanie algorytmu. Jest to odmienna sytuacja od pierwszego algorytmu zachłannego, w
+którym pojedyncze zadowolenie danego wyborcy z komitetu rośnie wtedy, gdy nowo
+dobrany kandydat ma jakiekolwiek przydzielone punkty $k-Bordy$. W tamtym przypadku nowo
+dołączony zwycięzca nie musi być najlepszy spośród wszystkich aktualnie wybranych
+kandydatów do zwycięskiego komitetu, aby polepszyć indywidualne zadowolenie danego
+wyborcy i tym samym zbiorcze zadowolenie wyborców.
+
+\subsection{Szczegóły implementacyjne}
+Algorytm zaimplementowany jest w klasie $GreedyCC$ znajdującej się w pakiecie
+$ecs.elections.algorithms.greedy\_cc$. Główna pętla algorytmu znajduje się w metodzie $run$.
+Implementacja i kolejne kroki algorytmu są takie same lub bardzo podobne jak dla
+pierwszego algorytmu zachłannego zależnego od parametru $p$. Największa różnica jest w najbardziej wewnętrznej pętli
+iterującej po wszystkich wyborcach. Zaimplementowana jest tu funkcja zadowolenia
+pojedynczego wyborcy, różniąca się od analogicznej funkcji dla pierwszego algorytmu
+zachłannego. Badany kandydat zwiększa wartość pojedynczej satysfakcji danego wyborcy
+tylko wtedy, gdy ma on przydzielone u wyborcy najwięcej punktów $k-Bordy$ w porównaniu z
+dotychczasowymi zwycięzcami. W celu sprawdzenia czy potencjalny zwycięzca w danej
+iteracji, zwiększa satysfakcję danego wyborcy, porównane są dwie wartości: punkty $k-Bordy$
+przyznane przez wyborcę dla potencjalnego zwycięzcy i punkty $k-Bordy$ przyznane przez
+wyborcę dla najlepszego spośród kandydatów aktualnego zwycięskiego komitetu. Jeśli
+punkty dla badanego kandydata są większe od punktów najlepszego dotychczasowego
+zwycięzcy, dodatkowa satysfakcja dla badanego kandydata od danego wyborcy jest
+uzupełniania o różnicę między punktami $k-Bordy$ przydzielonymi dla badanego kandydata i
+punktami $k-Bordy$ przydzielonymi dla najlepszego dotychczas kandydata. W danej iteracji
+wygrywa kandydat, który wniósł najwięcej dodatkowej satysfakcji do ogólnego zadowolenia
+wyborców. Drugą istotną różnicą wspomnianą przy omawianiu pierwszej, jest sposób
+porównania w danej iteracji niewybranych jeszcze kandydatów w celu ustalenia najlepszego
+z nich. Polega on na zbadaniu jaką dodatkową satysfakcję do ogólnego poziomu
+zadowolenia wnosi badany kandydat i porównywaniu tych dodatkowych satysfakcji, a nie
+wartości ogólnego poziomu zadowolenia jak w przypadku pierwszego algorytmu.
+
+\section{Algorytm genetyczny}
+
 \bibliographystyle{alpha}
 \bibliography{bibliografia}
 
