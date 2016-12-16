@@ -6,6 +6,12 @@
 % dodatkowe pakiety
 \usepackage{enumerate}
 \usepackage{listings}
+\usepackage{caption}
+
+% żeby stopki były zastosowane do stron gdzie rozpoczyna się rozdział
+\usepackage{etoolbox}
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
 \lstloadlanguages{TeX}
 
 \lstset{
@@ -57,13 +63,20 @@
 \setlength{\parindent}{0pt}
 \renewcommand{\indent}{\hspace*{\tindent}}
 
+\fancypagestyle{plain}{%
+\fancyhf{} % clear all header and footer fields
+\fancyhead[R]{\bfseries \thepage}
+\fancyfoot[C]{System obliczający wyniki wyborów dla uogólnienia systemu k-Borda} % except the center
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}}
+
 %---------------------------------------------------------------------------
 
 \begin{document}
 
 \titlepages
 
-\tableofcontents
+\tableofcontents\thispagestyle{fancy}
 
 
 %----------------------------------------------------------------------------
@@ -331,6 +344,222 @@ odpowiednich modułów.
 \subsection{Komponenty programowe}
 Przyporządkowania żądań użytkownika do odpowiednich modułów (adresów URL do
 widoków) znajdują się w pliku $ecs.elections.urls.py$.
+
+\chapter{Współpraca modułów i innych komponentów}
+\section{Diagram komunikacji}
+\begin{center}
+\centerline{\includegraphics[scale=0.65]{pics/Diagram_Komunikacji.png}}
+\captionof{figure}{Diagram komunikacji}
+\end{center}
+
+\section{Ścieżki przejść}
+\subsection{Logowanie}
+\begin{enumerate}
+\item Użytkownik za pomocą przeglądarki internetowej wysyła żądanie logowania.
+\item Moduł URL Resolver kieruje żądanie do modułu administracji kont.
+\item Moduł administracji kont przesyła do przeglądarki stronę z formularzem do
+zalogowania (pole $Username$ i $Password$).
+\item Użytkownik wypełnia formularz i za pomocą przeglądarki internetowej wysyła
+uzupełniony formularz.
+\item Moduł URL Resolver przekazuje żądanie do modułu administracji kont.
+\item Moduł administracji kont przeprowadza uwierzytelnienie użytkownika.
+\item W zależności od rezultatu uwierzytelnienia podjęte są trzy możliwe akcje:
+	\begin{itemize}
+	\item jeżeli uwierzytelnienie powiodło się, Moduł administracji kont loguje użytkownika 		i wysyła do
+	przeglądarki stronę z wiadomością o sukcesie logowania
+	\item jeżeli podana nazwa użytkownika nie istnieje w bazie, Moduł administracji kont 			wysyła do
+	przeglądarki internetowej stronę z formularzem do zalogowania (pole
+	$Username$ i $Password$) i z informacją o nieistnieniu podanej nazwy
+	użytkownika. Następuje przejście do kroku nr $4$
+	\item jeżeli podana nazwa użytkownika istnieje w bazie, ale podane hasło jest
+nieprawidłowe, Moduł administracji kont wysyła do przeglądarki internetowej stronę z
+formularzem do zalogowania (pole $Username$ i $Password$) i z informacją o
+błędnym haśle. Następuje przejście do kroku nr $4$
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Wylogowanie}
+\begin{enumerate}
+\item Użytkownik za pomocą przeglądarki internetowej wysyła żądanie wylogowania.
+\item Moduł URL Resolver kieruje żądanie do modułu administracji kont.
+\item Moduł administracji kont wylogowuje użytkownika i przesyła do przeglądarki stronę
+domową aplikacji.
+\end{enumerate}
+
+\subsection{Rejestracja}
+\begin{enumerate}
+\item Użytkownik za pomocą przeglądarki internetowej wysyła żądanie zarejestrowania
+użytkownika.
+\item Moduł URL Resolver kieruje żądanie do modułu administracji kont.
+\item Moduł administracji kont przesyła do przeglądarki stronę z formularzem do rejestracji
+(pola $E-mail$, $Username$, $Password$, $First name$ i $Last name$).
+\item Użytkownik wypełnia formularz i za pomocą przeglądarki internetowej wysyła
+uzupełniony formularz.
+\item Moduł URL Resolver przekazuje żądanie do modułu administracji kont.
+\item Moduł administracji kont przeprowadza walidację danych.
+\item W zależności od rezultatu walidacji:
+	\begin{itemize}
+	\item jeżeli się powiodła, Moduł administracji kont tworzy konto nowego użytkownika, 			zapisuje je do
+	bazy danych, loguje użytkownika do nowo utworzonego konta i przesyła do
+	przeglądarki stronę z wiadomością o sukcesie logowania
+	\item w przeciwnym wypadku, zostaje wysłana do przeglądarki strona z
+	formularzem do rejestracji wraz z informacją o znalezionym problemie.
+	Następuje przejście do kroku nr $4$
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Wyświetlenie listy wszystkich wyborów}
+\begin{enumerate}
+\item Użytkownik klikając przycisk $Your elections$ na stronie, wysyła za pomocą
+przeglądarki internetowej żądanie wyświetlenia listy swoich wyborów.
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
+$ElectionListView$).
+\item Moduł zarządzania wyborami kieruje zapytanie do bazy danych o obiekty
+reprezentujące wybory danego użytkownika.
+\item Po pobraniu z bazy potrzebnych danych moduł zarządzania wyborami za pomocą
+szablonu $election\_list.html$ tworzy stronę i wysyła do przeglądarki internetowej
+użytkownika.
+\end{enumerate}
+
+\subsection{Stworzenie wyborów}
+\begin{enumerate}
+\item Użytkownik klikając przycisk $New election$ na stronie, wysyła za pomocą
+przeglądarki internetowej żądanie stworzenie nowych wyborów.
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
+$ElectionCreateView$).
+\item Widok posiada zdefiniowany szablon $election\_create.html$ i formularz $ElectionForm$.
+Wykorzystując te komponenty tworzy i wysyła do użytkownika stronę z formularzem.
+\item Użytkownik wypełnia formularz (pola $Name$ i $Commitee size$) i wysyła uzupełniony
+formularz.
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
+$ElectionCreateView$).
+\item Widok wykorzystując klasę formularza pobiera dane z formularza, tworzy nowy
+obiekt wyborów i zapisuje go do bazy.
+\item Widok wykorzystując szablon $election\_details.html$ tworzy stronę i wysyła ją do
+przeglądarki użytkownika.
+\end{enumerate}
+
+\subsection{Usunięcie wyborów}
+\begin{enumerate}
+\item Użytkownik klikając ikonę kosza na stronie, wysyła za pomocą przeglądarki
+internetowej żądanie usunięcia wyborów.
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
+$ElectionDeleteView$).
+\item Widok posiada zdefiniowany szablon $election\_delete.html$, który wykorzystuje do
+stworzenia i wysłania strony potwierdzającej akcję użytkownika.
+\item Użytkownik potwierdza chęć usunięcia wyborów przez naciśnięcie przycisku $Yes,
+delete this.$ (W przypadku wyboru przycisku $No, cancel$ akcja nie zostaje przeprowadzona a użytkownik zostaje przeniesiony na stronę z listą swoich
+wyborów).
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
+$ElectionDeleteView$).
+\item Widok usuwa wybory z bazy danych i wykorzystując szablon $election\_list.html$ tworzy
+i wysyła stronę do przeglądarki internetowej użytkownika.
+\end{enumerate}
+
+\subsection{Wyświetlenie informacji szczegółowych dla danych wyborów}
+\begin{enumerate}
+\item Użytkownik klikając na link wyborów na stronie z listą swoich wyborów, wysyła za
+pomocą przeglądarki internetowej żądanie wyświetlenia informacji szczegółowych
+dla danych wyborów.
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
+$ElectionDetailView$).
+\item Widok pobiera z bazy danych listę głosujących oraz listę wyników wyborów.
+\item Jeżeli wybory zostały wygenerowane z rozkładu normalnego, widok przekierowuje
+działanie programu do modułu wizualizacji wyborów i wyników wyborów (widok
+$ElectionChartView$). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$
+\item Widok pobiera z bazy danych obiekty będące punktami $2D$ reprezentującymi
+wyborców i kandydatów. Ustawia parametry wykresu a następnie wysyła wszystkie
+dane z powrotem do widoku $ElectionDetailView$ umożliwiając stworzenie wykresu.
+\item Widok wykorzystując szablon $election\_details.html$ tworzy i wysyła stronę do
+przeglądarki użytkownika.
+\end{enumerate}
+
+\subsection{Stworzenie nowego wyniku dla danych wyborów}
+\begin{enumerate}
+\item Użytkownik klikając na link $Add new result$ na stronie ze szczegółowymi informacjami
+o danych wyborach, wysyła za pomocą przeglądarki internetowej żądanie stworzenia
+nowego wyniku dla danych wyborów.
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
+$ResultCreateView$).
+\item Widok wykorzystując formularz $ResultForm$ i szablon $result\_create.html$ tworzy oraz
+wysyła do użytkownika stronę z formularzem do określenia parametrów wyniku (pola:
+parametr $p$ do obliczania normy oraz typ algorytmu).
+\item Użytkownik wypełnia formularz i wysyła go do systemu.
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
+$ResultCreateView$).
+\item Widok wczytuje dane z formularza, pobiera z bazy danych obiekt reprezentujący
+wybory a następnie przekierowuje działanie programu do modułu obliczania wyników
+wyborów przekazując konieczne parametry.
+\item Moduł obliczania wyników wyborów liczy zwycięzców wyborów za pomocą
+odpowiedniego algorytmu. Następnie przekazuje sterowanie z powrotem do widoku
+$ResultCreateView$ przekazując wyniki.
+\item Widok zapisuje wynik do bazy danych i przechodzi do ścieżki \textit{Wyświetlenie
+informacji szczegółowych dla danych wyborów}.
+\end{enumerate}
+
+\subsection{Wyświetlenie szczegółowych informacji o danym wyniku danych
+wyborów}
+\begin{enumerate}
+\item Użytkownik klikając na link danego wyniku wyborów na stronie ze szczegółowymi
+informacjami o danych wyborach, wysyła za pomocą przeglądarki internetowej
+żądanie wyświetlenia szczegółowych informacji o danym wyniku dla danych
+wyborów.
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
+$ResultDetailsView$).
+\item Widok pobiera z bazy danych informacje o zwycięzcach danych wyborów.
+\item Jeżeli wybory zostały wygenerowane z rozkładu normalnego, widok przekierowuje
+działanie programu do modułu wizualizacji wyborów i wyników wyborów (widok
+$ResultChartView$). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$
+\item Widok pobiera z bazy danych obiekty będące punktami $2D$ reprezentującymi
+wyborców, kandydatów i zwycięzców. Ustawia parametry wykresu a następnie
+wysyła wszystkie dane z powrotem do widoku $ResultDetailsView$ umożliwiając
+stworzenie wykresu.
+\item Widok wykorzystując szablon $result\_details.html$ tworzy i wysyła stronę do
+przeglądarki użytkownika.
+\end{enumerate}
+
+\subsection{Wczytanie wyborów z pliku .soc}
+\begin{enumerate}
+\item Użytkownik klikając na przycisk $Load data from file$ na stronie ze szczegółowymi
+informacjami o danych wyborach, wysyła za pomocą przeglądarki internetowej
+żądanie wczytania wyborów z pliku $.soc$.
+\item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
+$ElectionLoadDataFormView$).
+\item Widok wykorzystując formularz $ElectionLoadDataForm$ i szablon
+$election_load_data.html$ tworzy oraz wysyła do użytkownika stronę z formularzem do
+wybrania pliku, z którego będą wczytywane wybory.
+\item Użytkownik wskazuje plik i wysyła uzupełniony formularz do systemu.
+\item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
+$ElectionLoadDataFormView$).
+\item Widok parsuje plik wejściowy i waliduje dane. W przypadku poprawnego wczytania
+pliku wejściowego następuje zapis wczytanych obiektów do bazy danych. Za pomocą
+szablonu $election\_details.html$ zostaje stworzona i wysłana strona do przeglądarki
+użytkownika.
+\end{enumerate}
+
+\subsection{Generacja wyborów z rozkładu normalnego}
+\begin{enumerate}
+\item Użytkownik klikając na przycisk $Generate election from normal distribution$ na stronie
+ze szczegółowymi informacjami o danych wyborach, wysyła za pomocą przeglądarki
+internetowej żądanie wygenerowania wyborów za pomocą rozkładu normalnego.
+\item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
+$ElectionGenerateDataFormView$).
+\item Widok wykorzystując formularz $ElectionGenerateDataForm$ i szablon
+$election\_generate\_data.html$ tworzy oraz wysyła do użytkownika stronę z formularzem do
+określenia parametrów wyborów oraz i rozkładu normalnego.  
+\item Użytkownik uzupełnia formularz i wysyła go do systemu.
+\item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
+$ElectionGenerateDataFormView$).
+\item Widok wczytuje dane z formularza i wykorzystując generator, generuje według
+wczytanych parametrów kandydatów, wyborców oraz liczy ich preferencje. Dane
+zostają zapisane do bazy. Następnie program przechodzi do 2-go punktu ścieżki
+\textit{Wyświetlanie informacji szczegółowych dla danych wyborów}.
+\end{enumerate}
+
+\chapter{Struktura obiektowa przechowywanych danych}
+\section{Opis modeli wykorzystywanych w ORM}
+Poniżej zamieszczono opis klas wykorzystywanych przez $Django$ do odwzorowania
+obiektowej architektury systemu informatycznego na bazę danych.
 
 \bibliographystyle{alpha}
 \bibliography{bibliografia}

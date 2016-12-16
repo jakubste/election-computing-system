@@ -112,10 +112,16 @@ im. Stanis\l{}awa Staszica w Krakowie}}}
 \renewcommand{\footrulewidth}{0.5pt}
 \fancyhf{}
 \fancyhead{}
-\fancyhead[L]{\slshape{\small \rightmark}}
-\fancyhead[R]{\bfseries \thepage}
+%\fancyhead[L]{\slshape{\small \rightmark}}
+%\fancyhead[R]{\bfseries \thepage}
 
-\thesisheaders
+
+\fancyhead[LE]{\bfseries \thepage}
+\fancyhead[RO]{\bfseries \thepage}
+\cfoot{\@titlePL}
+
+
+%\thesisheaders
 
 \frenchspacing
 \sloppy 
