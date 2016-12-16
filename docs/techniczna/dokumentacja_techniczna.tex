@@ -561,6 +561,131 @@ zostają zapisane do bazy. Następnie program przechodzi do 2-go punktu ścieżk
 Poniżej zamieszczono opis klas wykorzystywanych przez $Django$ do odwzorowania
 obiektowej architektury systemu informatycznego na bazę danych.
 
+\subsection{Election}
+\begin{center}
+\centerline{\includegraphics[scale=0.85]{pics/Election.png}}
+\captionof{figure}{Obiekt mapowany na tabelę wyborów}
+\end{center}
+Pola:
+\begin{itemize}
+\item $user$ - użytkownik aplikacji
+\item $name$ - nazwa wyborów
+\item $committee\_size$ - rozmiar zwycięskiego komitetu
+\end{itemize}
+Metody:
+\begin{itemize}
+\item $get\_absolute\_url()$ - zwraca adres URL, który daje dostęp do danych wyborów z
+poziomu dokumentu $.html$
+\item $is\_set\_up()$ - zwraca prawdę jeśli dla danych wyborów zostali określeni kandydaci i
+głosujący lub fałsz w przeciwnym przypadku
+\end{itemize}
+
+\subsection{Candidate}
+\begin{center}
+\centerline{\includegraphics[scale=0.85]{pics/Candidate.png}}
+\captionof{figure}{Obiekt mapowany na tabelę z danymi kandydata}
+\end{center}
+Pola:
+\begin{itemize}
+\item $name$ - nazwa kandydata
+\item $position$ - położenie kandydata w układzie współrzędnych, pole opcjonalne dla
+kandydatów generowanych z rozkładu normalnego
+\item $preferences$ - pole mapowane na relację wiele do wielu łączącej kandydata i
+głosującego w tabeli $Preference$
+\item $election$ - wybory, do których należy kandydat
+\item $soc\_id$ - identyfikator kandydata w odpowiadającym wyborom pliku w formacie $.soc$,
+pole opcjonalne dla wyborów parsowanych z pliku
+\end{itemize}
+
+\subsection{Voter}
+\begin{center}
+\centerline{\includegraphics[scale=0.85]{pics/Voter.png}}
+\captionof{figure}{Obiekt reprezentujący głos w wyborach}
+\end{center}
+Pola:
+\begin{itemize}
+\item $repeats$ - liczba powtórzeń głosów w wyborach
+\item $position$ - współrzędne wyborcy na wykresie, pole opcjonalne dla wyborów
+generowanych z rozkładu normalnego
+\item $election$ - wybory, do których należy głosujący
+\end{itemize}
+Metody:
+\begin{itemize}
+\item $set\_preferences\_by\_ids()$ - metoda wykorzystywana przy parsowaniu plików
+w formacie $.soc$.
+Na podstawie ciągu identyfikatorów wyborców pobranego z pliku tworzy ciąg kandydatów ułożony według preferencji wyborcy. Pobrane dane zapisuje w bazie
+danych w postaci rekordu w tabeli $Preference$.
+\item $calculate\_committe\_score(committee: List(Candidate), \ p: Int, \
+candidates\_number: Int)$ - oblicza wynik komitetu $committee$ na podstawie
+parametru $p$ i liczby kandydatów $candidates\_number$. Wynik mnożony jest przez
+liczbę powtórzeń głosu.
+\end{itemize}
+
+\subsection{Preference}
+\begin{center}
+\centerline{\includegraphics[scale=0.85]{pics/Preference.png}}
+\captionof{figure}{Obiekt reprezentujący pozycję kandydata w liście preferencji głosującego}
+\end{center}
+Pola:
+\begin{itemize}
+\item $candidate$ - kandydat związany z preferencją
+\item $voter$ - głosujący związany z preferencją
+\item $preference$ - pozycja preferencji na liście preferencji głosującego 
+\end{itemize}
+
+\subsection{Point}
+\begin{center}
+\centerline{\includegraphics[scale=0.85]{pics/Point.png}}
+\captionof{figure}{Obiekt przechowujący współrzędne wyborcy lub kandydata w układzie współrzędnych.}
+\end{center}
+Pola - współrzędne w układzie kartezjańskim:
+\begin{itemize}
+\item $x: Int$
+\item $y: Int$
+\end{itemize}
+Metody:
+\begin{itemize}
+\item $distance(other: Point) : Float$ - metoda zwracająca odległość punktu od punktu $other$ w metryce euklidesowej w przestrzeni $R^2$
+\end{itemize}
+
+\subsection{Result}
+\begin{center}
+\centerline{\includegraphics[scale=0.85]{pics/Result.png}}
+\captionof{figure}{Obiekt mapowany na tabelę z danymi wyników wyborów: rodzaj algorytmu, parametry
+wywołania algorytmu, otrzymany wynik punktowy komitetu oraz czas działania algorytmu}
+\end{center}
+Pola:
+\begin{itemize}
+\item $election$ - wybory, dla których obliczono rezultat
+\item $p\_parameter$ - parametr $p$ normy $\ell_p$
+\item $winners$ - zwycięski komitet
+\item $algorithm$ - identyfikator algorytmu
+\item $time$ - czas wykonania obliczeń
+\item $score$ - wynik punktowy zwycięskiego komitetu
+\end{itemize}
+
+\subsection{GeneticAlgorithmSettings}
+\begin{center}
+\centerline{\includegraphics[scale=0.85]{pics/GeneticAlgorithmSettings.png}}
+\captionof{figure}{Klasa mapowana na tabelę gromadząca dane specyficzne dla konfiguracji algorytmu
+genetycznego. Wykorzystywana do zapisania specyficznych dla algorytmu genetycznego
+parametrów wywołania.}
+\end{center}
+Pola:
+\begin{itemize}
+\item $result$ - rezultat algorytmu genetycznego
+\item $mutation\_probability$ - prawdopodobieństwo wystąpienia mutacji danego osobnika
+\item $crossing\_probability$ - prawdopodobieństwo wymiany puli genów pomiędzy parą
+osobników
+\item $cycles$ - liczba iteracji algorytmu genetycznego
+\end{itemize}
+
+\section{Diagram ERD}
+\begin{center}
+\centerline{\includegraphics[scale=0.45]{pics/ECS_ERD.png}}
+\captionof{figure}{Diagram ERD}
+\end{center}
+
 \bibliographystyle{alpha}
 \bibliography{bibliografia}
 
