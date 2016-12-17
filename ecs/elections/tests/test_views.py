@@ -19,6 +19,7 @@ mock.patch.object = mock.patch.object
 
 
 class ElectionListTestCase(TestCase):
+    TestCase.maxDiff = None
     def setUp(self):
         self.url = 'elections:election_list'
 
@@ -236,8 +237,8 @@ class ElectionChartViewTest(TestCase):
         colors = view.get_colors()
         labels = view.get_labels()
 
-        self.assertEqual(colors[0], 'red')
-        self.assertEqual(colors[1], 'blue')
+        self.assertEqual(colors[0], 'black')
+        self.assertEqual(colors[1], 'black')
         self.assertEqual(labels[0], 'Candidates')
         self.assertEqual(labels[1], 'Voters')
         self.assertEqual(len(candidates), 0)
@@ -262,8 +263,8 @@ class ElectionChartViewTest(TestCase):
             self.assertIn('x', point)
             self.assertIn('y', point)
 
-        self.assertEqual(colors[0], 'red')
-        self.assertEqual(colors[1], 'blue')
+        self.assertEqual(colors[0], 'black')
+        self.assertEqual(colors[1], 'black')
         self.assertEqual(labels[0], 'Candidates')
         self.assertEqual(labels[1], 'Voters')
         self.assertEqual(len(candidates), 4)
@@ -281,20 +282,22 @@ class ElectionChartViewTest(TestCase):
         mocked_get_colors.return_value = ['red', 'blue']
         mocked_get_points_stroke_colors.return_value = ['black', 'black']
         mocked_get_data.return_value = [[{'x': 0, 'y': 1}], [{'x': 2, 'y': 3}]]
-        expected = [
+        expected = {'datasets': [
             {
-                "pointColor": "red",
-                "pointStrokeColor": "black",
+                "borderColor": "red",
+                "backgroundColor": "black",
                 "data": [{"x": 0, "y": 1}],
-                "label": "label1"
+                "label": "label1",
+                "pointRadius": 5
             },
             {
-                "pointColor": "blue",
-                "pointStrokeColor": "black",
+                "borderColor": "blue",
+                "backgroundColor": "black",
                 "data": [{"x": 2, "y": 3}],
-                "label": "label2"
+                "label": "label2",
+                "pointRadius": 5
             },
-        ]
+        ]}
         request = RequestFactory().get(self.url)
         view = ElectionChartView(
             request=request,
@@ -361,26 +364,29 @@ class ResultChartViewTest(TestCase):
         mocked_get_colors.return_value = ['red', 'blue', 'yellow']
         mocked_get_points_stroke_colors.return_value = ['black', 'black', 'black']
         mocked_get_data.return_value = [[{'x': 0, 'y': 1}], [{'x': 2, 'y': 3}], [{'x': 4, 'y': 5}]]
-        expected = [
+        expected = {'datasets': [
             {
-                "pointColor": "red",
-                "pointStrokeColor": "black",
+                "borderColor": "red",
+                "backgroundColor": "black",
                 "data": [{"x": 0, "y": 1}],
-                "label": "label1"
+                "label": "label1",
+                "pointRadius": 5
             },
             {
-                "pointColor": "blue",
-                "pointStrokeColor": "black",
+                "borderColor": "blue",
+                "backgroundColor": "black",
                 "data": [{"x": 2, "y": 3}],
-                "label": "label2"
+                "label": "label2",
+                "pointRadius": 5
             },
             {
-                "pointColor": "yellow",
-                "pointStrokeColor": "black",
+                "borderColor": "yellow",
+                "backgroundColor": "black",
                 "data": [{"x": 4, "y": 5}],
-                "label": "label3"
+                "label": "label3",
+                "pointRadius": 10
             },
-        ]
+        ]}
         request = RequestFactory().get(self.url)
         view = ResultChartView(
             request=request,
