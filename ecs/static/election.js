@@ -18,21 +18,25 @@ $(document).ready(function () {
     if ($scatterChart.length > 0) {
         $.get($scatterChart.data('url'), function (data) {
             var ctx = $scatterChart.get(0).getContext("2d");
-            new Chart(ctx).Scatter(data['data'], {
-                responsive: true,
-                datasetFill: false,
-                datasetStroke: false
+            new Chart.Scatter(ctx, {
+                data: data['data'],
+                options: {
+                    responsive: true,
+                    datasetFill: false,
+                    datasetStroke: false,
+                    showLines : false
+                }
             });
         });
     }
-
 
     var $resultsSlider = $('#results-slider');
     if ($resultsSlider.length) {
         // http://stackoverflow.com/a/6299576/5349587
         var ticks = [];
         var i = 0;
-        while (ticks.push(i++) <= $resultsSlider.data('slider-max')) {}
+        while (ticks.push(i++) <= $resultsSlider.data('slider-max')) {
+        }
 
         $resultsSlider.slider({
             formatter: function (value) {
@@ -53,11 +57,17 @@ $(document).ready(function () {
             }
             $.get(source, function (data) {
                 var ctx = $scatterChart.get(0).getContext("2d");
-                new Chart(ctx).Scatter(data['data'], {
-                    responsive: true,
-                    datasetFill: false,
-                    datasetStroke: false,
-                    animation: false
+                new Chart.Scatter(ctx, {
+                    data: data['data'],
+                    options: {
+                        responsive: true,
+                        datasetFill: false,
+                        datasetStroke: false,
+                        showLines : false,
+                        animation: false,
+                        reverse: true
+                    }
+
                 });
             });
         };

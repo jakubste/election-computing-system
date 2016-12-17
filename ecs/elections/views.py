@@ -204,7 +204,8 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
 class ElectionChartView(ScatterChartMixin):
     datasets_number = 2
     labels = ['Candidates', 'Voters']
-    colors = ['red', 'blue']
+    colors = ['black', 'black']
+    points_stroke_colors = ['green', 'blue']
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -291,8 +292,9 @@ class ResultDetailsView(DetailView):
 class ResultChartView(ScatterChartMixin):
     datasets_number = 3
     labels = ['Voters', 'Candidates', 'Winners']
-    colors = ['lightblue', 'red', 'green']
-    points_stroke_colors = ['white', 'black', 'green']
+    colors = ['black', 'black', 'black']
+    points_stroke_colors = ['blue', 'green', 'red']
+    points_radii = [5, 5, 10]
 
     def dispatch(self, request, *args, **kwargs):
         try:
