@@ -350,7 +350,7 @@ class AlgorithmsChartView(ChartMixin):
         """
         results = list(self.results.filter(algorithm=algorithm_char_code))
         if not results:
-            return
+            return []
         return [self.to_point(result.p_parameter, result.time) for result in results]
 
     @staticmethod

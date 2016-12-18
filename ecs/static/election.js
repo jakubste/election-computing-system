@@ -92,6 +92,8 @@ $(document).ready(function () {
 
     var $algorithms_chart = $("#algorithms_chart");
     $.get($algorithms_chart.data('url'), function (data) {
+        if($algorithms_chart.length == 0)
+            return;
         var ctx = $algorithms_chart.get(0).getContext("2d");
         new Chart(ctx, {
             type: 'line',
