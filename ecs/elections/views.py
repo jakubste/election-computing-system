@@ -23,7 +23,7 @@ from ecs.elections.helpers import check_votes_number_unique_votes_relation, chec
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GENETIC_ALGORITHM
 from ecs.geo.models import Point
-from ecs.utils.scatter_view import ScatterChartMixin
+from ecs.utils.chart_views import ChartMixin
 from ecs.utils.views import LoginRequiredMixin
 
 
@@ -201,7 +201,7 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
         return super(ElectionGenerateDataFormView, self).form_valid(form)
 
 
-class ElectionChartView(ScatterChartMixin):
+class ElectionChartView(ChartMixin):
     datasets_number = 2
     labels = ['Candidates', 'Voters']
     colors = ['black', 'black']
@@ -289,7 +289,7 @@ class ResultDetailsView(DetailView):
     context_object_name = 'result'
 
 
-class ResultChartView(ScatterChartMixin):
+class ResultChartView(ChartMixin):
     datasets_number = 3
     labels = ['Voters', 'Candidates', 'Winners']
     colors = ['black', 'black', 'black']
@@ -313,6 +313,56 @@ class ResultChartView(ScatterChartMixin):
         voters = list(Point.objects.filter(voter__election=self.election).values('x', 'y'))
         winners = list(
             Point.objects.filter(candidate__in=self.result.winners.all())
-                         .extra(select={'r': '2'}).values('x', 'y', 'r')
+                .extra(select={'r': '2'}).values('x', 'y', 'r')
         )
         return [voters, candidates, winners]
+
+
+class AlgorithmsChartView(ChartMixin):
+    datasets_number = 4
+    labels = ['Brute Force', 'Genetic', 'Greedy', 'Greedy CC']
+    colors = ['red', 'green', 'gold', 'silver']
+    points_stroke_colors = ['transparent', 'transparent', 'transparent', 'transparent']
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.results = Result.objects.filter(winners__result__election=kwargs['pk']).distinct()
+        except Result.DoesNotExist:
+            raise Http404
+        return super(AlgorithmsChartView, self).dispatch(request, *args, **kwargs)
+
+    def get_data(self):
+        """
+        Time execution of given algorithms for given p parameter
+        :return: algorithms' datasets
+        """
+        # TODO use constants from models.py after greedy branch merge
+        brute = self.results_for_algorithm('b')
+        genetic = self.results_for_algorithm('g')
+        greedy = self.results_for_algorithm('r')
+        greedy_cc = self.results_for_algorithm('c')
+        return [brute, genetic, greedy, greedy_cc]
+
+    def results_for_algorithm(self, algorithm_char_code):
+        """
+        :param algorithm_char_code: one of: 'r', 'g', 'b', 'c'
+        :return: list of dicts { x: p_parameter, y: time } for algorithm specified by `algorithm_char_code`
+        """
+        results = list(self.results.filter(algorithm=algorithm_char_code))
+        if not results:
+            return
+        return [self.to_point(result.p_parameter, result.time) for result in results]
+
+    @staticmethod
+    def to_point(x, y):
+        return {
+            'x': x,
+            'y': y
+        }
+    # def print_results(self, results):
+    #     if not results:
+    #         return
+    #     for result in results:
+    #         print ("p %d" % result['x'])
+    #         print ("time %f" % result['y'])
+

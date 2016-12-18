@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views.generic import View
 
 
-class ScatterChartMixin(View):
+class ChartMixin(View):
     datasets_number = 0
     labels = None
     colors = None

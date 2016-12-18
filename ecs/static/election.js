@@ -89,4 +89,23 @@ $(document).ready(function () {
         $algorithm_selection.on('change', toggleVisibilityGeneticForm);
         toggleVisibilityGeneticForm();
     }
+
+    var $algorithms_chart = $("#algorithms_chart");
+    $.get($algorithms_chart.data('url'), function (data) {
+        var ctx = $algorithms_chart.get(0).getContext("2d");
+        new Chart(ctx, {
+            type: 'line',
+            data: data['data'],
+            options: {
+                datasetFill: false,
+                datasetStroke: false,
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }]
+                }
+            }
+        });
+    })
 });

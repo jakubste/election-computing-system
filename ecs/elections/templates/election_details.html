@@ -56,6 +56,16 @@
                 <div class="col-md-2"></div>
             </div>
 
+            <h2>Algorithms comparison</h2>
+            <div class="container">
+                <div class="col-md-1"></div>
+                <div class="col-md-9">
+                    <canvas id="algorithms_chart" data-url="{% url 'elections:algorithms_chart_data' election.pk %}"
+                            width="580" height="580"></canvas>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
         {% endif %}
 
         <h2>Available results</h2>
