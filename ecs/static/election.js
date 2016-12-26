@@ -106,9 +106,6 @@ $(document).ready(function () {
                     display:true,
                     text:'Time measured for given algorithm and p'
                 },
-                tooltips: {
-                    mode: 'index',
-                },
                 scales: {
                     xAxes: [{
                         display: true,

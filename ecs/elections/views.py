@@ -344,19 +344,31 @@ class AlgorithmsChartView(ChartMixin):
             Each of five lists contains the list of the same length
         """
         # TODO use constants from models.py after greedy branch merge
-        times_and_labels = {'b': [], 'g': [], 'r': [], 'c': [], 'x_axis': [], 'all': []}
+        times_and_labels = {'b': [], 'g': [], 'r': [], 'c': [], 'x_axis': []}
 
-        idx = 0
+        prev_p = 0
+        max_list_length = 0
+        algorithm_keys = ['b', 'g', 'r', 'c']
+
         for result in self.results:
-            times_and_labels['b'].append(None)
-            times_and_labels['g'].append(None)
-            times_and_labels['r'].append(None)
-            times_and_labels['c'].append(None)
-            times_and_labels['x_axis'].append(result.p_parameter)
-            times_and_labels[result.algorithm][idx] = result.time
-            idx += 1
+            if prev_p != result.p_parameter:
+                prev_p = result.p_parameter
+                self.fill_up_with_nones(algorithm_keys, max_list_length, prev_p, times_and_labels)
+            times_and_labels[result.algorithm].append(result.time)
+            list_length = len(times_and_labels[result.algorithm])
+            max_list_length = list_length if list_length > max_list_length else max_list_length
+
+        self.fill_up_with_nones(algorithm_keys, max_list_length, prev_p, times_and_labels)
 
         return times_and_labels
+
+    @staticmethod
+    def fill_up_with_nones(algorithm_keys, max_list_length, prev_p, times_and_labels):
+        while len(times_and_labels['x_axis']) < max_list_length:
+            times_and_labels['x_axis'].append(prev_p)
+        for key in algorithm_keys:
+            while len(times_and_labels[key]) < max_list_length:
+                times_and_labels[key].append(None)
 
     def get_datasets(self, *args, **kwargs):
         """
