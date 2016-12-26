@@ -82,10 +82,12 @@ class GeneticAlgorithm(Algorithm):
                 if new_ind:
                     pool.append(new_ind)
 
+            new_inds = []
             for ind in pool:
                 new_ind = ind.mutate()
                 if new_ind:
-                    pool.append(new_ind)
+                    new_inds.append(new_ind)
+            pool += new_inds
 
             pool = sorted(pool, key=lambda x: x.score, reverse=True)
             pool = pool[:count]
