@@ -99,12 +99,29 @@ $(document).ready(function () {
             type: 'line',
             data: data['data'],
             options: {
-                datasetFill: false,
-                datasetStroke: false,
+                showLines: true,
+                responsive: true,
+                title:{
+                    display:true,
+                    text:'Time measured for given algorithm and p'
+                },
+                tooltips: {
+                    mode: 'index',
+                },
                 scales: {
                     xAxes: [{
-                        type: 'linear',
-                        position: 'bottom'
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'p'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'time [s]'
+                        }
                     }]
                 }
             }

@@ -1,8 +1,7 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
-from django.forms.fields import ChoiceField
-from django.forms.widgets import ChoiceInput, Select
+from django.forms.widgets import Select
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView
@@ -322,7 +321,7 @@ class AlgorithmsChartView(ChartMixin):
     datasets_number = 4
     labels = ['Brute Force', 'Genetic', 'Greedy', 'Greedy CC']
     colors = ['red', 'green', 'gold', 'silver']
-    points_stroke_colors = ['transparent', 'transparent', 'transparent', 'transparent']
+    points_stroke_colors = ['red', 'green', 'gold', 'silver']
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -333,36 +332,57 @@ class AlgorithmsChartView(ChartMixin):
 
     def get_data(self):
         """
-        Time execution of given algorithms for given p parameter
-        :return: algorithms' datasets
+        :return: algorithms' datasets - dictionary with five keys
+            'b' - for brute\n
+            'g' - for genetic\n
+            'r' - for greedy\n
+            'c' - for greedy_cc\n
+                'b', 'g', 'r', 'c' - stores times measured for given entry on x_axis list
+            Under 'i' index only one and at least one of the four above lists can store
+            a time - other three lists have to store None value under 'i'-th index
+                'x_axis' - label for x axis - stores list of p_parameter values
+            Each of five lists contains the list of the same length
         """
         # TODO use constants from models.py after greedy branch merge
-        brute = self.results_for_algorithm('b')
-        genetic = self.results_for_algorithm('g')
-        greedy = self.results_for_algorithm('r')
-        greedy_cc = self.results_for_algorithm('c')
-        return [brute, genetic, greedy, greedy_cc]
+        times_and_labels = {'b': [], 'g': [], 'r': [], 'c': [], 'x_axis': [], 'all': []}
 
-    def results_for_algorithm(self, algorithm_char_code):
-        """
-        :param algorithm_char_code: one of: 'r', 'g', 'b', 'c'
-        :return: list of dicts { x: p_parameter, y: time } for algorithm specified by `algorithm_char_code`
-        """
-        results = list(self.results.filter(algorithm=algorithm_char_code))
-        if not results:
-            return []
-        return [self.to_point(result.p_parameter, result.time) for result in results]
+        idx = 0
+        for result in self.results:
+            times_and_labels['b'].append(None)
+            times_and_labels['g'].append(None)
+            times_and_labels['r'].append(None)
+            times_and_labels['c'].append(None)
+            times_and_labels['x_axis'].append(result.p_parameter)
+            times_and_labels['all'].append(result.time)
+            times_and_labels[result.algorithm][idx] = result.time
+            idx += 1
 
-    @staticmethod
-    def to_point(x, y):
+        return times_and_labels
+
+    def get_datasets(self, *args, **kwargs):
+        """
+        Format data to Scatter dataset format
+        """
+        algorithm_keys = ['b', 'g', 'r', 'c']
+        labels = self.get_labels()
+        colors = self.get_colors()
+        point_stroke_colors = self.get_points_stroke_colors()
+        points_radii = self.get_points_radii()
+        data = self.get_data()
+
+        datasets = [
+            {
+                'fill': False,
+                'label': labels[i],
+                'borderColor': colors[i],
+                'backgroundColor': point_stroke_colors[i],
+                'data': data[algorithm_keys[i]],
+                'pointRadius': points_radii[i],
+            }
+            for i in xrange(self.datasets_number)
+            ]
+
         return {
-            'x': x,
-            'y': y
+            'labels': data['x_axis'],
+            'datasets': datasets
         }
-    # def print_results(self, results):
-    #     if not results:
-    #         return
-    #     for result in results:
-    #         print ("p %d" % result['x'])
-    #         print ("time %f" % result['y'])
-
