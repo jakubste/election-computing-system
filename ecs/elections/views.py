@@ -353,7 +353,6 @@ class AlgorithmsChartView(ChartMixin):
             times_and_labels['r'].append(None)
             times_and_labels['c'].append(None)
             times_and_labels['x_axis'].append(result.p_parameter)
-            times_and_labels['all'].append(result.time)
             times_and_labels[result.algorithm][idx] = result.time
             idx += 1
 

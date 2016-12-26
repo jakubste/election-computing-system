@@ -100,6 +100,7 @@ $(document).ready(function () {
             data: data['data'],
             options: {
                 showLines: true,
+                spanGaps: true,
                 responsive: true,
                 title:{
                     display:true,
