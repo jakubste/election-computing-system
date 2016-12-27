@@ -352,8 +352,8 @@ class AlgorithmsChartView(ChartMixin):
 
         for result in self.results:
             if prev_p != result.p_parameter:
-                prev_p = result.p_parameter
                 self.fill_up_with_nones(algorithm_keys, max_list_length, prev_p, times_and_labels)
+                prev_p = result.p_parameter
             times_and_labels[result.algorithm].append(result.time)
             list_length = len(times_and_labels[result.algorithm])
             max_list_length = list_length if list_length > max_list_length else max_list_length
