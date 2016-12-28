@@ -834,6 +834,104 @@ wartości ogólnego poziomu zadowolenia jak w przypadku pierwszego algorytmu.
 
 \section{Algorytm genetyczny}
 
+\chapter{Porównanie algorytmów}
+\section{Zrównanie jakości działania algorytmów zachłannych}
+Ponieważ algorytm zachłanny według zasady $Chamberlin-Courant’a$ przystosowany jest do działania dla dużych wartości parametru $p$ (im większy parametr $p$, tym wartość wskazanego przez algorytm komitetu powinna rosnąć), zasadnym jest analiza dla jakiego parametru $p$ algorytm zachłanny według zasady $Chamberlin-Courant’a$ staje się nie gorszy od algorytmu zachłannego zależnego od parametru $p$. Algorytm zachłanny według zasady $Chamberlin-Courant’a$ jest znacznie szybszy od swojego konkurenta, więc wiedząc dla jakiej wartości parametru $p$ staje się nie gorszy pod względem jakości rezultatu, można go z powodzeniem stosować zamiast algorytmu zachłannego zależnego od parametru $p$. W tym podrozdziale podjęta zostanie próba oszacowania wartości parametru $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku oraz zostanie przeprowadzona analiza czynników, które mogą potencjalnie wpływać na wartość tego parametru $p$. W dalszej części podrozdziału parametr $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku będzie nazywany graniczną wartością parametru $p$.
+\subsection{Działanie algorytmów zachłannych}
+Dla wszystkich przypadków testowanych, wyniki algorytmów zachłannych zachowywały pewien schemat wraz ze wzrostem parametru $p$. Dla małych wartości parametru $p$ jakość rezultatu obliczonego przez algorytm zachłanny zależny od wartości parametru $p$, znacznie przewyższa drugi z algorytmów zachłannych. Wraz ze wzrostem parametru $p$ jakości wyników wyliczanych przez algorytmy są coraz bliższe sobie. Dla pewnej wartości granicznej parametru $p$, algorytm zachłanny według zasady $Chamberlin-Courant’a$ staje się nie gorszy od swojego konkurenta pod względem jakości wyniku. Dla wartości parametru $p$ większych od tej wartości granicznej, algorytm zachłanny według zasady $Chamberlin-Courant’a$ jest co najmniej tak samo dobry jak algorytm zachłanny zależny od parametru $p$. Dla wartości parametru $p$ większych i równych od wartości granicznej parametru $p$, najczęściej występuje taka sytuacja, że wyniki obydwu algorytmów są takie same. 
+
+Powyższa zasada zachowywania się wyników algorytmów zachłannych względem siebie sprawdziła się dla wszystkich przypadków testowanych. Ponieważ badane algorytmy są algorytmami heurystycznymi, mogą wystąpić odstępstwa od tej reguły. 
+
+\subsection{Wpływ liczby wyborców na wartość graniczną parametru $p$}
+Pierwszym czynnikiem, który badano pod kątem jego wpływu na wartość graniczną parametru $p$, była liczba wyborców. W tym celu określono pewne stałe wartości dla innych parametrów definiujących wybory, a następnie szacowano wartość graniczną parametru $p$. Szacowanie polegało na poszukiwaniu wartości granicznej w ten sposób, że porównywano dla pewnej wybranej początkowo wartości parametru $p$ wyniki obydwu algorytmów i w zależności, który algorytm okazał się lepszy pod względem jakości wyniku, dalsze poszukiwanie ograniczano do wartości parametru $p$ mniejszych lub większych wybranej początkowo wartości. Jeżeli lepszy okazywał się algorytm zachłanny zależny od wartości parametru $p$, wtedy dalsze poszukiwanie ograniczano do wartości parametru $p$ większych od badanej początkowo wartości parametru $p$. W przeciwnym przypadku szukano dla wartości parametru $p$ mniejszych od wybranej na początku wartości. Postępowanie w celu oszacowania wartości granicznej parametru $p$ miało cechy wyszukiwania binarnego. Wartość graniczna parametru $p$ nie była określana dokładnie, lecz jedynie szacowana. Błąd bezwzględny określonej wartości wynosił dla tego testu $50$. Jeżeli przykładowo stwierdzono, że wartość graniczna znajduje się między wartością $1500$ a $1600$, to szacowano, że wartość graniczna parametru $p$ wynosi $1550$. Dla tego testu przyjęto, że rozmiar komitetu będzie wynosił $15$, a liczba kandydatów będzie wynosiła $50$. Zbadano zależność wartości granicznej parametru $p$ dla liczby wyborców wynoszącej $25$, $50$, $75$ oraz $100$. Próbę przeprowadzono dwukrotnie dla każdej wartości liczby wyborców w celu określenia czy wynik dla danej liczby wyborców jest podobny niezależnie od innych parametrów. Testy przeprowadzano dla wyborów generowanych z rozkładu normalnego. Wyniki przedstawione są w formie tabeli i wykresu. \\ 
+
+\begin{center}
+
+\begin{tabular}{|c|c|c|c|c|}
+   \hline 
+   liczba wyborców & 25 & 50 & 75 & 100 \\ 
+   \hline 
+   wartość graniczna parametru $p$ - próba nr 1 & 1550 & 1600 & 50 & 100 \\ 
+   \hline 
+   wartość graniczna parametru $p$ - próba nr 2 & 50 & ponad 5000 & 1150 & 50 \\ 
+   \hline 
+\end{tabular}    
+\captionof{table}{Graniczne wartości parametru $p$ dla różnej liczby wyborców}
+\end{center}
+
+\vspace{\baselineskip}
+
+\begin{center}
+\centerline{\includegraphics[scale=1]{pics/wartosc_graniczna_od_liczba_wyborcow.png}}
+\captionof{figure}{Zależność wartości granicznej parametru $p$ od liczby wyborców}
+\end{center}
+
+Na wykresie nie zaznaczono wyniku drugiej próby dla liczby wyborców równej $50$. Nie oszacowano jej dokładnie, gdyż wiadomo że wynosiła ponad $5000$. Nie jest istotne jak duża jest ta wartość. Badanie to pokazało, że nie ma zależności między wartością graniczną parametru $p$ a liczbą wyborców. Rozrzut wyników jest bardzo duży nawet dla dwóch różnych prób dla tej samej liczby wyborców.   
+
+\subsection{Wpływ odchylenia standardowego na wartość graniczną parametru $p$}
+Zdecydowano się na sprawdzenie wpływu rozproszenia wyborców i kandydatów na wartość graniczną parametru $p$. Wartości parametru były takie same jak w poprzednim teście poza wartością odchylenia standardowego. Wcześniej wartość odchylenia standardowego dla wyborców i kandydatów wynosiła domyślne $30$. W tym teście podniesiono tą wartość do $100$. Sposób przeprowadzenia testu był analogiczny do poprzedniego. Wyniki przedstawione są w formie tabeli.
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+   \hline 
+   liczba wyborców & 25 & 50 \\ 
+   \hline 
+   wartość graniczna parametru $p$ - próba nr 1 & ponad 5000 & 1500 \\ 
+   \hline 
+   wartość graniczna parametru $p$ - próba nr 2 & 50 & 50 \\ 
+   \hline 
+\end{tabular}    
+\captionof{table}{Graniczne wartości parametru $p$ dla różnej liczby wyborców i $\sigma = 100$}
+\end{center}
+
+Ponieważ po dwukrotnym sprawdzeniu wyniku dla dwóch różnych liczb wyborców, rozrzut wyników okazał się równie duży jak w przypadku pierwszego testu, stąd poprzestano na tych wynikach. Wpływu odchylenia standardowego w ten sposób badanego na graniczną wartość parametru $p$ nie odnotowano.
+
+\subsection{Wpływ liczby kandydatów na wartość graniczną parametru $p$}
+Kolejnym zbadanym czynnikiem był wpływ liczby kandydatów na wartość graniczną parametru $p$ przy założeniu, że pozostałe parametry definiujące wybory są stałe. Na potrzeby testu przyjęto, że rozmiar komitetu będzie równy $15$, liczba wyborców wyniesie $50$, a odchylenie standardowe zarówno dla wyborców, jak i kandydatów wyniesie domyślne $30$. Sposób przeprowadzenia testu był analogiczny do poprzednich. Błąd bezwzględny oszacowanych wartości granicznych, dla wartości rzędu kilku tysięcy wynosił $250$, dla rzędu kilkaset lub kilkadziesiąt $50$. Jeżeli przykładowo stwierdzono, że wartość graniczna znajduje się między wartością $3000$ a $3500$, to szacowano, że wartość graniczna parametru $p$ wynosi $3250$. Większa dokładność okazała się nieistotna. Wyniki przedstawione są w formie tabeli.
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+   \hline 
+   liczba kandydatów & 20 & 40 \\ 
+   \hline 
+   wartość graniczna parametru $p$ - próba nr 1 & 850 & 3250 \\ 
+   \hline 
+   wartość graniczna parametru $p$ - próba nr 2 & 250 & 50 \\ 
+   \hline 
+\end{tabular}    
+\captionof{table}{Graniczne wartości parametru $p$ dla różnej liczby kandydatów}
+\end{center}
+
+Ponieważ podobnie jak w poprzednim teście rozrzut wyników okazał się bardzo duży, zdecydowano poprzestać na dwukrotnym sprawdzeniu dwóch różnych liczb kandydatów. Dla takiej samej liczby kandydatów, wartość graniczna parametru $p$ potrafi być jednocześnie i bardzo duża i bardzo mała. Wpływu w ten sposób badanej liczby kandydatów na graniczną wartość parametru $p$ nie znaleziono.
+
+\subsection{Wpływ rozmiaru komitetu na wartość graniczną parametru $p$}
+Kolejnym badanym czynnikiem był rozmiar komitetu. Metodyka badania była taka sama jak w poprzednim teście. Błąd bezwzględny oszacowanych wartości granicznych, dla wartości rzędu kilku tysięcy wynosił $500$, dla rzędu kilkaset lub kilkadziesiąt $50$. Parametry definiujące wybory poza rozmiarem komitetu przyjęto jako stałe. Liczbę kandydatów określono na wartość $60$, liczbę wyborców na 50, a odchylenie standardowe wyborców i kandydatów na domyślne $30$. Wyniki przedstawiono w formie tabeli i wykresu. 
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+   \hline 
+   rozmiar komitetu & 10 & 20 & 30 & 40 & 50 \\ 
+   \hline 
+   wartość graniczna parametru $p$ - próba nr 1 & 50 & 2500 & 4000 & 3500 & 3500 \\ 
+   \hline 
+   wartość graniczna parametru $p$ - próba nr 2 & 100 & 1500 & 3500 & 3500 & 3000 \\ 
+   \hline 
+\end{tabular}    
+\captionof{table}{Graniczne wartości parametru $p$ dla różnego rozmiaru komitetu}
+\end{center}
+
+\vspace{\baselineskip}
+
+\begin{center}
+\centerline{\includegraphics[scale=1]{pics/wartosc_graniczna_od_rozmiar_komitetu.png}}
+\captionof{figure}{Zależność wartości granicznej parametru $p$ od rozmiaru komitetu}
+\end{center}
+
+Rozrzut wyników dwóch różnych prób dla badanych rozmiarów komitetów był w porównaniu do poprzednich badań stosunkowo niewielki. Dla najmniejszego rozmiaru komitetu wynoszącego $10$, wartość graniczna parametru $p$ była rzędu kilkadziesiąt. Dla rozmiaru komitetu równego $20$ rozrzut wyników był największy. Dla większych rozmiarów komitetu wartość graniczna była na poziomie kilka tysięcy i zdawała się mieć pewien rodzaj stabilizacji. Wciąż jednak trudno stwierdzić czy istnieje jakakolwiek zależność między badanymi wielkościami. Można jedynie zaobserwować, że dla mniejszych rozmiarów komitetu wartość graniczna przybiera dość często małą wartość rzędu kilkadziesiąt, a dla większych rozmiarów komitetu wartość graniczna jest raczej rzędu kilka tysięcy.
+
+Przeprowadzając wszystkie powyższe testy zauważono jednak inną prawidłowość. Otóż zaobserwowano, że już dla niewielkiej wartości parametru $p$ większość zwycięzców wskazanych przez obydwa algorytmy pokrywa się ze sobą. O innej wartości wskazanego komitetu dla większych wartości parametru $p$ decyduje niewielka część zwycięzców. Tworzą się pary lub trójki kandydatów, którzy znajdują się blisko siebie i w zależności od tego który z nich zostanie wybrany do zwycięskiego komitetu, wartości zadowolenia wyborców się nieco zmieniają. Przykładowo może się tak zdarzyć, że istnieje para kandydatów spośród której zawsze do zwycięskiego komitetu trafia jeden z kandydatów w tej parze. Przy czym istnieje graniczna wartość parametru $p$, poniżej której zawsze jeden z kandydatów w tej parze wchodzi do zwycięskiego komitetu i jednocześnie powyżej tej granicznej wartości parametru $p$ drugi kandydat z pary wchodzi do zwycięskiego komitetu. Jeżeli ta graniczna wartość jest duża, to wtedy algorytm zachłanny zależny od parametru $p$ długo będzie wybierał pierwszego kandydata z pary przewyższając tym samym algorytm według zasady $Chamberlin-Courant’a$, który zawsze wybierze drugiego kandydata. Stąd graniczna wartość parametru $p$ dla tego przypadku jest duża, bo algorytm zachłanny zależny od parametru $p$ będzie długo minimalnie lepszy od drugiego algorytmu zachłannego. Jednak trzon zwycięzców dla obydwu algorytmów szybko jest taki sam. Stąd na wartość graniczną parametru $p$ głównie ma wpływ lokalne rozmieszczenie kandydatów. Jeżeli znajdą się pary i trójki, spośród których dla dużych wartości parametru $p$ następuje zamiana miejsc w zwycięskim komitecie, wtedy wartość graniczna parametru $p$ jest dla takich przypadków duża. Jeżeli takich zaciętych par nie ma i zwycięzcy są wyłaniani w zdecydowany sposób pod kątem reprezentatywności dla pewnej części wyborców, wtedy wartość graniczna parametru $p$ jest mała. Poniekąd taka interpretacja tłumaczy tendencję do małej wartości granicznej parametru $p$ dla małych zwycięskich komitetów i dużą wartość graniczną parametru $p$ dla dużych zwycięskich komitetów. Dla małych rozmiarem komitetów, każdy ze zwycięzców klarownie reprezentuje pewną część wyborców przez co nie tworzą się dla większych $p$ pary rywalizujące o reprezentację dla pewnej części wyborców. Dla dużych komitetów, w związku z wieloma miejscami w komitecie o zwycięstwo rywalizują również mniej popierani w danej grupie wyborców kandydaci, przez co jest większa szansa na stworzenie się opisanej wcześniej pary lub trójki kandydatów.
+
+
 \bibliographystyle{alpha}
 \bibliography{bibliografia}
 
