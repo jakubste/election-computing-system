@@ -213,6 +213,9 @@ class ElectionChartView(ChartMixin):
             raise Http404
         return super(ElectionChartView, self).dispatch(request, *args, **kwargs)
 
+    def get_title(self):
+        return 'Voters and candidates distribution'
+
     def get_data(self):
         """
         Returns list of lists of points.
@@ -294,6 +297,12 @@ class ResultChartView(ChartMixin):
     colors = ['black', 'black', 'black']
     points_stroke_colors = ['blue', 'green', 'red']
     points_radii = [5, 5, 10]
+    algorithm_keys = {
+        'b': 'Brute Force',
+        'g': 'Genetic',
+        'r': 'Greedy',
+        'c': 'Greedy CC'
+    }
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -302,6 +311,10 @@ class ResultChartView(ChartMixin):
         except Result.DoesNotExist:
             raise Http404
         return super(ResultChartView, self).dispatch(request, *args, **kwargs)
+
+    def get_title(self):
+        return 'Result for algorithm: %s with p: %d' % (
+            self.algorithm_keys[self.result.algorithm], self.result.p_parameter)
 
     def get_data(self):
         """
@@ -322,6 +335,7 @@ class AlgorithmsChartView(ChartMixin):
     labels = ['Brute Force', 'Genetic', 'Greedy', 'Greedy CC']
     colors = ['red', 'green', 'gold', 'silver']
     points_stroke_colors = ['red', 'green', 'gold', 'silver']
+    algorithm_keys = ['b', 'g', 'r', 'c']
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -348,17 +362,16 @@ class AlgorithmsChartView(ChartMixin):
 
         prev_p = 0
         max_list_length = 0
-        algorithm_keys = ['b', 'g', 'r', 'c']
 
         for result in self.results:
             if prev_p != result.p_parameter:
-                self.fill_up_with_nones(algorithm_keys, max_list_length, prev_p, times_and_labels)
+                self.fill_up_with_nones(self.algorithm_keys, max_list_length, prev_p, times_and_labels)
                 prev_p = result.p_parameter
             times_and_labels[result.algorithm].append(result.time)
             list_length = len(times_and_labels[result.algorithm])
             max_list_length = list_length if list_length > max_list_length else max_list_length
 
-        self.fill_up_with_nones(algorithm_keys, max_list_length, prev_p, times_and_labels)
+        self.fill_up_with_nones(self.algorithm_keys, max_list_length, prev_p, times_and_labels)
 
         return times_and_labels
 

@@ -270,18 +270,20 @@ class ElectionChartViewTest(TestCase):
         self.assertEqual(len(candidates), 4)
         self.assertEqual(len(voters), 10)
 
+    @mock.patch.object(ElectionChartView, 'get_title')
     @mock.patch.object(ElectionChartView, 'get_labels')
     @mock.patch.object(ElectionChartView, 'get_colors')
     @mock.patch.object(ElectionChartView, 'get_points_stroke_colors')
     @mock.patch.object(ElectionChartView, 'get_data')
     def test_get_datasets(
             self, mocked_get_data, mocked_get_points_stroke_colors,
-            mocked_get_colors, mocked_get_labels
+            mocked_get_colors, mocked_get_labels, mocked_get_title
     ):
         mocked_get_labels.return_value = ['label1', 'label2']
         mocked_get_colors.return_value = ['red', 'blue']
         mocked_get_points_stroke_colors.return_value = ['black', 'black']
         mocked_get_data.return_value = [[{'x': 0, 'y': 1}], [{'x': 2, 'y': 3}]]
+        mocked_get_title.return_value = "chart title"
         expected = {'datasets': [
             {
                 "borderColor": "red",
@@ -297,7 +299,9 @@ class ElectionChartViewTest(TestCase):
                 "label": "label2",
                 "pointRadius": 5
             },
-        ]}
+        ],
+            'title': mocked_get_title.return_value
+        }
         request = RequestFactory().get(self.url)
         view = ElectionChartView(
             request=request,
@@ -352,18 +356,20 @@ class ResultChartViewTest(TestCase):
         self.assertEqual(len(voters), 10)
         self.assertEqual(len(winners), 2)
 
+    @mock.patch.object(ResultChartView, 'get_title')
     @mock.patch.object(ResultChartView, 'get_labels')
     @mock.patch.object(ResultChartView, 'get_colors')
     @mock.patch.object(ResultChartView, 'get_points_stroke_colors')
     @mock.patch.object(ResultChartView, 'get_data')
     def test_get_datasets(
             self, mocked_get_data, mocked_get_points_stroke_colors,
-            mocked_get_colors, mocked_get_labels
+            mocked_get_colors, mocked_get_labels, mocked_get_title
     ):
         mocked_get_labels.return_value = ['label1', 'label2', 'label3']
         mocked_get_colors.return_value = ['red', 'blue', 'yellow']
         mocked_get_points_stroke_colors.return_value = ['black', 'black', 'black']
         mocked_get_data.return_value = [[{'x': 0, 'y': 1}], [{'x': 2, 'y': 3}], [{'x': 4, 'y': 5}]]
+        mocked_get_title.return_value = "chart title"
         expected = {'datasets': [
             {
                 "borderColor": "red",
@@ -386,7 +392,9 @@ class ResultChartViewTest(TestCase):
                 "label": "label3",
                 "pointRadius": 10
             },
-        ]}
+        ],
+            'title': mocked_get_title.return_value
+        }
         request = RequestFactory().get(self.url)
         view = ResultChartView(
             request=request,

@@ -8,6 +8,7 @@ class ChartMixin(View):
     colors = None
     points_stroke_colors = None
     points_radii = None
+    title = ""
 
     def get_data(self):
         raise NotImplementedError
@@ -36,6 +37,9 @@ class ChartMixin(View):
         else:
             return self.points_radii
 
+    def get_title(self):
+        return self.title
+
     def get_datasets(self, *args, **kwargs):
         """
         Format data to Scatter dataset format
@@ -46,16 +50,19 @@ class ChartMixin(View):
         points_radii = self.get_points_radii()
         data = self.get_data()
 
-        return {'datasets': [
-            {
-                'label': labels[i],
-                'borderColor': colors[i],
-                'backgroundColor': point_stroke_colors[i],
-                'data': data[i],
-                'pointRadius': points_radii[i]
-            }
-            for i in xrange(self.datasets_number)
-            ]}
+        return {
+            'datasets': [
+                {
+                    'label': labels[i],
+                    'borderColor': colors[i],
+                    'backgroundColor': point_stroke_colors[i],
+                    'data': data[i],
+                    'pointRadius': points_radii[i]
+                }
+                for i in xrange(self.datasets_number)
+                ],
+            'title': self.get_title()
+        }
 
     def get(self, *args, **kwargs):
         return JsonResponse(

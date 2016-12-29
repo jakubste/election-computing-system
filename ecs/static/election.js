@@ -22,6 +22,10 @@ $(document).ready(function () {
                 data: data['data'],
                 options: {
                     responsive: true,
+                    title: {
+                        display: true,
+                        text:  data['data']['title']
+                    },
                     datasetFill: false,
                     datasetStroke: false,
                     showLines : false
@@ -61,6 +65,10 @@ $(document).ready(function () {
                     data: data['data'],
                     options: {
                         responsive: true,
+                        title: {
+                            display: true,
+                            text: data['data']['title']
+                        },
                         datasetFill: false,
                         datasetStroke: false,
                         showLines : false,
@@ -119,6 +127,9 @@ $(document).ready(function () {
                         scaleLabel: {
                             display: true,
                             labelString: 'time [s]'
+                        },
+                        ticks: {
+                            min: 0
                         }
                     }]
                 }
