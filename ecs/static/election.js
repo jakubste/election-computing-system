@@ -28,7 +28,8 @@ $(document).ready(function () {
                     },
                     datasetFill: false,
                     datasetStroke: false,
-                    showLines : false
+                    showLines: false,
+                    animation: false
                 }
             });
         });
