@@ -59,6 +59,17 @@
 \setlength{\parindent}{0pt}
 \renewcommand{\indent}{\hspace*{\tindent}}
 
+% żeby stopki były zastosowane do stron gdzie rozpoczyna się rozdział
+\usepackage{etoolbox}
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
+\fancypagestyle{plain}{%
+\fancyhf{} % clear all header and footer fields
+\fancyhead[R]{\bfseries \thepage}
+\fancyfoot[C]{System obliczający wyniki wyborów dla uogólnienia systemu k-Borda} % except the center
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}}
+
 %---------------------------------------------------------------------------
 
 \begin{document}

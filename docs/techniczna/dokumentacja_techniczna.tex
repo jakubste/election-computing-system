@@ -932,6 +932,52 @@ Rozrzut wyników dwóch różnych prób dla badanych rozmiarów komitetów był 
 
 Przeprowadzając wszystkie powyższe testy zauważono jednak inną prawidłowość. Otóż zaobserwowano, że już dla niewielkiej wartości parametru $p$ większość zwycięzców wskazanych przez obydwa algorytmy pokrywa się ze sobą. O innej wartości wskazanego komitetu dla większych wartości parametru $p$ decyduje niewielka część zwycięzców. Tworzą się pary lub trójki kandydatów, którzy znajdują się blisko siebie i w zależności od tego który z nich zostanie wybrany do zwycięskiego komitetu, wartości zadowolenia wyborców się nieco zmieniają. Przykładowo może się tak zdarzyć, że istnieje para kandydatów spośród której zawsze do zwycięskiego komitetu trafia jeden z kandydatów w tej parze. Przy czym istnieje graniczna wartość parametru $p$, poniżej której zawsze jeden z kandydatów w tej parze wchodzi do zwycięskiego komitetu i jednocześnie powyżej tej granicznej wartości parametru $p$ drugi kandydat z pary wchodzi do zwycięskiego komitetu. Jeżeli ta graniczna wartość jest duża, to wtedy algorytm zachłanny zależny od parametru $p$ długo będzie wybierał pierwszego kandydata z pary przewyższając tym samym algorytm według zasady $Chamberlin-Courant’a$, który zawsze wybierze drugiego kandydata. Stąd graniczna wartość parametru $p$ dla tego przypadku jest duża, bo algorytm zachłanny zależny od parametru $p$ będzie długo minimalnie lepszy od drugiego algorytmu zachłannego. Jednak trzon zwycięzców dla obydwu algorytmów szybko jest taki sam. Stąd na wartość graniczną parametru $p$ głównie ma wpływ lokalne rozmieszczenie kandydatów. Jeżeli znajdą się pary i trójki, spośród których dla dużych wartości parametru $p$ następuje zamiana miejsc w zwycięskim komitecie, wtedy wartość graniczna parametru $p$ jest dla takich przypadków duża. Jeżeli takich zaciętych par nie ma i zwycięzcy są wyłaniani w zdecydowany sposób pod kątem reprezentatywności dla pewnej części wyborców, wtedy wartość graniczna parametru $p$ jest mała. Poniekąd taka interpretacja tłumaczy tendencję do małej wartości granicznej parametru $p$ dla małych zwycięskich komitetów i dużą wartość graniczną parametru $p$ dla dużych zwycięskich komitetów. Dla małych rozmiarem komitetów, każdy ze zwycięzców klarownie reprezentuje pewną część wyborców przez co nie tworzą się dla większych $p$ pary rywalizujące o reprezentację dla pewnej części wyborców. Dla dużych komitetów, w związku z wieloma miejscami w komitecie o zwycięstwo rywalizują również mniej popierani w danej grupie wyborców kandydaci, przez co jest większa szansa na stworzenie się opisanej wcześniej pary lub trójki kandydatów.
 
+\subsection{Stopień pokrywania się zwycięzców dla różnych wartości parametru p}
+W związku z zaobserwowaniem faktu dużego pokrywania się zwycięskich kandydatów wyłanianych przez algorytmy zachłanne dla odpowiednio dużych wartości parametru $p$, postanowiono dokładniej zbadać tę kwestię. Sprawdzono jaki procent kandydatów ze zwycięskich komitetów wyłonionych przez obydwa algorytmy pokrywa się ze sobą. Testy przeprowadzono dla różnych wartości definiujących wybory. Dla każdej ze sprawdzonych wartości parametru $p$ sprawdzono pokrycie się zwycięzców dla $10$ różnych wyborów. Dla każdej wartości parametru $p$ policzono następnie średnią i medianę z wyliczonych wartości procentowych pokrycia się komitetów. Wyniki poszczególnych prób i obliczonych średnich oraz median przedstawiono w formie tabeli. W tabeli przyjęto następujące oznaczenia: $k$ - rozmiar komitetu, $c$ - liczba kandydatów, $v$ - liczba wyborców. Dla poszczególnych wyborów przedstawiono ilu zwycięskich kandydatów z całego komitetu pokryło się z wynikami drugiego algorytmu dla danej wartości parametru $p$. Średnie i mediany przedstawiono również w formie wykresu.
+
+%\clearpage
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+parametr $p$ & 30 & 50 & 100 & 1000 \\ 
+\hline 
+$k$ = 10, $c$ = 70, $v$ = 100 & 6/10 & 8/10 & 8/10 & 9/10 \\ 
+\hline 
+$k$ = 15, $c$ = 55, $v$ = 75 & 13/15 & 15/15 & 15/15 & 15/15 \\ 
+\hline 
+$k$ = 20, $c$ = 50, $v$ = 40 & 15/20 & 15/20 & 15/20 & 17/20 \\ 
+\hline 
+$k$ = 25, $c$ = 65, $v$ = 80 & 20/25 & 23/25 & 24/25 & 24/25 \\ 
+\hline 
+$k$ = 30, $c$ = 80, $v$ = 45 & 26/30 & 26/30 & 27/30 & 27/30 \\ 
+\hline 
+$k$ = 35, $c$ = 45, $v$ = 75 & 30/35 & 34/35 & 34/35 & 34/35 \\ 
+\hline 
+$k$ = 40, $c$ = 75, $v$ = 60 & 35/40 & 35/40 & 36/40 & 36/40 \\ 
+\hline 
+$k$ = 45, $c$ = 85, $v$ = 50 & 38/45 & 40/45 & 41/45 & 41/45 \\ 
+\hline 
+$k$ = 50, $c$ = 150, $v$ = 150 & 34/50 & 39/50 & 46/50 & 47/50 \\ 
+\hline 
+$k$ = 55, $c$ = 95, $v$ = 110 & 44/55 & 49/55 & 54/55 & 54/55 \\ 
+\hline 
+średnia & 79.4 \% & 87.43 \% & 90.94 \% & 93.14 \% \\ 
+\hline 
+mediana & 82.22 \% & 88.19 \% & 91.55 \% & 92.55 \% \\ 
+\hline 
+\end{tabular}
+\captionof{figure}{Procentowe pokrycie się zwycięskich kandydatów dla różnych wartości parametru $p$} 
+\end{center}
+
+\vspace{\baselineskip}
+
+\begin{center}
+\centerline{\includegraphics[scale=1]{pics/srednia_mediana_od_parametr_p.png}}
+\captionof{figure}{Średnie i mediany pokrycia się zwycięskich komitetów}
+\end{center}
+
+Uzyskane wyniki pokazują, że już dla wartości parametru $p = 50$ średnio ponad $87 \%$ zwycięskich kandydatów wśród obydwu wyników pokryło się. Dla większych wartości parametru $p$ średnie i mediany nieznacznie wzrosły. Dla wartości $p = 50$ pokrycie się wyników poza jednym przypadkiem nie schodziło poniżej $80 \%$. Zwycięzcy kandydaci, którzy nie powtórzyli się w drugim wyniku zazwyczaj stanowili dla parametru $p$ wynoszącego co najmniej $50$ około $10 \%$. Te przypadki to opisane wcześniej pary bądź trójki kandydatów, którzy wymieniają się na pozycji zwycięzcy dla dużych wartości parametru $p$. 
+
 
 \bibliographystyle{alpha}
 \bibliography{bibliografia}
