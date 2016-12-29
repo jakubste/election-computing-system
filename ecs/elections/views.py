@@ -402,6 +402,7 @@ class AlgorithmsChartView(ChartMixin):
                 'backgroundColor': point_stroke_colors[i],
                 'data': data[algorithm_keys[i]],
                 'pointRadius': points_radii[i],
+                'cubicInterpolationMode': 'monotone'
             }
             for i in xrange(self.datasets_number)
             ]

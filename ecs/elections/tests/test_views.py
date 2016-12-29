@@ -444,7 +444,8 @@ class AlgorithmComparisonChartTestCase(TestCase):
                     "backgroundColor": "red",
                     "pointRadius": 5,
                     "data": [6.568374, 6.819739, None, None, None, 32.440533, None],
-                    "fill": False
+                    "fill": False,
+                    'cubicInterpolationMode': 'monotone'
                 },
                 {
                     "borderColor": "green",
@@ -452,7 +453,8 @@ class AlgorithmComparisonChartTestCase(TestCase):
                     "backgroundColor": "green",
                     "pointRadius": 5,
                     "data": [2.626315, None, 10.491934, None, 5.55241, 12.444652, 13.22525],
-                    "fill": False
+                    "fill": False,
+                    'cubicInterpolationMode': 'monotone'
                 },
                 {
                     "borderColor": "gold",
@@ -460,7 +462,8 @@ class AlgorithmComparisonChartTestCase(TestCase):
                     "backgroundColor": "gold",
                     "pointRadius": 5,
                     "data": [0.186459, None, 0.527355, 0.756524, None, 0.550341, None],
-                    "fill": False
+                    "fill": False,
+                    'cubicInterpolationMode': 'monotone'
                 },
                 {
                     "borderColor": "silver",
@@ -468,7 +471,8 @@ class AlgorithmComparisonChartTestCase(TestCase):
                     "backgroundColor": "silver",
                     "pointRadius": 5,
                     "data": [0.07559, 0.045842, None, None, None, None, None],
-                    "fill": False
+                    "fill": False,
+                    'cubicInterpolationMode': 'monotone'
                 }
             ]
         }
