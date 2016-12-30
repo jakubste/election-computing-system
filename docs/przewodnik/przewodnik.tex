@@ -176,7 +176,7 @@ wczytywać pewien format pliku wejściowego definiującego wybory, który niekon
 \subsection{Opis wymagań}
 
 \subsubsection{Wymagania funkcjonalne}
-Poniżej zamieszczona jest lista najważniejszych wymagań w postaci kolejnych tabel. Tabela składa się z trzech pól opisujących dane wymaganie: \textit{Nazwa, Opis} i \textit{Uzasadnienie}. Pole \textit{Nazwa} jest nazwą usługi dostarczanej przez system, pole \textit{Opis} szczegółowo opisuje w jaki sposób jest realizowane dane wymaganie, a pole \textit{Uzasadnienie} podaje powód dlaczego w taki, a nie inny sposób wymaganie zostało zrealizowane i postawione.
+Poniżej zamieszczona jest lista najważniejszych wymagań, które wyewoluowały do przedstawionej postaci w trakcie trwania projektu. Wymagania są przedstawione w postaci kolejnych tabel. Tabela składa się z trzech pól opisujących dane wymaganie: \textit{Nazwa, Opis} i \textit{Uzasadnienie}. Pole \textit{Nazwa} jest nazwą usługi dostarczanej przez system, pole \textit{Opis} szczegółowo opisuje w jaki sposób jest realizowane dane wymaganie, a pole \textit{Uzasadnienie} podaje powód dlaczego w taki, a nie inny sposób wymaganie zostało zrealizowane i postawione.
 \newpage
 \begin{table}
 \centering
@@ -635,6 +635,27 @@ kandydatów, $50$ wyborców oraz komitet zwycięski liczący $15$ kandydatów. A
 zachłanny według zasady $Chamberlin-Courant’a$ nie zmienia swojego czasu obliczeń, gdyż działanie
 algorytmu nie zależy od parametru $p$ . Najszybciej działa algorytm zachłanny według zasady
 $Chamberlin-Courant’a$, drugi w kolejności jest algorytm zachłanny zależny od parametru $p$ , a najwolniejszy jest algorytm genetyczny.
+
+\subsection{Zrównanie jakości działania algorytmów zachłannych}
+\subsubsection{Przewidywany schemat działania algorytmów zachłannych}
+W związku ze specyfiką zaimplementowanych algorytmów zachłannych przyjęto pewien sposób zachowania się wyników algorytmów względem siebie dla różnych wartości parametru $p$. Dla małych wartości parametru $p$ algorytm zachłanny zależny od parametru $p$ produkuje zdecydowanie lepsze jakościowo rezultaty od algorytmu według zasady $Chamberlin-Courant’a$. Wraz ze wzrostem parametru $p$ różnica w jakości działania maleje aż do osiągnięcia wartości granicznej parametru $p$, począwszy od której algorytm zachłanny według zasady $Chamberlin-Courant’a$ staje się nie gorszy od algorytmu zachłannego zależnego od parametru $p$. Wszystkie przypadki testowe zachowywały się zgodnie z przyjętym schematem działania.  Ponieważ algorytm zachłanny według zasady $Chamberlin-Courant’a$ jest zdecydowanie szybszy od drugiego algorytmu zachłannego zasadna jest próba określenia wartości granicznej parametru $p$ dla różnych parametrów wyborów. 
+
+\subsubsection{Wartość graniczna parametru $p$}
+Sprawdzono zależność granicznej wartości parametru $p$ od różnych parametrów definiujących wybory. Testowano zależność od liczby kandydatów, liczby wyborców, rozmiaru komitetu oraz odchylenia standardowego. Oddzielnie badano zależność od każdego z podanych parametrów przyjmując za pozostałe parametry pewne stałe. Po wynikach testów ciężko było wskazać zależność między wartością graniczną parametru $p$ a którymś z badanych parametrów wyborów. Rozrzut wyników był duży i dotyczył nawet różnych prób dla tych samych danych. Wartości graniczne parametru $p$ oscylowały od rzędu kilkadziesiąt do rzędu kilka tysięcy. 
+
+\noindent W trakcie wykonywania testów zauważono jednak inną prawidłowość. Już dla stosunkowo niewielkich wartości parametru $p$ wyniki działania obydwu algorytmów w znacznym stopniu się pokrywały. Duża większość zwycięskich kandydatów była wspólna, a różnice dotyczyły jedynie pewnych par lub trójek kandydatów, którzy wymieniali się w roli zwycięzcy dla dużych wartości parametru $p$.
+
+\subsubsection{Stopień pokrywania się zwycięzców dla różnych wartości parametru $p$}
+W celu zbadania jaki jest procentowy stopień pokrycia się komitetów, przeprowadzono testy dla różnych wartości parametru $p$. Dla każdej wybranej wartości parametru $p$ przeprowadzono $10$ prób. Każda próba to inaczej zdefiniowane wybory. Wśród $10$ prób rozmiar komitetu znajdował się w przedziale $[10, 55]$, liczba kandydatów w przedziale $[45, 150]$, a liczba wyborców w przedziale $[40, 150]$. Poniżej przedstawiono na wykresie średnie i mediany pokrycia się zwycięzców. Dla każdej wartości parametru $p$ obliczono średnią i medianę z $10$ opisanych prób. 
+
+\begin{center}
+\centerline{\includegraphics[scale=1]{pics/srednia_mediana_od_parametr_p.png}}
+\captionof{figure}{Średnie i mediany pokrycia się zwycięskich komitetów}
+\end{center}
+
+\noindent Wartości średnich i median znajdują się blisko siebie dla każdej wartości parametru $p$. Rozrzut wyników dla każdej wartości parametru $p$ nie był duży. Już dla wartości $p = 50$ średnie pokrycie się komitetów obliczanych przez obydwa algorytmy przekroczyło $87\%$. Dla $p = 100$ średnia przekroczyła $90 \%$. Natomiast dla $p = 1000$ średnia wzrosła nieznacznie w stosunku do średniej dla wartości $p = 100$. Pozostałe kilka bądź kilkanaście procent zwycięzców, którzy się nie pokrywają dla obydwu algorytmów stanowią wspomniane wcześniej pary bądź trójki kandydatów, którzy wymieniają się na pozycji zwycięzców dla dużych wartości parametru $p$, które są rzędu klika tysięcy.
+
+\noindent Wyniki wskazują, że już dla wartości $p = 50$ można stosować algorytm według zasady $Chamberlin-Courant’a$ zamiast drugiego algorytmu zachłannego, mając dużą szansę na pokrycie się zwycięzców na poziomie $90 \%$. Wartość graniczną parametru $p$ trudno przewidzieć niezależnie od parametrów wyborów.  
 
 % o ile to mozliwe prosze uzywac odwolan \cite w konkretnych miejscach a nie \nocite
 
