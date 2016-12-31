@@ -11,7 +11,7 @@ mock.patch.object = mock.patch.object
 class GeneticAlgorithmTestCase(TestCase):
     def setUp(self):
         self.election = ElectionFactory.create(committee_size=2)
-        self.candidates = CandidateFactory.create_batch(3, election=self.election)
+        self.candidates = CandidateFactory.create_batch(6, election=self.election)
         self.voters = VoterFactory.create_batch(3, election=self.election)
         for voter in self.voters:
             for candidate in self.candidates:
