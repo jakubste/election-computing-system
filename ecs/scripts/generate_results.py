@@ -80,8 +80,8 @@ def run():
         result.save()
 
     cycles = [20, 50, 100]
-    crossing_probability = [10, 20, 50, 100]
-    mutation_probability = [10, 20, 50, 100]
+    crossing_probability = [50, 75, 100]
+    mutation_probability = [10, 25, 50]
 
     for cycle in cycles:
         for cp in crossing_probability:

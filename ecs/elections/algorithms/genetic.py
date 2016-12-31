@@ -74,9 +74,10 @@ class GeneticAlgorithm(Algorithm):
             if settings.PRINT_PROGRESS:
                 print 'cycle', i, 'from', self.cycles
 
-            cross_amount = int(count * (self.crossing_probability/100.0))
+            cross_amount = int(count * (self.crossing_probability / 100.0))
             ma = sample(pool, cross_amount)
-            mb = sample(pool, cross_amount)
+            mb = ma[cross_amount / 2:]
+            ma = ma[:cross_amount / 2]
             for a, b in zip(ma, mb):
                 new_ind = a.cross(b)
                 if new_ind:
