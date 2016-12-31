@@ -8,6 +8,9 @@
 \usepackage{enumerate}
 \usepackage{listings}
 \usepackage{caption}
+\usepackage{amsmath}
+% TODO przenieść do aghdoc
+\newcommand{\code}[1]{\texttt{#1}}
 
 % żeby stopki były zastosowane do stron gdzie rozpoczyna się rozdział
 \usepackage{etoolbox}
@@ -90,45 +93,61 @@
 \subsection{Metoda Bordy}
 \label{subsec:metoda_bordy}
 
-Niech $v$ będzie głosem nad zbiorem kandydatów $C$. Wynik według Bordy kandydata $c$ w $v$ jest równy $\beta(i)=C-i$, gdzie $i$- pozycja kandydata w ciągu $v$.
+Niech $v$ będzie głosem nad zbiorem kandydatów $C$. Wynik według Bordy kandydata $c$ w $v$ jest równy \begin{equation}
+\beta(i)=||C||-i,
+\end{equation}
+gdzie $i$- pozycja kandydata w ciągu $v$.\\
 Wynik $c$ w wyborach jest sumą wyników $c$ u każdego z wyborców
 
 
-\subsection{Metoda k-Borda}
-\label{subsec:metoda_k_borda}
+\subsection{Metoda k-Bordy}
+\label{subsec:metoda_k_bordy}
 
-Rozszerzenie metody Bordy. Wynik, zamiast dla jednego kandydata, obliczany jest dla ciągu kandydatów. $f_{kB}$- funkcja zadowolenia z komitetu. Ciąg $(i_1,\dots, i_k)$- ciąg pozycji kandydatów
+Rozszerzenie metody Bordy. Wynik, zamiast dla jednego kandydata, obliczany jest dla ciągu kandydatów. $f_{kB}$- funkcja zadowolenia z komitetu, $(i_1,\dots, i_k)$- ciąg pozycji kandydatów
+\begin{equation}
+f_{kB}=\sum_{j=1}^{k} \beta(i_j)
+\end{equation}
 
 \paragraph{Przyklad}
-$C={c_1,c_2,c_3,c_4}$ - zbiór kandydatów, 
+$C=\{c_1,c_2,c_3,c_4\}$ - zbiór kandydatów,
 $v=(c_2,c_1,c_4,c_3)$ - głos
 Niech $k = 2$ (wybory $2$ spośród $4$)
-$w=(c_4,c_3)$
+$w=(c_4,c_3)$.
 Najpierw określamy pozycje kandydatów z komitetu $w$ w $v$:
 $pos_v(w)=(3,4)$, zatem wynik komitetu w dla głosu v wynosi
 $f_{kB}(3,4) = (3) + (4) = ||C|| - 3 ) + ( ||C|| - 4 ) = 1 + 0 = 1$
 
 
-\subsection{Uogólnienie - system $\ell_p$ Borda}
+\subsection{Uogólnienie - system $\ell_p$-Bordy}
 \label{subsec:system_ell_p_borda}
 
-Zanim wprowadzone zostanie pojęcie uogólnionego systemu k-Borda warto przypomnieć wzór na normę $\ell_p$
-
+Zanim wprowadzone zostanie pojęcie uogólnionego systemu k-Borda warto przypomnieć wzór na normę\,$\ell_p$
 \subsubsection{Norma $\ell_p$}
 \label{subsubsection:norma_ell_p}
-
-$\ell_p(x_1,x_2,\dots, x_n) = \sqrt[p]{x_1^p+x_2^p+\dots+x_n^p},$ 
-
-
-Wówczas, w uogólnionej wersji metody k-Borda, funkcja zadowolenia $f_{kB}$ zostaje uzależniona również od parametru $p$ z powyższego wzoru. Norma liczona jest z wyników według Bordy, $\beta(i)$. Wzór uogólniony funkcji zadowolenia przyjmuje zatem postać:\\
-$f_{\ell_pB}(p,(i_11,\dots,i_k))=p[(i1)]p+[(i2)]p+...+[(ik)]p$
+\begin{equation}
+\ell_p(x_1,x_2,\dots, x_n) = \sqrt[p]{x_1^p+x_2^p+\dots+x_n^p}
+\end{equation}
 
 
-Systemy  k-Borda i Cahmberlin’a-Courant’a są szczególnymi przypadkami zdefiniowanego powyżej systemu $\ell_p$- Borda:\\
-Dla $p = 1$, $l_1$\\
-$f_{\ell_pB}(1,(i_1, \dots ,i_k)) = \beta(i_1) + \beta(i_2) + \dots + \beta(ik) = f_{kB}(i_11, \dots,i_k)$\\
-Dla $p= \infty$,  $l_{\infty}={max}$\\
-$f_{\ell_pB}(\infty,(i_1, \dots ,i_k))=\lim\limits_{p \to \infty} \sqrt[p]{\beta\left[(i_1)\right]^p+\beta\left[(i_2)\right]^p+ \dots +\left[\beta(i_k)\right]^p}=\max{\beta(i_1),\beta(i_2),\dots,\beta(i_k)} = \beta(i_1)=f_{CC}$
+Wówczas, w uogólnionej wersji metody k-Bordy, funkcja zadowolenia $f_{kB}$ (1.2) zostaje uzależniona również od parametru $p$ ze wzoru (1.3). Norma liczona jest z wyników według Bordy, $\beta(i)$ (1.1).\\Wzór uogólniony funkcji zadowolenia przyjmuje zatem postać:
+\begin{equation}
+f_{\ell_pB}(p,(i_1,\dots,i_k))=\sqrt[p]{[(i_1)]^p+[(i_2)]^p+...+[(i_k)]^p}
+\end{equation}
+
+Systemy  k-Bordy i Cahmberlin’a-Courant’a są szczególnymi przypadkami zdefiniowanego powyżej systemu $\ell_p$-Bordy:\\
+Dla \, $p = 1$, \, $l_1$:
+\begin{equation}
+f_{\ell_pB}(1,(i_1, \dots ,i_k)) = \beta(i_1) + \beta(i_2) + \dots + \beta(ik) = f_{kB}(i_11, \dots,i_k)
+\end{equation}
+Dla \, $p= \infty$, \, $l_{\infty}={max}$:
+
+\begin{multline}
+\begin{split}
+f_{\ell_pB}(\infty,(i_1, \dots ,i_k))\\
+&=\lim\limits_{p \to \infty} \sqrt[p]{\beta\left[(i_1)\right]^p+\beta\left[(i_2)\right]^p+ \dots +\left[\beta(i_k)\right]^p}\\
+&=\max{\beta(i_1),\beta(i_2),\dots,\beta(i_k)} = \beta(i_1)=f_{CC}
+\end{split}
+\end{multline}
 
 \section{Format danych wejściowych}
 \label{sec:format_danych_wejsciowych}
@@ -144,21 +163,22 @@ Pojedynczy plik składa się z następującego formatu:\\
 <liczba powtórzeń głosu>, <głos>}
 
 \chapter{Architektura Django}
-$Django$ to framework webowy napisany w $Pythonie$. Dostarcza wysokopoziomowych
+\textit{Django} to framework webowy napisany w \textit{Pythonie}. Dostarcza wysokopoziomowych
 abstrakcji pozwalających na szybkie i wygodne pisanie przejrzystych aplikacji. \\ \\
-Jego architektura koncepcyjnie przypomina wzorzec architektoniczny $Model-View-Controller$,
-jednak jak przyznają sami twórcy [ref], $Django$ nie do końca wpasowuje się w klasyczne
-ujęcie $MVC$. \\ \\
-$Django$ dostarcza mapowania obiekto-relacyjnego, dzięki którym całość modeli można ująć
-w $Pythonie$. Wygodny $ORM$ zazwyczaj wystarcza do obsługi bazy danych, jednak zawsze
-istnieje możliwość użycia bezpośrednio $SQL$. \\ \\
-Widoki w $Django$ spełniają dwojaką funkcję - służą zarówno przekazaniu danych do
+Jego architektura koncepcyjnie przypomina wzorzec architektoniczny \textit{Model-View-Controller},
+jednak, jak przyznają sami twórcy
+\footnote{\url{https://docs.djangoproject.com/en/1.10/faq/general/}{\\Django appears to be a MVC framework, but you call the Controller the “view”, and the View the “template”. How come you don’t use the standard names?}}
+, \textit{Django} nie do końca wpasowuje się w klasyczne
+ujęcie \textit{MVC}. \\ \\
+\textit{Django} dostarcza mapowania obiekto-relacyjnego, dzięki którym całość modeli można ująć
+w \textit{Pythonie}. Wygodny \textit{ORM} zazwyczaj wystarcza do obsługi bazy danych, jednak zawsze
+istnieje możliwość użycia bezpośrednio \textit{SQL}. \\ \\
+Widoki w \textit{Django} spełniają dwojaką funkcję - służą zarówno przekazaniu danych do
 wyświetlenia, jak i ich modyfikacji. W wyświetleniu danych użytkownikowi pośredniczą
-szablony ($templates$), które "opakowują" przekazane dane do postaci $HTMLa$, który może
-wyświetlić przeglądarka internetowa. Dzięki temu wybór danych, jakie mają zostać pokazane
-użytkownikowi jest oddzielony od samego sposobu ich prezentacji. \\ \\
-Za kontroler z klasycznego $MVC$ można uznać sam framework dostarczający wspomnianej
-obsługi bazy danych czy mapowania adresów URL do poszczególnych widoków.
+szablony (\textit{templates}), które \"opakowują\" przekazane dane do postaci \textit{HTML'a}, który może wyświetlić przeglądarka internetowa. Dzięki temu wybór danych, jakie mają zostać pokazane
+użytkownikowi, jest oddzielony od samego sposobu ich prezentacji. \\ \\
+Za kontroler z klasycznego \textit{MVC} można uznać sam framework dostarczający wspomnianej
+obsługi bazy danych czy mapowania adresów \textit{URL} do poszczególnych widoków.
 
 \chapter{Opis modułów}
 \label{cha:opis_modulow}
@@ -174,22 +194,22 @@ Komponenty programowe dla tego modułu znajdują się w pakiecie $ecs.accounts$ 
 {
 \centering
 \begin{tabular}{|c|c|c|}
-\hline 
-\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\ 
-\hline 
-widoki & klasa $LoginView$ & logowanie \\ 
-\cline{2-3} 
- & klasa $RegisterView$ & rejestracja \\ 
-\hline 
-szablony & $login.html$ & logowanie \\ 
-\cline{2-3} 
- & $register.html$ & rejestracja \\ 
-\hline 
-formularze & klasa $LoginForm$ & logowanie \\ 
-\cline{2-3} 
- & klasa $RegistrationForm$ & rejestracja \\ 
-\hline 
-\end{tabular} 
+\hline
+\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\
+\hline
+widoki & klasa \code{LoginView} & logowanie \\
+\cline{2-3}
+ & klasa \code{RegisterView} & rejestracja \\
+\hline
+szablony & \code{login.html} & logowanie \\
+\cline{2-3}
+ & \code{register.html} & rejestracja \\
+\hline
+formularze & klasa \code{LoginForm} & logowanie \\
+\cline{2-3}
+ & klasa \textit{RegistrationForm} & rejestracja \\
+\hline
+\end{tabular}
 }
 
 \section{Moduł zarządzania wyborami}
@@ -204,91 +224,93 @@ rozbudowany moduł.
 \subsection{Komponenty programowe}
 % \usepackage{array} is required
 \begin{tabular}{|c|c|p{5cm}|}
-\hline 
-\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\ 
-\hline 
-widoki & klasa $ElectionListView$ & wyświetlenie listy wszystkich wyborów \\ 
-\cline{2-3} 
- & klasa $ElectionCreateView$ & stworzenie wyborów \\ 
-\cline{2-3} 
- & klasa $ElectionDeleteView$ & usunięcie wyborów \\ 
-\cline{2-3} 
- & klasa $ElectionDetailView$ & wyświetlenie informacji szczegółowych o
-danych wyborach \\ 
-\cline{2-3} 
- & klasa $ResultCreateView$ & stworzenie wyniku dla danych wyborów -
-wyświetlenie formularza określającego
-parametry wyniku \\ 
-\cline{2-3} 
- & klasa $ResultDetailsView$ & wyświetlenie danego wyniku danych
-wyborów \\ 
-\cline{2-3} 
- & klasa $ResultDeleteView$ & usuwanie pojedynczego wyniku wyborów \\ 
-\hline 
-szablony & $election_list.html$ & wyświetlenie listy wszystkich wyborów,
-usunięcie wyborów - strona sukcesu
-wyświetlana po usunięciu wyborów \\ 
-\cline{2-3} 
- & $election_create.html$ & stworzenie wyborów \\ 
-\cline{2-3} 
- & $election_details.html$ & stworzenie wyborów - strona sukcesu
-wyświetlana po stworzeniu wyborów,
-wyświetlenie informacji szczegółowych o
-danych wyborach \\ 
-\cline{2-3} 
- & $election_delete.html$ & usunięcie wyborów \\ 
-\cline{2-3} 
- & $result_create.html$ & stworzenie nowego wyniku wyborów -
-strona z formularzem \\ 
-\cline{2-3} 
- & $result_details.html$ & wyświetlenie danego wyniku danych
-wyborów \\ 
-\cline{2-3} 
- & $result_delete.html$ & potwierdzenie usunięcia rezultatu \\ 
-\hline 
-formularze & klasa $ElectionForm$ & stworzenie wyborów \\ 
+\hline
+\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\
+\hline
+widoki & klasa \code{ElectionListView} & wyświetlenie listy wszystkich wyborów \\
 \cline{2-3}
- & klasa $ResultForm$ & stworzenie wyniku dla danych wyborów -
+ & klasa \code{ElectionCreateView} & stworzenie wyborów \\
+\cline{2-3}
+ & klasa \code{ElectionDeleteView} & usunięcie wyborów \\
+\cline{2-3}
+ & klasa \code{ElectionDetailView} & wyświetlenie informacji szczegółowych o
+danych wyborach \\
+\cline{2-3}
+ & klasa \code{ResultCreateView} & stworzenie wyniku dla danych wyborów -
+wyświetlenie formularza określającego
+parametry wyniku \\
+\cline{2-3}
+ & klasa \code{ResultDetailsView} & wyświetlenie danego wyniku danych
+wyborów \\
+\cline{2-3}
+ & klasa \code{ResultDeleteView} & usuwanie pojedynczego wyniku wyborów \\
+\hline
+szablony & \code{election\_list.html} & wyświetlenie listy wszystkich wyborów,
+usunięcie wyborów - strona wyświetlana po pomyślnym usunięciu wyborów \\
+\cline{2-3}
+ & \code{election\_create.html} & stworzenie wyborów \\
+\cline{2-3}
+ & \code{election\_details.html} & stworzenie wyborów - strona
+wyświetlana po pomyślnym stworzeniu wyborów,
+wyświetlenie informacji szczegółowych o
+danych wyborach \\
+\cline{2-3}
+ & \code{election\_delete.html} & usunięcie wyborów \\
+\cline{2-3}
+ & \code{result\_create.html} & stworzenie nowego wyniku wyborów -
+strona z formularzem \\
+\cline{2-3}
+ & \code{result\_details.html} & wyświetlenie danego wyniku danych
+wyborów \\
+\cline{2-3}
+ & \code{result\_delete.html} & potwierdzenie usunięcia rezultatu \\
+\hline
+formularze & klasa \code{ElectionForm} & stworzenie wyborów \\
+\cline{2-3}
+ & klasa \code{ResultForm} & stworzenie wyniku dla danych wyborów -
 formularz określający parametry wyniku \\
-\hline 
-\end{tabular} 
+\hline
+\end{tabular}
 
 \section{Moduł wizualizacji wyborów i wyników wyborów}
 \subsection{Opis ogólny}
-Moduł odpowiedzialny za stworzenie wykresu $2D$ wizualizującego wybory i jego wyniki.
-Wizualizacja dotyczy tylko wyborów wygenerowanych z rozkładu normalnego. Wyborcy i
+Moduł odpowiedzialny za stworzenie wykresu \textit{2D} wizualizującego wybory i jego wyniki.
+Wizualizacja dotyczy tylko wyborów wygenerowanych z rozkładu normalnego.\\ Wyborcy i
 kandydaci są reprezentowani jako punkty na płaszczyźnie. Punkty reprezentujące wyborców
 i kandydatów mają na wykresie odmienne kolory. Na wykresie wyników wyborów punkty
-reprezentujące zwycięzców wyborów są powiększone. Moduł współpracuje z modułem
+reprezentujące zwycięzców wyborów są powiększone.\\ Moduł współpracuje z modułem
 zarządzania wyborów, który zleca mu zadanie wizualizacji wyborów lub jego wyników. W
 celu wykonania zadania moduł wizualizacji wyborów i wyników wyborów pobiera dane z
 bazy danych.
 
 \subsection{Komponenty programowe}
 \begin{tabular}{|c|c|p{5cm}|}
-\hline 
-\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\ 
-\hline 
-widoki & klasa $ScatterChartMixin$ & pobranie danych potrzebnych do
+\hline
+\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\
+\hline
+widoki & klasa \code{ScatterChartMixin} & pobranie danych potrzebnych do
 wygenerowania wykresów (punkty, tytuł
 wykresu, serii danych), dziedziczy po
-klasie $View$ \\ 
-\cline{2-3} 
- & klasa $ElectionChartView$ & wizualizacja wyborów, klasa dziedziczy
-po klasie $ScatterChartMixin$, pobranie
-współrzędnych kandydatów i wyborców \\ 
-\cline{2-3} 
- & klasa $ResultChartView$ & wizualizacja wyników wyborów, klasa
-dziedziczy po klasie $ScatterChartMixin$,
+klasie \code{View} \\
+\cline{2-3}
+ & klasa \code{ElectionChartView} & wizualizacja wyborów, klasa dziedziczy
+po klasie \code{ScatterChartMixin}, pobranie
+współrzędnych kandydatów i wyborców \\
+\cline{2-3}
+ & klasa \code{ResultChartView} & wizualizacja wyników wyborów, klasa
+dziedziczy po klasie \code{ScatterChartMixin},
 pobranie współrzędnych kandydatów,
-wyborców oraz zwycięzców \\ 
-\hline 
-\end{tabular} 
+wyborców oraz zwycięzców \\
+\cline{2-3}
+& klasa \code{AlgorithmsComparisonChartView} & zestawia dla danych wyborów czasy wykonania obliczeń  przez rózne algorytmy dla róznych wartości parametru $p$\\
+\hline
+
+\end{tabular}
 
 \section{Moduł generacji i wczytywania wyborów}
 \subsection{Opis ogólny}
 Moduł odpowiedzialny za generację wyborów z rozkładu normalnego oraz wczytywanie
-wyborów z pliku formatu $.soc$. Moduł współpracuje z modułem zarządzania wyborami,
+wyborów z pliku formatu \textit{.soc}. Moduł współpracuje z modułem zarządzania wyborami,
 któremu zleca po wykonaniu swoich zadań, stworzenie i wysłanie użytkownikowi
 odpowiedniej strony internetowej. Moduł zapewnia wygenerowanie wyborów z rozkładu normalnego według wskazanych parametrów oraz walidację danych przy wczytywaniu
 wyborów z pliku. Po stworzeniu wyborów moduł komunikuje się z bazą danych w celu
@@ -296,29 +318,29 @@ utrwalenia wyborów.
 
 \subsection{Komponenty programowe}
 \begin{tabular}{|c|c|p{5cm}|}
-\hline 
-\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\ 
-\hline 
-Widoki & klasa $ElectionLoadDataFormView$ & wczytanie wyborów z pliku \\ 
-\cline{2-3} 
+\hline
+\textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\
+\hline
+Widoki & klasa \code{ElectionLoadDataFormView} & wczytanie wyborów z pliku \\
+\cline{2-3}
  & klasa
-$ElectionGenerateDataFormView$ & generacja wyborów z rozkładu
-normalnego \\ 
-\hline 
-Szablony & $election_load_data.html$ & strona z formularzem do
-wskazania pliku \\ 
-\cline{2-3} 
- & $election_generate_data.html$ & strona z formularzem do
+\code{ElectionGenerateDataFormView} & generacja wyborów z rozkładu
+normalnego \\
+\hline
+Szablony & \code{election\_load\_data.html} & strona z formularzem do
+wskazania pliku \\
+\cline{2-3}
+ & \code{election\_generate\_data.html} & strona z formularzem do
 wskazania parametrów wyborów i
-rozkładu normalnego \\ 
-\cline{2-3} 
- & $election_details.html$ & strona wyświetlana po
+rozkładu normalnego \\
+\cline{2-3}
+ & \code{election\_details.html} & strona wyświetlana po
 poprawnym wczytaniu danych z
-pliku \\ 
-\hline 
-Formularze & klasa $ElectionLoadDataForm$ & wczytanie z pliku \\ 
-\hline 
-\end{tabular} 
+pliku \\
+\hline
+Formularze & klasa \code{ElectionLoadDataForm} & wczytanie z pliku \\
+\hline
+\end{tabular}
 
 \section{Moduł obliczania wyników wyborów}
 \subsection{Opis ogólny}
@@ -328,13 +350,13 @@ algorytmami zachłannymi oraz algorytmem typu brute-force. Moduł współpracuje
 zarządzania wyborami, który zleca mu wykonanie zadania.
 \subsection{Komponenty programowe}
 Wszystkie komponenty programowe dotyczące modułu obliczania wyników wyborów
-zawierają się w pakiecie $ecs.elections.algorithms$. \\
+zawierają się w pakiecie \code{ecs.elections.algorithms}. \\
 Klasy odpowiedzialne za poszczególne algorytmy:
 \begin{itemize}
-\item $BruteForce$ - odpowiedzialna za algorytm typu brute-force
-\item $GreedyAlgorithm$ - odpowiedzialna za algorytm zachłanny zależny od parametru $p$
-\item $GreedyCC$ - odpowiedzialna za algorytm zachłanny niezależny od parametru $p$
-\item $GeneticAlgorithm$ - odpowiedzialna za algorytm genetyczny
+\item \code{BruteForce} - odpowiedzialna za algorytm typu brute-force
+\item \code{GreedyAlgorithm} - odpowiedzialna za algorytm zachłanny zależny od parametru $p$
+\item \code{GreedyCC} - odpowiedzialna za algorytm zachłanny niezależny od parametru $p$
+\item \code{GeneticAlgorithm} - odpowiedzialna za algorytm genetyczny
 \end{itemize}
 
 \section{Moduł URL Resolver}
@@ -344,7 +366,7 @@ odpowiednich modułów.
 
 \subsection{Komponenty programowe}
 Przyporządkowania żądań użytkownika do odpowiednich modułów (adresów URL do
-widoków) znajdują się w pliku $ecs.elections.urls.py$.
+widoków) znajdują się w pliku \code{ecs.elections.urls.py}.
 
 \chapter{Współpraca modułów i innych komponentów}
 \section{Diagram komunikacji}
@@ -359,7 +381,7 @@ widoków) znajdują się w pliku $ecs.elections.urls.py$.
 \item Użytkownik za pomocą przeglądarki internetowej wysyła żądanie logowania.
 \item Moduł URL Resolver kieruje żądanie do modułu administracji kont.
 \item Moduł administracji kont przesyła do przeglądarki stronę z formularzem do
-zalogowania (pole $Username$ i $Password$).
+zalogowania (pole \textit{Username} i \textit{Password}).
 \item Użytkownik wypełnia formularz i za pomocą przeglądarki internetowej wysyła
 uzupełniony formularz.
 \item Moduł URL Resolver przekazuje żądanie do modułu administracji kont.
@@ -370,11 +392,11 @@ uzupełniony formularz.
 	przeglądarki stronę z wiadomością o sukcesie logowania
 	\item jeżeli podana nazwa użytkownika nie istnieje w bazie, Moduł administracji kont 			wysyła do
 	przeglądarki internetowej stronę z formularzem do zalogowania (pole
-	$Username$ i $Password$) i z informacją o nieistnieniu podanej nazwy
+	\textit{Username} i \textit{Password}) i z informacją o nieistnieniu podanej nazwy
 	użytkownika. Następuje przejście do kroku nr $4$
 	\item jeżeli podana nazwa użytkownika istnieje w bazie, ale podane hasło jest
 nieprawidłowe, Moduł administracji kont wysyła do przeglądarki internetowej stronę z
-formularzem do zalogowania (pole $Username$ i $Password$) i z informacją o
+formularzem do zalogowania (pole \textit{Username} i \textit{Password}) i z informacją o
 błędnym haśle. Następuje przejście do kroku nr $4$
 	\end{itemize}
 \end{enumerate}
@@ -393,7 +415,7 @@ domową aplikacji.
 użytkownika.
 \item Moduł URL Resolver kieruje żądanie do modułu administracji kont.
 \item Moduł administracji kont przesyła do przeglądarki stronę z formularzem do rejestracji
-(pola $E-mail$, $Username$, $Password$, $First name$ i $Last name$).
+(pola \textit{E-mail}, \textit{Username}, \textit{Password}, \textit{First name} i \textit{Last name}).
 \item Użytkownik wypełnia formularz i za pomocą przeglądarki internetowej wysyła
 uzupełniony formularz.
 \item Moduł URL Resolver przekazuje żądanie do modułu administracji kont.
@@ -411,32 +433,32 @@ uzupełniony formularz.
 
 \subsection{Wyświetlenie listy wszystkich wyborów}
 \begin{enumerate}
-\item Użytkownik klikając przycisk $Your elections$ na stronie, wysyła za pomocą
+\item Użytkownik klikając przycisk \textit{Your elections} na stronie, wysyła za pomocą
 przeglądarki internetowej żądanie wyświetlenia listy swoich wyborów.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
-$ElectionListView$).
+\textit{ElectionListView}).
 \item Moduł zarządzania wyborami kieruje zapytanie do bazy danych o obiekty
 reprezentujące wybory danego użytkownika.
 \item Po pobraniu z bazy potrzebnych danych moduł zarządzania wyborami za pomocą
-szablonu $election\_list.html$ tworzy stronę i wysyła do przeglądarki internetowej
+szablonu\,\code{election\_list.html} tworzy stronę i wysyła do przeglądarki internetowej
 użytkownika.
 \end{enumerate}
 
 \subsection{Stworzenie wyborów}
 \begin{enumerate}
-\item Użytkownik klikając przycisk $New election$ na stronie, wysyła za pomocą
+\item Użytkownik klikając przycisk \textit{New election} na stronie, wysyła za pomocą
 przeglądarki internetowej żądanie stworzenie nowych wyborów.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
-$ElectionCreateView$).
-\item Widok posiada zdefiniowany szablon $election\_create.html$ i formularz $ElectionForm$.
+\textit{ElectionCreateView}).
+\item Widok posiada zdefiniowany szablon \code{election\_create.html} i formularz \textit{ElectionForm}.
 Wykorzystując te komponenty tworzy i wysyła do użytkownika stronę z formularzem.
-\item Użytkownik wypełnia formularz (pola $Name$ i $Commitee size$) i wysyła uzupełniony
+\item Użytkownik wypełnia formularz (pola \textit{Name} i \textit{Commitee size}) i wysyła uzupełniony
 formularz.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
-$ElectionCreateView$).
+\textit{ElectionCreateView}).
 \item Widok wykorzystując klasę formularza pobiera dane z formularza, tworzy nowy
 obiekt wyborów i zapisuje go do bazy.
-\item Widok wykorzystując szablon $election\_details.html$ tworzy stronę i wysyła ją do
+\item Widok wykorzystując szablon \code{election\_details.html} tworzy stronę i wysyła ją do
 przeglądarki użytkownika.
 \end{enumerate}
 
@@ -445,15 +467,15 @@ przeglądarki użytkownika.
 \item Użytkownik klikając ikonę kosza na stronie, wysyła za pomocą przeglądarki
 internetowej żądanie usunięcia wyborów.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
-$ElectionDeleteView$).
-\item Widok posiada zdefiniowany szablon $election\_delete.html$, który wykorzystuje do
+\textit{ElectionDeleteView}).
+\item Widok posiada zdefiniowany szablon \code{election\_delete.html}, który wykorzystuje do
 stworzenia i wysłania strony potwierdzającej akcję użytkownika.
-\item Użytkownik potwierdza chęć usunięcia wyborów przez naciśnięcie przycisku $Yes,
-delete this.$ (W przypadku wyboru przycisku $No, cancel$ akcja nie zostaje przeprowadzona a użytkownik zostaje przeniesiony na stronę z listą swoich
+\item Użytkownik potwierdza chęć usunięcia wyborów przez naciśnięcie przycisku \textit{Yes,
+delete this.} (W przypadku wyboru przycisku \textit{No, cancel} akcja nie zostaje przeprowadzona a użytkownik zostaje przeniesiony na stronę z listą swoich
 wyborów).
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
-$ElectionDeleteView$).
-\item Widok usuwa wybory z bazy danych i wykorzystując szablon $election\_list.html$ tworzy
+\textit{ElectionDeleteView}).
+\item Widok usuwa wybory z bazy danych i wykorzystując szablon \code{election\_list.html} tworzy
 i wysyła stronę do przeglądarki internetowej użytkownika.
 \end{enumerate}
 
@@ -462,42 +484,41 @@ i wysyła stronę do przeglądarki internetowej użytkownika.
 \item Użytkownik klikając na link wyborów na stronie z listą swoich wyborów, wysyła za
 pomocą przeglądarki internetowej żądanie wyświetlenia informacji szczegółowych
 dla danych wyborów.
-\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
-$ElectionDetailView$).
+\item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami\,(widok\,\code{ElectionDetailView}).
 \item Widok pobiera z bazy danych listę głosujących oraz listę wyników wyborów.
 \item Jeżeli wybory zostały wygenerowane z rozkładu normalnego, widok przekierowuje
 działanie programu do modułu wizualizacji wyborów i wyników wyborów (widok
-$ElectionChartView$). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$
-\item Widok pobiera z bazy danych obiekty będące punktami $2D$ reprezentującymi
+\code{ElectionChartView}). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$
+\item Widok pobiera z bazy danych obiekty będące punktami \textit{2D} reprezentującymi
 wyborców i kandydatów. Ustawia parametry wykresu a następnie wysyła wszystkie
-dane z powrotem do widoku $ElectionDetailView$ umożliwiając stworzenie wykresu.
-\item Widok wykorzystując szablon $election\_details.html$ tworzy i wysyła stronę do
+dane z powrotem do widoku \code{ElectionDetailView} umożliwiając stworzenie wykresu.
+\item Widok wykorzystując szablon \code{election\_details.html} tworzy i wysyła stronę do
 przeglądarki użytkownika.
 \end{enumerate}
 
 \subsection{Stworzenie nowego wyniku dla danych wyborów}
 \begin{enumerate}
-\item Użytkownik klikając na link $Add new result$ na stronie ze szczegółowymi informacjami
+%do poprawki
+\item Użytkownik klikając na link \textit{Add new result} na stronie ze szczegółowymi informacjami
 o danych wyborach, wysyła za pomocą przeglądarki internetowej żądanie stworzenia
 nowego wyniku dla danych wyborów.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
-$ResultCreateView$).
-\item Widok wykorzystując formularz $ResultForm$ i szablon $result\_create.html$ tworzy oraz
+\textit{ResultCreateView}).
+\item Widok wykorzystując formularz \textit{ResultForm} i szablon \code{result\_create.html} tworzy oraz
 wysyła do użytkownika stronę z formularzem do określenia parametrów wyniku (pola:
 parametr $p$ do obliczania normy oraz typ algorytmu).
 \item Użytkownik wypełnia formularz i wysyła go do systemu.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
-$ResultCreateView$).
+\code{ResultCreateView}).
 \item Widok wczytuje dane z formularza, pobiera z bazy danych obiekt reprezentujący
 wybory a następnie przekierowuje działanie programu do modułu obliczania wyników
 wyborów przekazując konieczne parametry.
 \item Moduł obliczania wyników wyborów liczy zwycięzców wyborów za pomocą
 odpowiedniego algorytmu. Następnie przekazuje sterowanie z powrotem do widoku
-$ResultCreateView$ przekazując wyniki.
+\code{ResultCreateView} przekazując wyniki.
 \item Widok zapisuje wynik do bazy danych i przechodzi do ścieżki \textit{Wyświetlenie
 informacji szczegółowych dla danych wyborów}.
 \end{enumerate}
-
 \subsection{Wyświetlenie szczegółowych informacji o danym wyniku danych
 wyborów}
 \begin{enumerate}
@@ -506,51 +527,51 @@ informacjami o danych wyborach, wysyła za pomocą przeglądarki internetowej
 żądanie wyświetlenia szczegółowych informacji o danym wyniku dla danych
 wyborów.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
-$ResultDetailsView$).
+\code{ResultDetailsView}).
 \item Widok pobiera z bazy danych informacje o zwycięzcach danych wyborów.
 \item Jeżeli wybory zostały wygenerowane z rozkładu normalnego, widok przekierowuje
 działanie programu do modułu wizualizacji wyborów i wyników wyborów (widok
-$ResultChartView$). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$
-\item Widok pobiera z bazy danych obiekty będące punktami $2D$ reprezentującymi
+\code{ResultChartView}). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$
+\item Widok pobiera z bazy danych obiekty będące punktami \textit{2D} reprezentującymi
 wyborców, kandydatów i zwycięzców. Ustawia parametry wykresu a następnie
-wysyła wszystkie dane z powrotem do widoku $ResultDetailsView$ umożliwiając
+wysyła wszystkie dane z powrotem do widoku \code{ResultDetailsView}, umożliwiając
 stworzenie wykresu.
-\item Widok wykorzystując szablon $result\_details.html$ tworzy i wysyła stronę do
+\item Widok wykorzystując szablon \code{result\_details.html} tworzy i wysyła stronę do
 przeglądarki użytkownika.
 \end{enumerate}
 
 \subsection{Wczytanie wyborów z pliku .soc}
 \begin{enumerate}
-\item Użytkownik klikając na przycisk $Load data from file$ na stronie ze szczegółowymi
+\item Użytkownik klikając na przycisk \textit{Load data from file} na stronie ze szczegółowymi
 informacjami o danych wyborach, wysyła za pomocą przeglądarki internetowej
-żądanie wczytania wyborów z pliku $.soc$.
+żądanie wczytania wyborów z pliku \textit{.soc}.
 \item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
-$ElectionLoadDataFormView$).
-\item Widok wykorzystując formularz $ElectionLoadDataForm$ i szablon
-$election_load_data.html$ tworzy oraz wysyła do użytkownika stronę z formularzem do
+\code{ElectionLoadDataFormView}).
+\item Widok wykorzystując formularz \code{ElectionLoadDataForm} i szablon
+\code{election\_load\_data.html} tworzy oraz wysyła do użytkownika stronę z formularzem do
 wybrania pliku, z którego będą wczytywane wybory.
 \item Użytkownik wskazuje plik i wysyła uzupełniony formularz do systemu.
 \item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
-$ElectionLoadDataFormView$).
+\code{ElectionLoadDataFormView}).
 \item Widok parsuje plik wejściowy i waliduje dane. W przypadku poprawnego wczytania
 pliku wejściowego następuje zapis wczytanych obiektów do bazy danych. Za pomocą
-szablonu $election\_details.html$ zostaje stworzona i wysłana strona do przeglądarki
+szablonu \code{election\_details.html} zostaje stworzona i wysłana strona do przeglądarki
 użytkownika.
 \end{enumerate}
 
 \subsection{Generacja wyborów z rozkładu normalnego}
 \begin{enumerate}
-\item Użytkownik klikając na przycisk $Generate election from normal distribution$ na stronie
+\item Użytkownik klikając na przycisk \textit{Generate election from normal distribution} na stronie
 ze szczegółowymi informacjami o danych wyborach, wysyła za pomocą przeglądarki
 internetowej żądanie wygenerowania wyborów za pomocą rozkładu normalnego.
 \item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
-$ElectionGenerateDataFormView$).
-\item Widok wykorzystując formularz $ElectionGenerateDataForm$ i szablon
-$election\_generate\_data.html$ tworzy oraz wysyła do użytkownika stronę z formularzem do
-określenia parametrów wyborów oraz i rozkładu normalnego.  
+\textit{ElectionGenerateDataFormView}).
+\item Widok wykorzystując formularz \code{ElectionGenerateDataForm} i szablon
+\code{election\_generate\_data.html} tworzy oraz wysyła do użytkownika stronę z formularzem do
+określenia parametrów wyborów oraz i rozkładu normalnego.
 \item Użytkownik uzupełnia formularz i wysyła go do systemu.
 \item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
-$ElectionGenerateDataFormView$).
+\code{ElectionGenerateDataFormView}).
 \item Widok wczytuje dane z formularza i wykorzystując generator, generuje według
 wczytanych parametrów kandydatów, wyborców oraz liczy ich preferencje. Dane
 zostają zapisane do bazy. Następnie program przechodzi do 2-go punktu ścieżki
@@ -569,15 +590,15 @@ obiektowej architektury systemu informatycznego na bazę danych.
 \end{center}
 Pola:
 \begin{itemize}
-\item $user$ - użytkownik aplikacji
-\item $name$ - nazwa wyborów
-\item $committee\_size$ - rozmiar zwycięskiego komitetu
+\item \code{user} - użytkownik aplikacji
+\item \code{name} - nazwa wyborów
+\item \code{committee\_size} - rozmiar zwycięskiego komitetu
 \end{itemize}
 Metody:
 \begin{itemize}
-\item $get\_absolute\_url()$ - zwraca adres URL, który daje dostęp do danych wyborów z
-poziomu dokumentu $.html$
-\item $is\_set\_up()$ - zwraca prawdę jeśli dla danych wyborów zostali określeni kandydaci i
+\item \code{get\_absolute\_url()} - zwraca adres URL, który daje dostęp do danych wyborów z
+poziomu dokumentu \textit{HTML}
+\item \code{is\_set\_up()} - zwraca prawdę jeśli dla danych wyborów zostali określeni kandydaci i
 głosujący lub fałsz w przeciwnym przypadku
 \end{itemize}
 
@@ -588,13 +609,13 @@ głosujący lub fałsz w przeciwnym przypadku
 \end{center}
 Pola:
 \begin{itemize}
-\item $name$ - nazwa kandydata
-\item $position$ - położenie kandydata w układzie współrzędnych, pole opcjonalne dla
+\item \code{name} - nazwa kandydata
+\item \code{position} - położenie kandydata w układzie współrzędnych, pole opcjonalne dla
 kandydatów generowanych z rozkładu normalnego
-\item $preferences$ - pole mapowane na relację wiele do wielu łączącej kandydata i
-głosującego w tabeli $Preference$
-\item $election$ - wybory, do których należy kandydat
-\item $soc\_id$ - identyfikator kandydata w odpowiadającym wyborom pliku w formacie $.soc$,
+\item \code{preferences} - pole mapowane na relację wiele do wielu łączącej kandydata i
+głosującego w tabeli \textit{Preference}
+\item \code{election} - wybory, do których należy kandydat
+\item \code{soc\_id} - identyfikator kandydata w odpowiadającym wyborom pliku w formacie \textit{.soc},
 pole opcjonalne dla wyborów parsowanych z pliku
 \end{itemize}
 
@@ -605,20 +626,20 @@ pole opcjonalne dla wyborów parsowanych z pliku
 \end{center}
 Pola:
 \begin{itemize}
-\item $repeats$ - liczba powtórzeń głosów w wyborach
-\item $position$ - współrzędne wyborcy na wykresie, pole opcjonalne dla wyborów
+\item \code{repeats} - liczba powtórzeń głosów w wyborach
+\item \code{position} - współrzędne wyborcy na wykresie, pole opcjonalne, stosowane dla wyborów
 generowanych z rozkładu normalnego
-\item $election$ - wybory, do których należy głosujący
+\item \code{election} - wybory, do których należy głosujący
 \end{itemize}
 Metody:
 \begin{itemize}
-\item $set\_preferences\_by\_ids()$ - metoda wykorzystywana przy parsowaniu plików
-w formacie $.soc$.
+\item \code{set\_preferences\_by\_ids()} - metoda wykorzystywana przy parsowaniu plików
+w formacie \textit{.soc}.
 Na podstawie ciągu identyfikatorów wyborców pobranego z pliku tworzy ciąg kandydatów ułożony według preferencji wyborcy. Pobrane dane zapisuje w bazie
 danych w postaci rekordu w tabeli $Preference$.
-\item $calculate\_committe\_score(committee: List(Candidate), \ p: Int, \
-candidates\_number: Int)$ - oblicza wynik komitetu $committee$ na podstawie
-parametru $p$ i liczby kandydatów $candidates\_number$. Wynik mnożony jest przez
+\item \code{calculate\_committe\_score(committee: List(Candidate), \ p: Int, \
+candidates\_number: Int)} - oblicza wynik komitetu \code{committee} na podstawie
+parametru \code{p} i liczby kandydatów \code{candidates\_number}. Wynik mnożony jest przez
 liczbę powtórzeń głosu.
 \end{itemize}
 
@@ -629,9 +650,9 @@ liczbę powtórzeń głosu.
 \end{center}
 Pola:
 \begin{itemize}
-\item $candidate$ - kandydat związany z preferencją
-\item $voter$ - głosujący związany z preferencją
-\item $preference$ - pozycja preferencji na liście preferencji głosującego 
+\item \code{candidate} - kandydat związany z preferencją
+\item \code{voter} - głosujący związany z preferencją
+\item \code{preference} - pozycja preferencji na liście preferencji głosującego
 \end{itemize}
 
 \subsection{Point}
@@ -641,12 +662,12 @@ Pola:
 \end{center}
 Pola - współrzędne w układzie kartezjańskim:
 \begin{itemize}
-\item $x: Int$
-\item $y: Int$
+\item \code{x: Int}
+\item \code{y: Int}
 \end{itemize}
 Metody:
 \begin{itemize}
-\item $distance(other: Point) : Float$ - metoda zwracająca odległość punktu od punktu $other$ w metryce euklidesowej w przestrzeni $R^2$
+\item \code{distance(other: Point) : Float} - metoda zwracająca odległość punktu od punktu \code{other} w metryce euklidesowej w przestrzeni $R^2$
 \end{itemize}
 
 \subsection{Result}
@@ -657,12 +678,12 @@ wywołania algorytmu, otrzymany wynik punktowy komitetu oraz czas działania alg
 \end{center}
 Pola:
 \begin{itemize}
-\item $election$ - wybory, dla których obliczono rezultat
-\item $p\_parameter$ - parametr $p$ normy $\ell_p$
-\item $winners$ - zwycięski komitet
-\item $algorithm$ - identyfikator algorytmu
-\item $time$ - czas wykonania obliczeń
-\item $score$ - wynik punktowy zwycięskiego komitetu
+\item \code{election} - wybory, dla których obliczono rezultat
+\item \code{p\_parameter} - parametr $p$ normy $\ell_p$
+\item \code{winners} - zwycięski komitet
+\item \code{algorithm} - identyfikator algorytmu
+\item \code{time} - czas wykonania obliczeń
+\item \code{score} - wynik punktowy zwycięskiego komitetu
 \end{itemize}
 
 \subsection{GeneticAlgorithmSettings}
@@ -674,11 +695,11 @@ parametrów wywołania.}
 \end{center}
 Pola:
 \begin{itemize}
-\item $result$ - rezultat algorytmu genetycznego
-\item $mutation\_probability$ - prawdopodobieństwo wystąpienia mutacji danego osobnika
-\item $crossing\_probability$ - prawdopodobieństwo wymiany puli genów pomiędzy parą
+\item \code{result} - rezultat algorytmu genetycznego
+\item \code{mutation\_probability} - prawdopodobieństwo wystąpienia mutacji danego osobnika
+\item \code{crossing\_probability} - prawdopodobieństwo wymiany puli genów pomiędzy parą
 osobników
-\item $cycles$ - liczba iteracji algorytmu genetycznego
+\item \code{cycles} - liczba iteracji algorytmu genetycznego
 \end{itemize}
 
 \section{Diagram ERD}
@@ -706,7 +727,7 @@ zadowolenia wyborców. Stąd można uznać opisany algorytm jako zachłanny.
 Aktualny poziom zadowolenia wyborców na danym etapie algorytmu określany jest za
 pomocą uprzednio zdefiniowanego uogólnienia systemu $k-Bordy$. Satysfakcja pojedynczego
 wyborcy z komitetu liczącego na danym etapie algorytmu $k$ zwycięzców,określana jest za
-pomocą funkcji: $$f_{{\ell_p}-Borda}(i_1, i_2, ..., i_k) = \sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+\dots+[\beta(i_k)]^p}$$ Funkcja bazuje na normie $\ell_p$ oraz punktacji $k-Bordy$. Dokładne informacje na temat funkcji
+pomocą funkcji: $$f_{{\ell_p}-Borda}(i_1, i_2,\dots, i_k) = \sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+\dots+[\beta(i_k)]^p}$$ Funkcja bazuje na normie $\ell_p$ oraz punktacji $k-Bordy$. Dokładne informacje na temat funkcji
 umieszczone są w rozdziale \textit{Dziedzina problemu}. Ogólne zadowolenie wyborców z komitetu
 jest obliczane jako suma pojedynczych zadowoleń wszystkich wyborców. Algorytm działa w
 ten sposób, że przed wyborem pierwszego zwycięzcy, poziom zadowolenia wyborców
@@ -729,9 +750,9 @@ osiągnięcia określonego rozmiaru komitetu. Poziom zadowolenia wyborców po ka
 iteracji algorytmu rośnie.
 
 \subsection{Szczegóły implementacji}
-Algorytm zaimplementowany jest w klasie $GreedyAlgorithm$ znajdującej się w pakiecie
-$ecs.elections.algorithms.greedy\_algorithm$. Główna pętla algorytmu znajduje się w metodzie
-$run$. Przed główną pętlą programu do pamięci operacyjnej pobrane są obiekty z bazy danych
+Algorytm zaimplementowany jest w klasie \code{GreedyAlgorithm} znajdującej się w pakiecie
+\code{ecs.elections.algorithms.greedy\_algorithm}. Główna pętla algorytmu znajduje się w metodzie
+\code{run()}. Przed główną pętlą programu do pamięci operacyjnej pobrane są obiekty z bazy danych
 reprezentujące kandydatów, wyborców oraz preferencje wyborców. Ponadto odpowiednio
 uzupełniane są struktury danych reprezentujące aktualne zadowolenie wyborców z wybranych kandydatów, aktualny skład zwycięskiego komitetu oraz kandydatów wciąż
 walczących o zwycięstwo, którzy stanowią wszystkich kandydatów bez tych, którzy już
@@ -773,6 +794,7 @@ danej iteracji kandydata, który w tym momencie staje się zwycięzcą.
 
 \subsection{Pseudokod}
 \begin{center}
+% TODO poprawić znaczek różnicy w pseudokodzie
 \centerline{\includegraphics[scale=0.9]{pics/pseudocode_greedy_algorithm.png}}
 \captionof{figure}{Pseudokod algorytmu zachłannego}
 \end{center}
@@ -790,14 +812,18 @@ ogólnego poziomu zadowolenia wyborców. Różnica w stosunku do pierwszego algo
 zachłannego polega na innej funkcji zadowolenia, na bazie której inaczej obliczane są
 pojedyncze zadowolenia wyborców i tym samym inaczej obliczane jest ogólne zadowolenie
 wyborców z danego komitetu, które jest sumą pojedynczych satysfakcji wszystkich
-wyborców. W regule $Chamberlin-Courant’a$ położony jest nacisk na regułę reprezentacji proporcjonalnej. Każdy wyborca reprezentowany jest przez jednego, wyraźnego kandydata i
+wyborców. W regule \textit{Chamberlin-Courant’a} położony jest nacisk na regułę reprezentacji proporcjonalnej. Każdy wyborca reprezentowany jest przez jednego, wyraźnego kandydata i
 tylko punkty tego kandydata wpływają na wartość pojedynczego zadowolenia wyborcy z
 danego komitetu. Jest to szczególny przypadek uogólnienia systemu $k-Bordy$, w którym $p \to \infty$. Jednak dla odpowiednio dużych wartości parametru $p$ opisana heurystyka dobrze
 sprawdza się dla uogólnienia systemu $k-Bordy$.
 
 \subsection{Funkcja zadowolenia}
 Aktualny poziom zadowolenia wyborców na danym etapie algorytmu określany jest za
-pomocą funkcji satysfakcji $Chamberlin-Courant’a$: $$f_{CC}(i_1, i_2, ..., i_k) = \beta(i_1) $$ Jest ona skrajnym przypadkiem dla uogólnienia systemu $k-Borda$, kiedy $p \to \infty$. Zgodnie z tą
+pomocą funkcji satysfakcji \textit{Chamberlin-Courant’a}:
+\begin{equation}
+f_{CC}(i_1, i_2, ..., i_k) = \beta(i_1)
+\end{equation}
+Jest ona skrajnym przypadkiem dla uogólnienia systemu $k-Borda$, kiedy $p \to \infty$. Zgodnie z tą
 funkcją, pojedyncze zadowolenie danego wyborcy z komitetu może wzrosnąć tylko w
 przypadku, gdy do komitetu dołączany zostaje kandydat, któremu dany wyborca przydzielił
 więcej punktów $k-Bordy$ od punktów aktualnego reprezentanta. Jeżeli taki kandydat zostanie
@@ -810,8 +836,8 @@ kandydatów do zwycięskiego komitetu, aby polepszyć indywidualne zadowolenie d
 wyborcy i tym samym zbiorcze zadowolenie wyborców.
 
 \subsection{Szczegóły implementacyjne}
-Algorytm zaimplementowany jest w klasie $GreedyCC$ znajdującej się w pakiecie
-$ecs.elections.algorithms.greedy\_cc$. Główna pętla algorytmu znajduje się w metodzie $run$.
+Algorytm zaimplementowany jest w klasie \code{GreedyCC} znajdującej się w pakiecie
+\code{ecs.elections.algorithms.greedy\_cc}. Główna pętla algorytmu znajduje się w metodzie \code{run()}.
 Implementacja i kolejne kroki algorytmu są takie same lub bardzo podobne jak dla
 pierwszego algorytmu zachłannego zależnego od parametru $p$. Największa różnica jest w najbardziej wewnętrznej pętli
 iterującej po wszystkich wyborcach. Zaimplementowana jest tu funkcja zadowolenia
@@ -837,26 +863,33 @@ wartości ogólnego poziomu zadowolenia jak w przypadku pierwszego algorytmu.
 
 \chapter{Porównanie algorytmów}
 \section{Zrównanie jakości działania algorytmów zachłannych}
-Ponieważ algorytm zachłanny według zasady $Chamberlin-Courant’a$ przystosowany jest do działania dla dużych wartości parametru $p$ (im większy parametr $p$, tym wartość wskazanego przez algorytm komitetu powinna rosnąć), zasadnym jest analiza dla jakiego parametru $p$ algorytm zachłanny według zasady $Chamberlin-Courant’a$ staje się nie gorszy od algorytmu zachłannego zależnego od parametru $p$. Algorytm zachłanny według zasady $Chamberlin-Courant’a$ jest znacznie szybszy od swojego konkurenta, więc wiedząc dla jakiej wartości parametru $p$ staje się nie gorszy pod względem jakości rezultatu, można go z powodzeniem stosować zamiast algorytmu zachłannego zależnego od parametru $p$. W tym podrozdziale podjęta zostanie próba oszacowania wartości parametru $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku oraz zostanie przeprowadzona analiza czynników, które mogą potencjalnie wpływać na wartość tego parametru $p$. W dalszej części podrozdziału parametr $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku będzie nazywany graniczną wartością parametru $p$.
+Ponieważ algorytm zachłanny według zasady \textit{Chamberlin'a-Courant’a} przystosowany jest do
+działania dla dużych wartości parametru $p$ (im większy parametr $p$, tym wartość wskazanego przez algorytm komitetu powinna rosnąć), zasadnym jest analiza dla jakiego parametru $p$ algorytm zachłanny
+według zasady \textit{Chamberlin'a-Courant’a} staje się nie gorszy od algorytmu zachłannego zależnego
+od parametru $p$. Algorytm zachłanny według zasady \textit{Chamberlin'a-Courant’a} jest znacznie szybszy od swojego konkurenta, więc wiedząc dla jakiej wartości parametru $p$ staje się nie gorszy pod względem jakości rezultatu, można go z powodzeniem stosować zamiast algorytmu zachłannego zależnego od parametru $p$. W tym podrozdziale podjęta zostanie próba oszacowania wartości parametru $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku oraz zostanie przeprowadzona analiza czynników, które mogą potencjalnie wpływać na wartość tego parametru $p$. W dalszej części podrozdziału parametr $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku będzie nazywany graniczną wartością parametru $p$.
 \subsection{Działanie algorytmów zachłannych}
-Dla wszystkich przypadków testowanych, wyniki algorytmów zachłannych zachowywały pewien schemat wraz ze wzrostem parametru $p$. Dla małych wartości parametru $p$ jakość rezultatu obliczonego przez algorytm zachłanny zależny od wartości parametru $p$, znacznie przewyższa drugi z algorytmów zachłannych. Wraz ze wzrostem parametru $p$ jakości wyników wyliczanych przez algorytmy są coraz bliższe sobie. Dla pewnej wartości granicznej parametru $p$, algorytm zachłanny według zasady $Chamberlin-Courant’a$ staje się nie gorszy od swojego konkurenta pod względem jakości wyniku. Dla wartości parametru $p$ większych od tej wartości granicznej, algorytm zachłanny według zasady $Chamberlin-Courant’a$ jest co najmniej tak samo dobry jak algorytm zachłanny zależny od parametru $p$. Dla wartości parametru $p$ większych i równych od wartości granicznej parametru $p$, najczęściej występuje taka sytuacja, że wyniki obydwu algorytmów są takie same. 
+Dla wszystkich przypadków testowanych, wyniki algorytmów zachłannych zachowywały pewien schemat wraz ze wzrostem parametru $p$. Dla małych wartości parametru $p$ jakość rezultatu obliczonego przez algorytm zachłanny zależny od wartości parametru $p$, znacznie przewyższa drugi z algorytmów zachłannych. Wraz ze wzrostem parametru $p$ jakości wyników wyliczanych przez algorytmy są coraz bliższe sobie. Dla pewnej wartości granicznej parametru $p$, algorytm zachłanny według zasady
+\textit{Chamberlin'a-Courant’a} staje się nie gorszy od swojego konkurenta pod względem jakości
+wyniku. Dla wartości parametru $p$ większych od tej wartości granicznej, algorytm zachłanny według zasady
+\textit{Chamberlin'a-Courant’a} jest co najmniej tak samo dobry jak algorytm zachłanny zależny od
+parametru $p$. Dla wartości parametru $p$ większych i równych od wartości granicznej parametru $p$, najczęściej występuje taka sytuacja, że wyniki obydwu algorytmów są takie same.
 
-Powyższa zasada zachowywania się wyników algorytmów zachłannych względem siebie sprawdziła się dla wszystkich przypadków testowanych. Ponieważ badane algorytmy są algorytmami heurystycznymi, mogą wystąpić odstępstwa od tej reguły. 
+Powyższa zasada zachowywania się wyników algorytmów zachłannych względem siebie sprawdziła się dla wszystkich przypadków testowanych. Ponieważ badane algorytmy są algorytmami heurystycznymi, mogą wystąpić odstępstwa od tej reguły.
 
 \subsection{Wpływ liczby wyborców na wartość graniczną parametru $p$}
-Pierwszym czynnikiem, który badano pod kątem jego wpływu na wartość graniczną parametru $p$, była liczba wyborców. W tym celu określono pewne stałe wartości dla innych parametrów definiujących wybory, a następnie szacowano wartość graniczną parametru $p$. Szacowanie polegało na poszukiwaniu wartości granicznej w ten sposób, że porównywano dla pewnej wybranej początkowo wartości parametru $p$ wyniki obydwu algorytmów i w zależności, który algorytm okazał się lepszy pod względem jakości wyniku, dalsze poszukiwanie ograniczano do wartości parametru $p$ mniejszych lub większych wybranej początkowo wartości. Jeżeli lepszy okazywał się algorytm zachłanny zależny od wartości parametru $p$, wtedy dalsze poszukiwanie ograniczano do wartości parametru $p$ większych od badanej początkowo wartości parametru $p$. W przeciwnym przypadku szukano dla wartości parametru $p$ mniejszych od wybranej na początku wartości. Postępowanie w celu oszacowania wartości granicznej parametru $p$ miało cechy wyszukiwania binarnego. Wartość graniczna parametru $p$ nie była określana dokładnie, lecz jedynie szacowana. Błąd bezwzględny określonej wartości wynosił dla tego testu $50$. Jeżeli przykładowo stwierdzono, że wartość graniczna znajduje się między wartością $1500$ a $1600$, to szacowano, że wartość graniczna parametru $p$ wynosi $1550$. Dla tego testu przyjęto, że rozmiar komitetu będzie wynosił $15$, a liczba kandydatów będzie wynosiła $50$. Zbadano zależność wartości granicznej parametru $p$ dla liczby wyborców wynoszącej $25$, $50$, $75$ oraz $100$. Próbę przeprowadzono dwukrotnie dla każdej wartości liczby wyborców w celu określenia czy wynik dla danej liczby wyborców jest podobny niezależnie od innych parametrów. Testy przeprowadzano dla wyborów generowanych z rozkładu normalnego. Wyniki przedstawione są w formie tabeli i wykresu. \\ 
+Pierwszym czynnikiem, który badano pod kątem jego wpływu na wartość graniczną parametru $p$, była liczba wyborców. W tym celu określono pewne stałe wartości dla innych parametrów definiujących wybory, a następnie szacowano wartość graniczną parametru $p$. Szacowanie polegało na poszukiwaniu wartości granicznej w ten sposób, że porównywano dla pewnej wybranej początkowo wartości parametru $p$ wyniki obydwu algorytmów i w zależności, który algorytm okazał się lepszy pod względem jakości wyniku, dalsze poszukiwanie ograniczano do wartości parametru $p$ mniejszych lub większych wybranej początkowo wartości. Jeżeli lepszy okazywał się algorytm zachłanny zależny od wartości parametru $p$, wtedy dalsze poszukiwanie ograniczano do wartości parametru $p$ większych od badanej początkowo wartości parametru $p$. W przeciwnym przypadku szukano dla wartości parametru $p$ mniejszych od wybranej na początku wartości. Postępowanie w celu oszacowania wartości granicznej parametru $p$ miało cechy wyszukiwania binarnego. Wartość graniczna parametru $p$ nie była określana dokładnie, lecz jedynie szacowana. Błąd bezwzględny określonej wartości wynosił dla tego testu $50$. Jeżeli przykładowo stwierdzono, że wartość graniczna znajduje się między wartością $1500$ a $1600$, to szacowano, że wartość graniczna parametru $p$ wynosi $1550$. Dla tego testu przyjęto, że rozmiar komitetu będzie wynosił $15$, a liczba kandydatów będzie wynosiła $50$. Zbadano zależność wartości granicznej parametru $p$ dla liczby wyborców wynoszącej $25$, $50$, $75$ oraz $100$. Próbę przeprowadzono dwukrotnie dla każdej wartości liczby wyborców w celu określenia czy wynik dla danej liczby wyborców jest podobny niezależnie od innych parametrów. Testy przeprowadzano dla wyborów generowanych z rozkładu normalnego. Wyniki przedstawione są w formie tabeli i wykresu. \\
 
 \begin{center}
 
 \begin{tabular}{|c|c|c|c|c|}
-   \hline 
-   liczba wyborców & 25 & 50 & 75 & 100 \\ 
-   \hline 
-   wartość graniczna parametru $p$ - próba nr 1 & 1550 & 1600 & 50 & 100 \\ 
-   \hline 
-   wartość graniczna parametru $p$ - próba nr 2 & 50 & ponad 5000 & 1150 & 50 \\ 
-   \hline 
-\end{tabular}    
+   \hline
+   liczba wyborców & 25 & 50 & 75 & 100 \\
+   \hline
+   wartość graniczna parametru $p$ - próba nr 1 & 1550 & 1600 & 50 & 100 \\
+   \hline
+   wartość graniczna parametru $p$ - próba nr 2 & 50 & ponad 5000 & 1150 & 50 \\
+   \hline
+\end{tabular}
 \captionof{table}{Graniczne wartości parametru $p$ dla różnej liczby wyborców}
 \end{center}
 
@@ -867,21 +900,21 @@ Pierwszym czynnikiem, który badano pod kątem jego wpływu na wartość granicz
 \captionof{figure}{Zależność wartości granicznej parametru $p$ od liczby wyborców}
 \end{center}
 
-Na wykresie nie zaznaczono wyniku drugiej próby dla liczby wyborców równej $50$. Nie oszacowano jej dokładnie, gdyż wiadomo że wynosiła ponad $5000$. Nie jest istotne jak duża jest ta wartość. Badanie to pokazało, że nie ma zależności między wartością graniczną parametru $p$ a liczbą wyborców. Rozrzut wyników jest bardzo duży nawet dla dwóch różnych prób dla tej samej liczby wyborców.   
+Na wykresie nie zaznaczono wyniku drugiej próby dla liczby wyborców równej $50$. Nie oszacowano jej dokładnie, gdyż wiadomo że wynosiła ponad $5000$. Nie jest istotne jak duża jest ta wartość. Badanie to pokazało, że nie ma zależności między wartością graniczną parametru $p$ a liczbą wyborców. Rozrzut wyników jest bardzo duży nawet dla dwóch różnych prób dla tej samej liczby wyborców.
 
 \subsection{Wpływ odchylenia standardowego na wartość graniczną parametru $p$}
 Zdecydowano się na sprawdzenie wpływu rozproszenia wyborców i kandydatów na wartość graniczną parametru $p$. Wartości parametru były takie same jak w poprzednim teście poza wartością odchylenia standardowego. Wcześniej wartość odchylenia standardowego dla wyborców i kandydatów wynosiła domyślne $30$. W tym teście podniesiono tą wartość do $100$. Sposób przeprowadzenia testu był analogiczny do poprzedniego. Wyniki przedstawione są w formie tabeli.
 
 \begin{center}
 \begin{tabular}{|c|c|c|}
-   \hline 
-   liczba wyborców & 25 & 50 \\ 
-   \hline 
-   wartość graniczna parametru $p$ - próba nr 1 & ponad 5000 & 1500 \\ 
-   \hline 
-   wartość graniczna parametru $p$ - próba nr 2 & 50 & 50 \\ 
-   \hline 
-\end{tabular}    
+   \hline
+   liczba wyborców & 25 & 50 \\
+   \hline
+   wartość graniczna parametru $p$ - próba nr 1 & ponad 5000 & 1500 \\
+   \hline
+   wartość graniczna parametru $p$ - próba nr 2 & 50 & 50 \\
+   \hline
+\end{tabular}
 \captionof{table}{Graniczne wartości parametru $p$ dla różnej liczby wyborców i $\sigma = 100$}
 \end{center}
 
@@ -892,32 +925,32 @@ Kolejnym zbadanym czynnikiem był wpływ liczby kandydatów na wartość granicz
 
 \begin{center}
 \begin{tabular}{|c|c|c|}
-   \hline 
-   liczba kandydatów & 20 & 40 \\ 
-   \hline 
-   wartość graniczna parametru $p$ - próba nr 1 & 850 & 3250 \\ 
-   \hline 
-   wartość graniczna parametru $p$ - próba nr 2 & 250 & 50 \\ 
-   \hline 
-\end{tabular}    
+   \hline
+   liczba kandydatów & 20 & 40 \\
+   \hline
+   wartość graniczna parametru $p$ - próba nr 1 & 850 & 3250 \\
+   \hline
+   wartość graniczna parametru $p$ - próba nr 2 & 250 & 50 \\
+   \hline
+\end{tabular}
 \captionof{table}{Graniczne wartości parametru $p$ dla różnej liczby kandydatów}
 \end{center}
 
 Ponieważ podobnie jak w poprzednim teście rozrzut wyników okazał się bardzo duży, zdecydowano poprzestać na dwukrotnym sprawdzeniu dwóch różnych liczb kandydatów. Dla takiej samej liczby kandydatów, wartość graniczna parametru $p$ potrafi być jednocześnie i bardzo duża i bardzo mała. Wpływu w ten sposób badanej liczby kandydatów na graniczną wartość parametru $p$ nie znaleziono.
 
 \subsection{Wpływ rozmiaru komitetu na wartość graniczną parametru $p$}
-Kolejnym badanym czynnikiem był rozmiar komitetu. Metodyka badania była taka sama jak w poprzednim teście. Błąd bezwzględny oszacowanych wartości granicznych, dla wartości rzędu kilku tysięcy wynosił $500$, dla rzędu kilkaset lub kilkadziesiąt $50$. Parametry definiujące wybory poza rozmiarem komitetu przyjęto jako stałe. Liczbę kandydatów określono na wartość $60$, liczbę wyborców na 50, a odchylenie standardowe wyborców i kandydatów na domyślne $30$. Wyniki przedstawiono w formie tabeli i wykresu. 
+Kolejnym badanym czynnikiem był rozmiar komitetu. Metodyka badania była taka sama jak w poprzednim teście. Błąd bezwzględny oszacowanych wartości granicznych, dla wartości rzędu kilku tysięcy wynosił $500$, dla rzędu kilkaset lub kilkadziesiąt $50$. Parametry definiujące wybory poza rozmiarem komitetu przyjęto jako stałe. Liczbę kandydatów określono na wartość $60$, liczbę wyborców na 50, a odchylenie standardowe wyborców i kandydatów na domyślne $30$. Wyniki przedstawiono w formie tabeli i wykresu.
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
-   \hline 
-   rozmiar komitetu & 10 & 20 & 30 & 40 & 50 \\ 
-   \hline 
-   wartość graniczna parametru $p$ - próba nr 1 & 50 & 2500 & 4000 & 3500 & 3500 \\ 
-   \hline 
-   wartość graniczna parametru $p$ - próba nr 2 & 100 & 1500 & 3500 & 3500 & 3000 \\ 
-   \hline 
-\end{tabular}    
+   \hline
+   rozmiar komitetu & 10 & 20 & 30 & 40 & 50 \\
+   \hline
+   wartość graniczna parametru $p$ - próba nr 1 & 50 & 2500 & 4000 & 3500 & 3500 \\
+   \hline
+   wartość graniczna parametru $p$ - próba nr 2 & 100 & 1500 & 3500 & 3500 & 3000 \\
+   \hline
+\end{tabular}
 \captionof{table}{Graniczne wartości parametru $p$ dla różnego rozmiaru komitetu}
 \end{center}
 
@@ -930,7 +963,9 @@ Kolejnym badanym czynnikiem był rozmiar komitetu. Metodyka badania była taka s
 
 Rozrzut wyników dwóch różnych prób dla badanych rozmiarów komitetów był w porównaniu do poprzednich badań stosunkowo niewielki. Dla najmniejszego rozmiaru komitetu wynoszącego $10$, wartość graniczna parametru $p$ była rzędu kilkadziesiąt. Dla rozmiaru komitetu równego $20$ rozrzut wyników był największy. Dla większych rozmiarów komitetu wartość graniczna była na poziomie kilka tysięcy i zdawała się mieć pewien rodzaj stabilizacji. Wciąż jednak trudno stwierdzić czy istnieje jakakolwiek zależność między badanymi wielkościami. Można jedynie zaobserwować, że dla mniejszych rozmiarów komitetu wartość graniczna przybiera dość często małą wartość rzędu kilkadziesiąt, a dla większych rozmiarów komitetu wartość graniczna jest raczej rzędu kilka tysięcy.
 
-Przeprowadzając wszystkie powyższe testy zauważono jednak inną prawidłowość. Otóż zaobserwowano, że już dla niewielkiej wartości parametru $p$ większość zwycięzców wskazanych przez obydwa algorytmy pokrywa się ze sobą. O innej wartości wskazanego komitetu dla większych wartości parametru $p$ decyduje niewielka część zwycięzców. Tworzą się pary lub trójki kandydatów, którzy znajdują się blisko siebie i w zależności od tego który z nich zostanie wybrany do zwycięskiego komitetu, wartości zadowolenia wyborców się nieco zmieniają. Przykładowo może się tak zdarzyć, że istnieje para kandydatów spośród której zawsze do zwycięskiego komitetu trafia jeden z kandydatów w tej parze. Przy czym istnieje graniczna wartość parametru $p$, poniżej której zawsze jeden z kandydatów w tej parze wchodzi do zwycięskiego komitetu i jednocześnie powyżej tej granicznej wartości parametru $p$ drugi kandydat z pary wchodzi do zwycięskiego komitetu. Jeżeli ta graniczna wartość jest duża, to wtedy algorytm zachłanny zależny od parametru $p$ długo będzie wybierał pierwszego kandydata z pary przewyższając tym samym algorytm według zasady $Chamberlin-Courant’a$, który zawsze wybierze drugiego kandydata. Stąd graniczna wartość parametru $p$ dla tego przypadku jest duża, bo algorytm zachłanny zależny od parametru $p$ będzie długo minimalnie lepszy od drugiego algorytmu zachłannego. Jednak trzon zwycięzców dla obydwu algorytmów szybko jest taki sam. Stąd na wartość graniczną parametru $p$ głównie ma wpływ lokalne rozmieszczenie kandydatów. Jeżeli znajdą się pary i trójki, spośród których dla dużych wartości parametru $p$ następuje zamiana miejsc w zwycięskim komitecie, wtedy wartość graniczna parametru $p$ jest dla takich przypadków duża. Jeżeli takich zaciętych par nie ma i zwycięzcy są wyłaniani w zdecydowany sposób pod kątem reprezentatywności dla pewnej części wyborców, wtedy wartość graniczna parametru $p$ jest mała. Poniekąd taka interpretacja tłumaczy tendencję do małej wartości granicznej parametru $p$ dla małych zwycięskich komitetów i dużą wartość graniczną parametru $p$ dla dużych zwycięskich komitetów. Dla małych rozmiarem komitetów, każdy ze zwycięzców klarownie reprezentuje pewną część wyborców przez co nie tworzą się dla większych $p$ pary rywalizujące o reprezentację dla pewnej części wyborców. Dla dużych komitetów, w związku z wieloma miejscami w komitecie o zwycięstwo rywalizują również mniej popierani w danej grupie wyborców kandydaci, przez co jest większa szansa na stworzenie się opisanej wcześniej pary lub trójki kandydatów.
+Przeprowadzając wszystkie powyższe testy zauważono jednak inną prawidłowość. Otóż zaobserwowano, że już dla niewielkiej wartości parametru $p$ większość zwycięzców wskazanych przez obydwa algorytmy pokrywa się ze sobą. O innej wartości wskazanego komitetu dla większych wartości parametru $p$ decyduje niewielka część zwycięzców. Tworzą się pary lub trójki kandydatów, którzy znajdują się blisko siebie i w zależności od tego który z nich zostanie wybrany do zwycięskiego komitetu, wartości zadowolenia wyborców się nieco zmieniają. Przykładowo może się tak zdarzyć, że istnieje para kandydatów spośród której zawsze do zwycięskiego komitetu trafia jeden z kandydatów w tej parze. Przy czym istnieje graniczna wartość parametru $p$, poniżej której zawsze jeden z kandydatów w tej parze wchodzi do zwycięskiego komitetu i jednocześnie powyżej tej granicznej wartości parametru $p$ drugi kandydat z pary wchodzi do zwycięskiego komitetu. Jeżeli ta graniczna wartość jest duża, to wtedy algorytm zachłanny zależny od parametru $p$ długo będzie wybierał pierwszego kandydata z pary
+przewyższając tym samym algorytm według zasady \textit{Chamberlin'a-Courant’a}, który zawsze wybierze drugiego
+kandydata. Stąd graniczna wartość parametru $p$ dla tego przypadku jest duża, bo algorytm zachłanny zależny od parametru $p$ będzie długo minimalnie lepszy od drugiego algorytmu zachłannego. Jednak trzon zwycięzców dla obydwu algorytmów szybko jest taki sam. Stąd na wartość graniczną parametru $p$ głównie ma wpływ lokalne rozmieszczenie kandydatów. Jeżeli znajdą się pary i trójki, spośród których dla dużych wartości parametru $p$ następuje zamiana miejsc w zwycięskim komitecie, wtedy wartość graniczna parametru $p$ jest dla takich przypadków duża. Jeżeli takich zaciętych par nie ma i zwycięzcy są wyłaniani w zdecydowany sposób pod kątem reprezentatywności dla pewnej części wyborców, wtedy wartość graniczna parametru $p$ jest mała. Poniekąd taka interpretacja tłumaczy tendencję do małej wartości granicznej parametru $p$ dla małych zwycięskich komitetów i dużą wartość graniczną parametru $p$ dla dużych zwycięskich komitetów. Dla małych rozmiarem komitetów, każdy ze zwycięzców klarownie reprezentuje pewną część wyborców przez co nie tworzą się dla większych $p$ pary rywalizujące o reprezentację dla pewnej części wyborców. Dla dużych komitetów, w związku z wieloma miejscami w komitecie o zwycięstwo rywalizują również mniej popierani w danej grupie wyborców kandydaci, przez co jest większa szansa na stworzenie się opisanej wcześniej pary lub trójki kandydatów.
 
 \subsection{Stopień pokrywania się zwycięzców dla różnych wartości parametru p}
 W związku z zaobserwowaniem faktu dużego pokrywania się zwycięskich kandydatów wyłanianych przez algorytmy zachłanne dla odpowiednio dużych wartości parametru $p$, postanowiono dokładniej zbadać tę kwestię. Sprawdzono jaki procent kandydatów ze zwycięskich komitetów wyłonionych przez obydwa algorytmy pokrywa się ze sobą. Testy przeprowadzono dla różnych wartości definiujących wybory. Dla każdej ze sprawdzonych wartości parametru $p$ sprawdzono pokrycie się zwycięzców dla $10$ różnych wyborów. Dla każdej wartości parametru $p$ policzono następnie średnią i medianę z wyliczonych wartości procentowych pokrycia się komitetów. Wyniki poszczególnych prób i obliczonych średnich oraz median przedstawiono w formie tabeli. W tabeli przyjęto następujące oznaczenia: $k$ - rozmiar komitetu, $c$ - liczba kandydatów, $v$ - liczba wyborców. Dla poszczególnych wyborów przedstawiono ilu zwycięskich kandydatów z całego komitetu pokryło się z wynikami drugiego algorytmu dla danej wartości parametru $p$. Średnie i mediany przedstawiono również w formie wykresu.
