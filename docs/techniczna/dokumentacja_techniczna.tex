@@ -151,8 +151,15 @@ f_{\ell_pB}(\infty,(i_1, \dots ,i_k))\\
 
 \section{Format danych wejściowych}
 \label{sec:format_danych_wejsciowych}
-Pojedynczy plik składa się z następującego formatu:\\
-\texttt{<liczba kandydatów> \\
+Struktura danych wejściowych została zaczerpnięta z zestawów danych zamieszczonych na stronie Pref\,Lib \footnote{\url{http://www.preflib.org/data/format.php\#soc}}. Wykorzystywanym typem zestawów danych są zestawy SOC \footnote{SOC - \textit{Strict Orders - Complete List}}
+\footnote{Szczegółowe opisy wyborów odnoszących się do poszczególnych plików można znaleźć pod adresem\\\url{http://www.preflib.org/data/index.php\#ed}}.\\
+Zgodnie ze specyfikacją, każdy prawidłowy plik z rozszerzeniem \textit{.soc} posiada profil będący całkowitą, przejściową i asymetryczną relacją na grupie obiektów.\\
+\textit{Preferencje} definiowane są jako ciągi liter oddzielone przecinkami, przykładowo:\\
+\code{A, B, C;}\\
+Powyższy zapis oznacza, że, spośród trzech opcji A, B, C, A jest bardziej preferowana niż B i C oraz B jest bardziej preferowana niż C. Relacja silnego porządku jest wówczas określana przez przecinek.\\
+\\
+Format pliku \textit{.soc}:\\
+\code{<liczba kandydatów> \\
 1, <nazwa kandydata> \\
 2, <nazwa kandydata> \\
 … \\
@@ -160,7 +167,9 @@ Pojedynczy plik składa się z następującego formatu:\\
 <liczba głosujących>, <liczba głosów policzonych>, <liczba unikalnych głosów> \\
 <liczba powtórzeń głosu>, <głos> \\
 … \\
-<liczba powtórzeń głosu>, <głos>}
+<liczba powtórzeń głosu>, <głos>}\\
+\\
+Przy czym \code{<głos>} to pojedyncza \textit{preferencja} opisana powyżej.
 
 \chapter{Architektura Django}
 \textit{Django} to framework webowy napisany w \textit{Pythonie}. Dostarcza wysokopoziomowych
