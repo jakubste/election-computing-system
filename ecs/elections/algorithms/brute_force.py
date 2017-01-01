@@ -12,7 +12,6 @@ class BruteForce(Algorithm):
         winning_committee = None
         max_score = 0
 
-
         self.fetch_preferences()
         num = len(combinations)
 

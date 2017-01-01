@@ -12,6 +12,8 @@ from django.views.generic.edit import CreateView, FormView
 
 from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.algorithms.genetic import GeneticAlgorithm
+from ecs.elections.algorithms.greedy_algorithm import GreedyAlgorithm
+from ecs.elections.algorithms.greedy_cc import GreedyCC
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
@@ -21,6 +23,7 @@ from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGene
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GENETIC_ALGORITHM
+from ecs.elections.models import GREEDY_ALGORITHM, GREEDY_CC
 from ecs.geo.models import Point
 from ecs.utils.chart_views import ChartMixin
 from ecs.utils.views import LoginRequiredMixin
@@ -85,9 +88,10 @@ class ElectionDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(ElectionDetailView, self).get_context_data(**kwargs)
-        if self.object.voters.count() < 500:
+        if self.object.voters.count() <= 100:
             ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
-        ctx['results'] = self.object.results.all()
+        ctx['results'] = self.object.results.all()\
+            .select_related('geneticalgorithmsettings').prefetch_related('winners')
         choices = [(res.pk, str(res)) for res in ctx['results'].reverse()]
         choices.append((None, '------'))
         choices.reverse()
@@ -250,6 +254,8 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
 
         algorithm = {
             BRUTE_ALGORITHM: BruteForce,
+            GREEDY_ALGORITHM: GreedyAlgorithm,
+            GREEDY_CC: GreedyCC,
             GENETIC_ALGORITHM: GeneticAlgorithm,
         }[form.cleaned_data['algorithm']]
         algorithm = algorithm(self.election, form.cleaned_data['p_parameter'], **algorithm_kwargs)
