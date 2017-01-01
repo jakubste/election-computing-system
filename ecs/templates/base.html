@@ -14,8 +14,6 @@
 
     <link rel="stylesheet" href="{% static 'main.css'%}">
 
-    <link rel="stylesheet" href="{% static 'social-icons.css' %}">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="shortcut icon" type="image/png" href="{% static 'vote.png' %}"/>
@@ -45,8 +43,9 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 {% if user.is_authenticated %}
-                    <li class="{{ view.active_election_list }}"><a href="{% url 'elections:election_list' %}">Your
-                        elections</a></li>
+                    <li class="{{ view.active_election_list }}"><a href="{% url 'elections:election_list' %}">
+                        Your elections
+                    </a></li>
                 {% endif %}
             </ul>
 
