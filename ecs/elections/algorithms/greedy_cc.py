@@ -8,10 +8,10 @@ class GreedyCC(Algorithm):
         self.fetch_preferences()
         candidates_still_fighting = list(self.election.candidates.all())
         winning_committee = []
-        actual_voters_satisfaction = {}
+        current_voters_satisfaction = {}
 
         for v in voters:
-            actual_voters_satisfaction[v.pk] = 0
+            current_voters_satisfaction[v.pk] = 0
 
         for i in range(self.election.committee_size):
             extra_satisfaction_with_leading_candidate = 0
@@ -22,11 +22,10 @@ class GreedyCC(Algorithm):
 
                 for v in voters:
                     x = self.candidates_number - self.preferences[v.pk][c.pk]
-                    satisfaction_of_given_voter = actual_voters_satisfaction[v.pk]
+                    satisfaction_of_given_voter = current_voters_satisfaction[v.pk]
 
                     if x > satisfaction_of_given_voter:
-                        extra_satisfaction_with_given_candidate += v.repeats * (
-                            x - satisfaction_of_given_voter)
+                        extra_satisfaction_with_given_candidate += v.repeats * (x - satisfaction_of_given_voter)
 
                 if extra_satisfaction_with_given_candidate > extra_satisfaction_with_leading_candidate:
                     leading_candidate = c
@@ -34,8 +33,8 @@ class GreedyCC(Algorithm):
 
             for v in voters:
                 x = self.candidates_number - self.preferences[v.pk][leading_candidate.pk]
-                if x > actual_voters_satisfaction[v.pk]:
-                    actual_voters_satisfaction[v.pk] = x
+                if x > current_voters_satisfaction[v.pk]:
+                    current_voters_satisfaction[v.pk] = x
 
             winning_committee.append(leading_candidate)
             candidates_still_fighting.remove(leading_candidate)
