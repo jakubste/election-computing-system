@@ -1,0 +1,18 @@
+.result-button {
+    float: right;
+}
+
+#results-slider{
+    width: 100%;
+}
+
+#results-slider-wrapper {
+    width: 100%;
+    padding-left: 7%;
+    padding-right: 7%;
+}
+
+.algorithm-settings .algorithm-settings-single {
+    width: 60px;
+    float: left;
+}

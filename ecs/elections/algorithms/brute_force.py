@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from ecs.elections.algorithms.algorithm import Algorithm
 
 
@@ -10,13 +12,12 @@ class BruteForce(Algorithm):
         winning_committee = None
         max_score = 0
 
-
         self.fetch_preferences()
         num = len(combinations)
 
         for i, committee in enumerate(combinations):
-            # print for developer - when it's running long, at least you have something to watch ;)
-            print i, 'out of', num
+            if settings.PRINT_PROGRESS and i % 100 == 0:
+                print i, 'out of', num
             score = self.calculate_committee_score_from_prefetched(
                 committee
             )

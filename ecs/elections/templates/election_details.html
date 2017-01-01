@@ -12,9 +12,19 @@
     <p>
         committee size: {{ election.committee_size }}
     </p>
-    <p>
-        results: {{ results_choice }}
-    </p>
+
+    {% if election.is_generated %}
+        <div id="results-slider-wrapper">
+            <input id="results-slider"
+                data-slider-id='results-slider' type="text"
+                data-slider-min="0" data-slider-max="{{ results_number }}"
+                data-slider-step="1" data-slider-value="0"
+                data-results-pks="{{ results_pks }}"
+                data-results-p-params="{{ results_p_params }}"
+                data-results-descriptions="{{ results_descriptions }}"
+            >
+        </div>
+    {% endif %}
 
     {% if not election.is_set_up %}
         <div class="alert alert-info">
@@ -49,70 +59,129 @@
         {% endif %}
 
         <h2>Available results</h2>
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#results_panel">Collapse/expand results listing</a>
-                    </h4>
-                </div>
-                <div id="results_panel" class="panel-collapse collapse in">
-                    {% for result in results %}
-                        <div class="panel-body">
+
+        {% regroup results by p_parameter as p_list %}
+        <div class="row"><div class="col-md-10 col-md-push-1">
+        <table class="table">
+            <thead class="bg-primary">
+            <tr>
+                <th class="col-md-1">p param</th>
+                <th class="col-md-2">Algorithm</th>
+                <th class="col-md-2">Time</th>
+                <th class="col-md-2" data-toggle="tooltip" title="This value should be compared only between results with the same p parameter!">
+                    Committee score <span class="glyphicon glyphicon-info-sign"></span>
+                </th>
+                <th class="col-md-3">Algorithm parameters</th>
+                <th class="col-md-2">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for results_group in p_list %}
+
+                {% for result in results_group.list %}
+                    <tr {% if forloop.parentloop.counter|divisibleby:2 %}class="bg-warning"{% endif %}>
+                        <th style="text-align: center" scope="row">{{ result.p_parameter }}</th>
+                        <td>{{ result.get_algorithm_display }}</td>
+                        <td>
+                            {% if result.winners.count %}
+                                {{ result.time|floatformat:2 }} s
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if result.winners.count %}
+                                {{ result.score|floatformat:2 }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if result.geneticalgorithmsettings %}
+                                <div class="algorithm-settings">
+                                    <div class="algorithm-settings-single" data-toggle="tooltip" title="Cycles count">
+                                        <i class="fa fa-repeat" aria-hidden="true"></i> {{ result.geneticalgorithmsettings.cycles }}
+                                    </div>
+                                    <div class="algorithm-settings-single" data-toggle="tooltip" title="Mutation probability in %">
+                                        <i class="fa fa-code-fork" aria-hidden="true"></i> {{ result.geneticalgorithmsettings.mutation_probability }}
+                                    </div>
+                                    <div class="algorithm-settings-single" data-toggle="tooltip" title="Crossing probability in %">
+                                        <i class="fa fa-venus-mars" aria-hidden="true"></i> {{ result.geneticalgorithmsettings.crossing_probability }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>
                             <a href="{{ result.get_absolute_url }}">
-                                <strong>{{ result.p_parameter }} - {{ result.get_algorithm_display }} - {{ result.time }}s</strong>
+                                <button class="btn btn-info btn-xs">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
                             </a>
-                        </div>
-                    {% endfor %}
-                    <div class="panel-footer">
-                        <a href="{% url 'elections:result_create' election.pk %}">
-                            Add new result
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            <a href="{% url 'elections:result_delete' result.pk %}">
+                                <button class="btn btn-danger btn-xs">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+        </div></div>
+
+
+        <a href="{% url 'elections:result_create' election.pk %}">
+            <button class="btn btn-success">
+                Add new result
+            </button>
+        </a>
 
         {% if voters %}
-        <h2>Voters listing</h2>
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#voters_panel">Collapse/expand voters listing</a>
-                    </h4>
-                </div>
-                <div id="voters_panel" class="panel-collapse collapse">
-                    {% for voter in voters %}
-                        <div class="panel-body">
-                            <strong>{{ voter.repeats }}</strong>x
-                            {% for preference in voter.preferences.all %}
-                                {{ preference.preference }}&nbsp;-&nbsp;{{ preference.candidate }}&nbsp;[{{ preference.candidate.soc_id }}]{% if not forloop.last %},{% endif %}
-                            {% endfor %}
+            <h2>Voters listing</h2>
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#voters_panel">Collapse/expand voters listing</a>
+                        </h4>
+                    </div>
+                    <div id="voters_panel" class="panel-collapse collapse">
+                        {% for voter in voters %}
+                            <div class="panel-body">
+                                <strong>{{ voter.repeats }}</strong>x
+                                {% for preference in voter.preferences.all %}
+                                    {{ preference.preference }}&nbsp;-&nbsp;{{ preference.candidate }}&nbsp;[
+                                    {{ preference.candidate.soc_id }}]{% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        <div class="panel-footer">
+                            <p>Listing format:<br>
+                                <code>
+                                    <strong>:vote_repeats:</strong> x :preference_index: - :candidate_name:
+                                    [:candidate_id:],
+                                    :preference_index: - :candidate_name: [:candidate_id:], …
+                                </code>
+                            </p>
+                            <p>
+                                Example:
+                                <br>
+                                <code>
+                                    <strong>7</strong>x 1 - John Snow [2], 2 - Daenerys [1], 3 - Cersei [3]
+                                </code><br>
+                                means there are 7 voters that choose John Snow in the first place, Danearys the second
+                                and
+                                Cersei as the last candidate in their preference.
+                                <br>
+                                Daenerys has id 1 in database (John Snow has 2 and Cersei has 3).
+                            </p>
                         </div>
-                    {% endfor %}
-                    <div class="panel-footer">
-                        <p>Listing format:<br>
-                            <code>
-                            <strong>:vote_repeats:</strong> x :preference_index: - :candidate_name: [:candidate_id:],
-                            :preference_index: - :candidate_name: [:candidate_id:], …
-                            </code>
-                        </p>
-                        <p>
-                            Example:
-                            <br>
-                            <code>
-                                <strong>7</strong>x 1 - John Snow [2], 2 - Daenerys [1], 3 - Cersei [3]
-                            </code><br>
-                            means there are 7 voters that choose John Snow in the first place, Danearys the second and
-                            Cersei as the last candidate in their preference.
-                            <br>
-                            Daenerys has id 1 in database (John Snow has 2 and Cersei has 3).
-                        </p>
                     </div>
                 </div>
             </div>
-        </div>
+        {% else %}
+            <div style="margin-bottom: 50px"></div>
         {% endif %}
     {% endif %}
 
