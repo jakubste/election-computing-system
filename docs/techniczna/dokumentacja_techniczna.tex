@@ -869,6 +869,41 @@ zadowolenia wnosi badany kandydat i porównywaniu tych dodatkowych satysfakcji, 
 wartości ogólnego poziomu zadowolenia jak w przypadku pierwszego algorytmu.
 
 \section{Algorytm genetyczny}
+Algorytmy genetyczne polegają na przedstawieniu róznych wynikó problemu 
+jako \textit{osobników}, a następnie, w sposób losowy, ich krzyżowanie i mutowanie. 
+Po każdym takim cyklu osobniki są poddawane ocenie i do dalszych cykli pozostawiane są tylko
+najlepsze okazy. Algorytm opiera się na znanej z biologii ewolucji.
+
+\subsection{Osobnik}
+W naszej implementacji osobnikiem jest wybierany komitet (podzbiór kandydatów). 
+Po utworzeniu jest on oceniany według funkcji satysfakcji i przypisywany jest mu wynik.
+
+\subsection{Krzyżowanie}
+Krzyżowanie osobników - komitetów polega na losowym wybraniu kandydatów z dwóch osobników, tak by łącznie było ich $k$ i żaden się nie powtarzał (krzyżowane osobniki mogą zawierać tych samych kandydatów).
+
+\subsection{Mutacja}
+Mutacja osobnika - komitetu polega na losowej zmianie jednego z kandydatów z komitetu na innego, wcześniej niewybranego.
+
+\subsection{Parametry algorytmu}
+System pozwala wybrać:
+\begin{itemize}
+\item liczbę cykli działania algorytmu
+\item cześć puli jaka jest poddawana krzyżowaniu (osobniki są z niej losowo wybierane do krzyżowania)
+\item prawdopodobieństwo wystąpienia mutacji w pojedynczym osobniku
+\end{itemize}
+
+\subsection{Cykl algorytmu}
+Na cykl algorytmu składa się:
+\begin{itemize}
+\item wybór par osobników do krzyżowania się
+\item krzyżowanie osobników
+\item mutacja osobników zgodnie z zadanym prawdopodobieństwem
+\item wybór N osobników do przejścia do kolejnego cyklu
+\end{itemize}
+
+Liczba N określa wielkość puli osobników i jest wybierana na początku działania algorytmu. W naszej implementacji przyjęliśmy stałą liczbę 50 osobników.
+
+
 
 \chapter{Porównanie algorytmów}
 \section{Zrównanie jakości działania algorytmów zachłannych}
