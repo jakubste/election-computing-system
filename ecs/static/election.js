@@ -15,10 +15,11 @@ function debounce(func, wait, immediate) {
 
 $(document).ready(function () {
     var $scatterChart = $("#election_chart");
+    var scatterChart;
     if ($scatterChart.length > 0) {
         $.get($scatterChart.data('url'), function (data) {
             var ctx = $scatterChart.get(0).getContext("2d");
-            new Chart.Scatter(ctx, {
+            scatterChart = new Chart.Scatter(ctx, {
                 data: data['data'],
                 options: {
                     responsive: true,
@@ -60,9 +61,13 @@ $(document).ready(function () {
                 var $resultPk = $resultsSlider.data('results-pks').toString().split(',')[$inputResultsSlider.val() - 1];
                 source = '/elections/chart_data/result/' + $resultPk + '/'
             }
+
             $.get(source, function (data) {
+                if (scatterChart != null) {
+                    scatterChart.destroy();
+                }
                 var ctx = $scatterChart.get(0).getContext("2d");
-                new Chart.Scatter(ctx, {
+                scatterChart = new Chart.Scatter(ctx, {
                     data: data['data'],
                     options: {
                         responsive: true,
