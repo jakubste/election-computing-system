@@ -6,40 +6,53 @@
 {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <p> Logged in as {{ user }}. Click on "Your elections" to start</p>
-    {% else %}
-        <p> Log in or register in order to create elections </p>
-    {% endif %}
+    <div class="alert alert-info">
+        {% if user.is_authenticated %}
+            <p> Logged in as {{ user }}. Click on "Your elections" to start</p>
+        {% else %}
+            <p> Log in or register in order to create elections </p>
+        {% endif %}
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            System for Computing Election Results According to Generalized k-Borda System.
+        </div>
+
+        <div class="panel-body">
+            <p>
+                Engineering thesis created on the Faculty of Computer Science, Electronics and Telecomunications,
+                AGH University of Science and Technology in Cracow
+            </p>
+
+            <p>Supervisor: Piotr Faliszewski, PhD</p>
+
+            <p>Authors: </p>
+            <ul>
+                <li>Tomasz Kasprzyk</li>
+                <li>Daniel Ogiela</li>
+                <li>Jakub Stępak</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Source code
+        </div>
+
+        <div class="panel-body">
+            <p>
+                Source code is available on <a href="https://github.com/jakubste/election-computing-system"
+                                               title="Source code">Github</a>.
+            </p>
+            <p>
+                <a href="https://github.com/jakubste/election-computing-system/tree/master/docs" title="Documentation">Documentation</a>
+                (in Polish) is available on Github as well.
+            </p>
+        </div>
+    </div>
+
+
 {% endblock %}
 
-{% block description %}
-    <div class="jumbotron">
-        <p>System for Computing Election Results According to Generalized k-Borda System.</p>
-        <br>
-        <p>Engineering thesis created on the Faculty of Computer Science, Electronics and Telecomunications, </p>
-
-        <br>
-        <p>Field of study: Computer Science</p>
-        <p>Supervisor: Piotr Faliszewski, PhD</p>
-        <br>
-
-        <p>Authors: </p>
-        <p>Tomasz Kasprzyk</p>
-        <p>Daniel Ogiela</p>
-        <p>Jakub Stępak</p>
-        <br>
-    </div>
-{% endblock %}
-
-{% block footer %}
-    <div class="col-md-12">
-        <ul class="social-network social-circle">
-            <li>
-                <a href="https://github.com/jakubste/election-computing-system" class="icoGitHub" title="GitHub">
-                    <i class="fa fa-github"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
-{% endblock footer %}
