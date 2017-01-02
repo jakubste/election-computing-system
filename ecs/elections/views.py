@@ -351,43 +351,35 @@ class AlgorithmsChartView(ChartMixin):
         return super(AlgorithmsChartView, self).dispatch(request, *args, **kwargs)
 
     def get_data(self):
-        """
-        :return: algorithms' datasets - dictionary with five keys
-            'b' - for brute\n
-            'g' - for genetic\n
-            'r' - for greedy\n
-            'c' - for greedy_cc\n
-                'b', 'g', 'r', 'c' - stores times measured for given entry on x_axis list
-            Under 'i' index only one and at least one of the four above lists can store
-            a time - other three lists have to store None value under 'i'-th index
-                'x_axis' - label for x axis - stores list of p_parameter values
-            Each of five lists contains the list of the same length
-        """
         # TODO use constants from models.py after greedy branch merge
-        times_and_labels = {'b': [], 'g': [], 'r': [], 'c': [], 'x_axis': []}
+        scores = {'b': [], 'g': [], 'r': [], 'c': []}
+        times = {'b': [], 'g': [], 'r': [], 'c': []}
+        x_labels = []
 
         prev_p = 0
         max_list_length = 0
 
         for result in self.results:
             if prev_p != result.p_parameter:
-                self.fill_up_with_nones(self.algorithm_keys, max_list_length, prev_p, times_and_labels)
+                self.fill_up_with_nones(self.algorithm_keys, max_list_length, prev_p, scores, times, x_labels)
                 prev_p = result.p_parameter
-            times_and_labels[result.algorithm].append(result.time)
-            list_length = len(times_and_labels[result.algorithm])
+            times[result.algorithm].append(result.time)
+            scores[result.algorithm].append(result.score)
+            list_length = len(times[result.algorithm])
             max_list_length = list_length if list_length > max_list_length else max_list_length
 
-        self.fill_up_with_nones(self.algorithm_keys, max_list_length, prev_p, times_and_labels)
+        self.fill_up_with_nones(self.algorithm_keys, max_list_length, prev_p, scores, times, x_labels)
 
-        return times_and_labels
+        return scores, times, x_labels
 
     @staticmethod
-    def fill_up_with_nones(algorithm_keys, max_list_length, prev_p, times_and_labels):
-        while len(times_and_labels['x_axis']) < max_list_length:
-            times_and_labels['x_axis'].append(prev_p)
+    def fill_up_with_nones(algorithm_keys, max_list_length, prev_p, scores, times, x_labels):
+        while len(x_labels) < max_list_length:
+            x_labels.append(prev_p)
         for key in algorithm_keys:
-            while len(times_and_labels[key]) < max_list_length:
-                times_and_labels[key].append(None)
+            while len(times[key]) < max_list_length:
+                times[key].append(None)
+                scores[key].append(None)
 
     def get_datasets(self, *args, **kwargs):
         """
@@ -400,20 +392,33 @@ class AlgorithmsChartView(ChartMixin):
         points_radii = self.get_points_radii()
         data = self.get_data()
 
-        datasets = [
-            {
+        scores, times, x_labels = data
+
+        datasets = []
+        for i in xrange(self.datasets_number):
+            datasets.append({
+                'fill': False,
+                'label': 'score',
+                'type': 'bar',
+                'borderColor': colors[i],
+                'backgroundColor': 'transparent',
+                'borderWidth': 2,
+                'data': scores[algorithm_keys[i]],
+                'yAxisID': 'score'
+            })
+            datasets.append({
+                'type': 'line',
                 'fill': False,
                 'label': labels[i],
                 'borderColor': colors[i],
                 'backgroundColor': point_stroke_colors[i],
-                'data': data[algorithm_keys[i]],
+                'data': times[algorithm_keys[i]],
                 'pointRadius': points_radii[i],
-                'cubicInterpolationMode': 'monotone'
-            }
-            for i in xrange(self.datasets_number)
-            ]
+                'cubicInterpolationMode': 'monotone',
+                'yAxisID': 'time'
+            })
 
         return {
-            'labels': data['x_axis'],
+            'labels': x_labels,
             'datasets': datasets
         }

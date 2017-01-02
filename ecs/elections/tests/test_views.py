@@ -428,54 +428,104 @@ class AlgorithmComparisonChartTestCase(TestCase):
         mocked_get_labels.return_value = ['Brute Force', 'Genetic', 'Greedy', 'Greedy CC']
         mocked_get_colors.return_value = ['red', 'green', 'gold', 'silver']
         mocked_get_points_stroke_colors.return_value = ['red', 'green', 'gold', 'silver']
-        mocked_get_data.return_value = {
-            'b': [6.568374, 6.819739, None, None, None, 32.440533, None],
-            'g': [2.626315, None, 10.491934, None, 5.55241, 12.444652, 13.22525],
-            'r': [0.186459, None, 0.527355, 0.756524, None, 0.550341, None],
-            'c': [0.07559, 0.045842, None, None, None, None, None],
-            'x_axis': [2, 2, 3, 15, 20, 20, 20]
-        }
-        expected = {
-            "labels": [2, 2, 3, 15, 20, 20, 20],
+        mocked_get_data.return_value = [{"r": [6780.0, 6780.0, 3408.4760775032637, None, None],
+                                         "b": [6780.0, None, 3408.4760775032637, 2265.7396569248376, 2234.07354502902],
+                                         "c": [5689.0, 5689.0, None, None, None],
+                                         "g": [6780.0, None, 3407.7071856402554, None, None]},
+                                        {"r": [0.718, 0.769, 2.52, None, None],
+                                         "b": [517.788, None, 2066.722, 2510.452, 2835.667],
+                                         "c": [0.109, 0.119, None, None, None], "g": [2.668, None, 5.734, None, None]},
+                                        [1, 1, 2, 10, 100]]
+        expected_datasets = {
+            "labels": [1, 1, 2, 10, 100],
             "datasets": [
                 {
                     "borderColor": "red",
-                    "label": "Brute Force",
+                    "borderWidth": 2,
+                    "backgroundColor": "transparent",
+                    "data": [6780.0, None, 3408.4760775032637, 2265.7396569248376, 2234.07354502902],
+                    "label": "score",
+                    "type": "bar",
+                    "yAxisID": "score",
+                    "fill": False
+                },
+                {
+                    "borderColor": "red",
+                    "cubicInterpolationMode": "monotone",
                     "backgroundColor": "red",
                     "pointRadius": 5,
-                    "data": [6.568374, 6.819739, None, None, None, 32.440533, None],
-                    "fill": False,
-                    'cubicInterpolationMode': 'monotone'
+                    "data": [517.788, None, 2066.722, 2510.452, 2835.667],
+                    "label": "Brute Force",
+                    "type": "line",
+                    "yAxisID": "time",
+                    "fill": False
                 },
                 {
                     "borderColor": "green",
-                    "label": "Genetic",
+                    "borderWidth": 2,
+                    "backgroundColor": "transparent",
+                    "data": [6780.0, None, 3407.7071856402554, None, None],
+                    "label": "score",
+                    "type": "bar",
+                    "yAxisID": "score",
+                    "fill": False
+                },
+                {
+                    "borderColor": "green",
+                    "cubicInterpolationMode": "monotone",
                     "backgroundColor": "green",
                     "pointRadius": 5,
-                    "data": [2.626315, None, 10.491934, None, 5.55241, 12.444652, 13.22525],
-                    "fill": False,
-                    'cubicInterpolationMode': 'monotone'
+                    "data": [2.668, None, 5.734, None, None],
+                    "label": "Genetic",
+                    "type": "line",
+                    "yAxisID": "time",
+                    "fill": False
                 },
                 {
                     "borderColor": "gold",
-                    "label": "Greedy",
+                    "borderWidth": 2,
+                    "backgroundColor": "transparent",
+                    "data": [6780.0, 6780.0, 3408.4760775032637, None, None],
+                    "label": "score",
+                    "type": "bar",
+                    "yAxisID": "score",
+                    "fill": False
+                },
+                {
+                    "borderColor": "gold",
+                    "cubicInterpolationMode": "monotone",
                     "backgroundColor": "gold",
                     "pointRadius": 5,
-                    "data": [0.186459, None, 0.527355, 0.756524, None, 0.550341, None],
-                    "fill": False,
-                    'cubicInterpolationMode': 'monotone'
+                    "data": [0.718, 0.769, 2.52, None, None],
+                    "label": "Greedy",
+                    "type": "line",
+                    "yAxisID": "time",
+                    "fill": False
                 },
                 {
                     "borderColor": "silver",
-                    "label": "Greedy CC",
+                    "borderWidth": 2,
+                    "backgroundColor": "transparent",
+                    "data": [5689.0, 5689.0, None, None, None],
+                    "label": "score",
+                    "type": "bar",
+                    "yAxisID": "score",
+                    "fill": False
+                },
+                {
+                    "borderColor": "silver",
+                    "cubicInterpolationMode": "monotone",
                     "backgroundColor": "silver",
                     "pointRadius": 5,
-                    "data": [0.07559, 0.045842, None, None, None, None, None],
-                    "fill": False,
-                    'cubicInterpolationMode': 'monotone'
+                    "data": [0.109, 0.119, None, None, None],
+                    "label": "Greedy CC",
+                    "type": "line",
+                    "yAxisID": "time",
+                    "fill": False
                 }
             ]
         }
+
         request = RequestFactory().get(self.url)
         view = AlgorithmsChartView(
             request=request,
@@ -483,10 +533,10 @@ class AlgorithmComparisonChartTestCase(TestCase):
             result=self.result
         )
         datasets = view.get_datasets()
-        self.assertEqual(expected, datasets)
+        self.assertEqual(expected_datasets, datasets)
         response = self.client.get(self.url)
         response = json.loads(response.content)
-        self.assertEqual(expected, response['data'])
+        self.assertEqual(expected_datasets, response['data'])
 
 
 class ResultCreateViewTestCase(TestCase):
