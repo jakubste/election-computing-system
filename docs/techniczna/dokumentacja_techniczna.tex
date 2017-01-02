@@ -216,7 +216,7 @@ szablony & \code{login.html} & logowanie \\
 \hline
 formularze & klasa \code{LoginForm} & logowanie \\
 \cline{2-3}
- & klasa \textit{RegistrationForm} & rejestracja \\
+ & klasa \code{RegistrationForm} & rejestracja \\
 \hline
 \end{tabular}
 }
@@ -736,7 +736,11 @@ zadowolenia wyborców. Stąd można uznać opisany algorytm jako zachłanny.
 Aktualny poziom zadowolenia wyborców na danym etapie algorytmu określany jest za
 pomocą uprzednio zdefiniowanego uogólnienia systemu $k-Bordy$. Satysfakcja pojedynczego
 wyborcy z komitetu liczącego na danym etapie algorytmu $k$ zwycięzców,określana jest za
-pomocą funkcji: $$f_{{\ell_p}-Borda}(i_1, i_2,\dots, i_k) = \sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+\dots+[\beta(i_k)]^p}$$ Funkcja bazuje na normie $\ell_p$ oraz punktacji $k-Bordy$. Dokładne informacje na temat funkcji
+pomocą funkcji: 
+\begin{equation}
+f_{{\ell_p}-Borda}(i_1, i_2,\dots, i_k) = \sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+\dots+[\beta(i_k)]^p}
+\end{equation}
+ Funkcja bazuje na normie $\ell_p$ oraz punktacji $k-Bordy$. Dokładne informacje na temat funkcji
 umieszczone są w rozdziale \textit{Dziedzina problemu}. Ogólne zadowolenie wyborców z komitetu
 jest obliczane jako suma pojedynczych zadowoleń wszystkich wyborców. Algorytm działa w
 ten sposób, że przed wyborem pierwszego zwycięzcy, poziom zadowolenia wyborców
@@ -869,7 +873,7 @@ zadowolenia wnosi badany kandydat i porównywaniu tych dodatkowych satysfakcji, 
 wartości ogólnego poziomu zadowolenia jak w przypadku pierwszego algorytmu.
 
 \section{Algorytm genetyczny}
-Algorytmy genetyczne polegają na przedstawieniu róznych wynikó problemu 
+Algorytmy genetyczne polegają na przedstawieniu róznych wyników problemu 
 jako \textit{osobników}, a następnie, w sposób losowy, ich krzyżowanie i mutowanie. 
 Po każdym takim cyklu osobniki są poddawane ocenie i do dalszych cykli pozostawiane są tylko
 najlepsze okazy. Algorytm opiera się na znanej z biologii ewolucji.
