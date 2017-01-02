@@ -100,8 +100,8 @@ gdzie $i$- pozycja kandydata w ciągu $v$.\\
 Wynik $c$ w wyborach jest sumą wyników $c$ u każdego z wyborców
 
 
-\subsection{Metoda k-Bordy}
-\label{subsec:metoda_k_bordy}
+\subsection{Metoda k-Borda}
+\label{subsec:metoda_k_borda}
 
 Rozszerzenie metody Bordy. Wynik, zamiast dla jednego kandydata, obliczany jest dla ciągu kandydatów. $f_{kB}$- funkcja zadowolenia z komitetu, $(i_1,\dots, i_k)$- ciąg pozycji kandydatów
 \begin{equation}
@@ -118,10 +118,10 @@ $pos_v(w)=(3,4)$, zatem wynik komitetu w dla głosu v wynosi
 $f_{kB}(3,4) = (3) + (4) = ||C|| - 3 ) + ( ||C|| - 4 ) = 1 + 0 = 1$
 
 
-\subsection{Uogólnienie - system $\ell_p$-Bordy}
+\subsection{Uogólnienie - system $\ell_p$-Borda}
 \label{subsec:system_ell_p_borda}
 
-Zanim wprowadzone zostanie pojęcie uogólnionego systemu k-Borda warto przypomnieć wzór na normę\,$\ell_p$
+Zanim wprowadzone zostanie pojęcie uogólnionego systemu $k-Borda$ warto przypomnieć wzór na normę\,$\ell_p$
 \subsubsection{Norma $\ell_p$}
 \label{subsubsection:norma_ell_p}
 \begin{equation}
@@ -129,12 +129,12 @@ Zanim wprowadzone zostanie pojęcie uogólnionego systemu k-Borda warto przypomn
 \end{equation}
 
 
-Wówczas, w uogólnionej wersji metody k-Bordy, funkcja zadowolenia $f_{kB}$ (1.2) zostaje uzależniona również od parametru $p$ ze wzoru (1.3). Norma liczona jest z wyników według Bordy, $\beta(i)$ (1.1).\\Wzór uogólniony funkcji zadowolenia przyjmuje zatem postać:
+Wówczas, w uogólnionej wersji metody $k-Borda$, funkcja zadowolenia $f_{kB}$ (1.2) zostaje uzależniona również od parametru $p$ ze wzoru (1.3). Norma liczona jest z wyników według Bordy, $\beta(i)$ (1.1).\\Wzór uogólniony funkcji zadowolenia przyjmuje zatem postać:
 \begin{equation}
 f_{\ell_pB}(p,(i_1,\dots,i_k))=\sqrt[p]{[(i_1)]^p+[(i_2)]^p+...+[(i_k)]^p}
 \end{equation}
 
-Systemy  k-Bordy i Cahmberlin’a-Courant’a są szczególnymi przypadkami zdefiniowanego powyżej systemu $\ell_p$-Bordy:\\
+Systemy $k-Borda$ i Chamberlina-Couranta są szczególnymi przypadkami zdefiniowanego powyżej systemu $\ell_p-Borda$:\\
 Dla \, $p = 1$, \, $l_1$:
 \begin{equation}
 f_{\ell_pB}(1,(i_1, \dots ,i_k)) = \beta(i_1) + \beta(i_2) + \dots + \beta(ik) = f_{kB}(i_11, \dots,i_k)
@@ -734,13 +734,13 @@ zadowolenia wyborców. Stąd można uznać opisany algorytm jako zachłanny.
 
 \subsection{Funkcja zadowolenia}
 Aktualny poziom zadowolenia wyborców na danym etapie algorytmu określany jest za
-pomocą uprzednio zdefiniowanego uogólnienia systemu $k-Bordy$. Satysfakcja pojedynczego
+pomocą uprzednio zdefiniowanego uogólnienia systemu $k-Borda$. Satysfakcja pojedynczego
 wyborcy z komitetu liczącego na danym etapie algorytmu $k$ zwycięzców,określana jest za
 pomocą funkcji: 
 \begin{equation}
 f_{{\ell_p}-Borda}(i_1, i_2,\dots, i_k) = \sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+\dots+[\beta(i_k)]^p}
 \end{equation}
- Funkcja bazuje na normie $\ell_p$ oraz punktacji $k-Bordy$. Dokładne informacje na temat funkcji
+ Funkcja bazuje na normie $\ell_p$ oraz punktacji $k-Borda$. Dokładne informacje na temat funkcji
 umieszczone są w rozdziale \textit{Dziedzina problemu}. Ogólne zadowolenie wyborców z komitetu
 jest obliczane jako suma pojedynczych zadowoleń wszystkich wyborców. Algorytm działa w
 ten sposób, że przed wyborem pierwszego zwycięzcy, poziom zadowolenia wyborców
@@ -796,8 +796,8 @@ wybranych kandydatów wraz z dobranym kandydatem wcześniej niewybranym, następ
 iteracja po wszystkich wyborcach. Dla każdego wyborcy oceniane jest pojedyncze
 zadowolenie z komitetu i dodawane do sumy zadowolenia wszystkich wyborców.
 Pojedyncze zadowolenie liczone jest w ten sposób, że wyciągana jest punktacja badanego
-kandydata według punktacji k-Bordy, a następnie liczona jest norma $\ell_p$ z aktualnego
-zadowolenia danego wyborcy (z wcześniej wybranych kandydatów) i punktów $k-Bordy$
+kandydata według punktacji $k-Borda$, a następnie liczona jest norma $\ell_p$ z aktualnego
+zadowolenia danego wyborcy (z wcześniej wybranych kandydatów) i punktów $k-Borda$
 przyznanych dla badanego kandydata. Po wybraniu zwycięzcy, ostatnim krokiem w głównej
 pętli algorytmu jest aktualizacja struktur danych reprezentujących aktualny stan algorytmu.
 Do zwycięskiego komitetu zostaje dołączony wybrany w danej iteracji kandydat, przy
@@ -812,9 +812,9 @@ danej iteracji kandydata, który w tym momencie staje się zwycięzcą.
 \captionof{figure}{Pseudokod algorytmu zachłannego}
 \end{center}
 
-\section{Algorytm zachłanny według zasady Chamberlin-Courant’a}
+\section{Algorytm zachłanny według zasady Chamberlina-Couranta}
 Algorytm ten nie aproksymuje wyników wyborów na bazie funkcji satysfakcji opisującej
-system $\ell_p-Borda$, ale na szczególnym przypadku tej funkcji gdy $p \to \infty$. W związku z tym parametr $p$ nie wpływa na działanie algorytmu.
+system \mbox{$\ell_p-Borda$}, ale na szczególnym przypadku tej funkcji gdy $p \to \infty$. W związku z tym parametr $p$ nie wpływa na działanie algorytmu.
 
 \subsection{Idea algorytmu}
 Algorytm został zaproponowany przez Lu i Boutilier’a. Idea jest taka sama jak dla
@@ -825,25 +825,25 @@ ogólnego poziomu zadowolenia wyborców. Różnica w stosunku do pierwszego algo
 zachłannego polega na innej funkcji zadowolenia, na bazie której inaczej obliczane są
 pojedyncze zadowolenia wyborców i tym samym inaczej obliczane jest ogólne zadowolenie
 wyborców z danego komitetu, które jest sumą pojedynczych satysfakcji wszystkich
-wyborców. W regule \textit{Chamberlin-Courant’a} położony jest nacisk na regułę reprezentacji proporcjonalnej. Każdy wyborca reprezentowany jest przez jednego, wyraźnego kandydata i
+wyborców. W regule \textit{Chamberlina-Couranta} położony jest nacisk na regułę reprezentacji proporcjonalnej. Każdy wyborca reprezentowany jest przez jednego, wyraźnego kandydata i
 tylko punkty tego kandydata wpływają na wartość pojedynczego zadowolenia wyborcy z
-danego komitetu. Jest to szczególny przypadek uogólnienia systemu $k-Bordy$, w którym $p \to \infty$. Jednak dla odpowiednio dużych wartości parametru $p$ opisana heurystyka dobrze
-sprawdza się dla uogólnienia systemu $k-Bordy$.
+danego komitetu. Jest to szczególny przypadek uogólnienia systemu $k-Borda$, w którym $p \to \infty$. Jednak dla odpowiednio dużych wartości parametru $p$ opisana heurystyka dobrze
+sprawdza się dla uogólnienia systemu $k-Borda$.
 
 \subsection{Funkcja zadowolenia}
 Aktualny poziom zadowolenia wyborców na danym etapie algorytmu określany jest za
-pomocą funkcji satysfakcji \textit{Chamberlin-Courant’a}:
+pomocą funkcji satysfakcji \textit{Chamberlina-Couranta}:
 \begin{equation}
 f_{CC}(i_1, i_2, ..., i_k) = \beta(i_1)
 \end{equation}
 Jest ona skrajnym przypadkiem dla uogólnienia systemu $k-Borda$, kiedy $p \to \infty$. Zgodnie z tą
 funkcją, pojedyncze zadowolenie danego wyborcy z komitetu może wzrosnąć tylko w
 przypadku, gdy do komitetu dołączany zostaje kandydat, któremu dany wyborca przydzielił
-więcej punktów $k-Bordy$ od punktów aktualnego reprezentanta. Jeżeli taki kandydat zostanie
+więcej punktów $k-Borda$ od punktów aktualnego reprezentanta. Jeżeli taki kandydat zostanie
 dołączony do zwycięzców, to on staje się reprezentantem dla danego wyborcy w aktualnym
 stanie algorytmu. Jest to odmienna sytuacja od pierwszego algorytmu zachłannego, w
 którym pojedyncze zadowolenie danego wyborcy z komitetu rośnie wtedy, gdy nowo
-dobrany kandydat ma jakiekolwiek przydzielone punkty $k-Bordy$. W tamtym przypadku nowo
+dobrany kandydat ma jakiekolwiek przydzielone punkty $k-Borda$. W tamtym przypadku nowo
 dołączony zwycięzca nie musi być najlepszy spośród wszystkich aktualnie wybranych
 kandydatów do zwycięskiego komitetu, aby polepszyć indywidualne zadowolenie danego
 wyborcy i tym samym zbiorcze zadowolenie wyborców.
@@ -856,15 +856,15 @@ pierwszego algorytmu zachłannego zależnego od parametru $p$. Największa róż
 iterującej po wszystkich wyborcach. Zaimplementowana jest tu funkcja zadowolenia
 pojedynczego wyborcy, różniąca się od analogicznej funkcji dla pierwszego algorytmu
 zachłannego. Badany kandydat zwiększa wartość pojedynczej satysfakcji danego wyborcy
-tylko wtedy, gdy ma on przydzielone u wyborcy najwięcej punktów $k-Bordy$ w porównaniu z
+tylko wtedy, gdy ma on przydzielone u wyborcy najwięcej punktów $k-Borda$ w porównaniu z
 dotychczasowymi zwycięzcami. W celu sprawdzenia czy potencjalny zwycięzca w danej
-iteracji, zwiększa satysfakcję danego wyborcy, porównane są dwie wartości: punkty $k-Bordy$
-przyznane przez wyborcę dla potencjalnego zwycięzcy i punkty $k-Bordy$ przyznane przez
+iteracji, zwiększa satysfakcję danego wyborcy, porównane są dwie wartości: punkty $k-Borda$
+przyznane przez wyborcę dla potencjalnego zwycięzcy i punkty $k-Borda$ przyznane przez
 wyborcę dla najlepszego spośród kandydatów aktualnego zwycięskiego komitetu. Jeśli
 punkty dla badanego kandydata są większe od punktów najlepszego dotychczasowego
 zwycięzcy, dodatkowa satysfakcja dla badanego kandydata od danego wyborcy jest
-uzupełniania o różnicę między punktami $k-Bordy$ przydzielonymi dla badanego kandydata i
-punktami $k-Bordy$ przydzielonymi dla najlepszego dotychczas kandydata. W danej iteracji
+uzupełniania o różnicę między punktami $k-Borda$ przydzielonymi dla badanego kandydata i
+punktami $k-Borda$ przydzielonymi dla najlepszego dotychczas kandydata. W danej iteracji
 wygrywa kandydat, który wniósł najwięcej dodatkowej satysfakcji do ogólnego zadowolenia
 wyborców. Drugą istotną różnicą wspomnianą przy omawianiu pierwszej, jest sposób
 porównania w danej iteracji niewybranych jeszcze kandydatów w celu ustalenia najlepszego
@@ -911,15 +911,15 @@ Liczba N określa wielkość puli osobników i jest wybierana na początku dzia�
 
 \chapter{Porównanie algorytmów}
 \section{Zrównanie jakości działania algorytmów zachłannych}
-Ponieważ algorytm zachłanny według zasady \textit{Chamberlin'a-Courant’a} przystosowany jest do
+Ponieważ algorytm zachłanny według zasady \textit{Chamberlina-Couranta} przystosowany jest do
 działania dla dużych wartości parametru $p$ (im większy parametr $p$, tym wartość wskazanego przez algorytm komitetu powinna rosnąć), zasadnym jest analiza dla jakiego parametru $p$ algorytm zachłanny
-według zasady \textit{Chamberlin'a-Courant’a} staje się nie gorszy od algorytmu zachłannego zależnego
-od parametru $p$. Algorytm zachłanny według zasady \textit{Chamberlin'a-Courant’a} jest znacznie szybszy od swojego konkurenta, więc wiedząc dla jakiej wartości parametru $p$ staje się nie gorszy pod względem jakości rezultatu, można go z powodzeniem stosować zamiast algorytmu zachłannego zależnego od parametru $p$. W tym podrozdziale podjęta zostanie próba oszacowania wartości parametru $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku oraz zostanie przeprowadzona analiza czynników, które mogą potencjalnie wpływać na wartość tego parametru $p$. W dalszej części podrozdziału parametr $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku będzie nazywany graniczną wartością parametru $p$.
+według zasady \textit{Chamberlina-Couranta} staje się nie gorszy od algorytmu zachłannego zależnego
+od parametru $p$. Algorytm zachłanny według zasady \textit{Chamberlina-Couranta} jest znacznie szybszy od swojego konkurenta, więc wiedząc dla jakiej wartości parametru $p$ staje się nie gorszy pod względem jakości rezultatu, można go z powodzeniem stosować zamiast algorytmu zachłannego zależnego od parametru $p$. W tym podrozdziale podjęta zostanie próba oszacowania wartości parametru $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku oraz zostanie przeprowadzona analiza czynników, które mogą potencjalnie wpływać na wartość tego parametru $p$. W dalszej części podrozdziału parametr $p$, dla którego algorytmy zachłanne zrównują się pod względem jakości wyniku będzie nazywany graniczną wartością parametru $p$.
 \subsection{Działanie algorytmów zachłannych}
 Dla wszystkich przypadków testowanych, wyniki algorytmów zachłannych zachowywały pewien schemat wraz ze wzrostem parametru $p$. Dla małych wartości parametru $p$ jakość rezultatu obliczonego przez algorytm zachłanny zależny od wartości parametru $p$, znacznie przewyższa drugi z algorytmów zachłannych. Wraz ze wzrostem parametru $p$ jakości wyników wyliczanych przez algorytmy są coraz bliższe sobie. Dla pewnej wartości granicznej parametru $p$, algorytm zachłanny według zasady
-\textit{Chamberlin'a-Courant’a} staje się nie gorszy od swojego konkurenta pod względem jakości
+\textit{Chamberlina-Couranta} staje się nie gorszy od swojego konkurenta pod względem jakości
 wyniku. Dla wartości parametru $p$ większych od tej wartości granicznej, algorytm zachłanny według zasady
-\textit{Chamberlin'a-Courant’a} jest co najmniej tak samo dobry jak algorytm zachłanny zależny od
+\textit{Chamberlina-Couranta} jest co najmniej tak samo dobry jak algorytm zachłanny zależny od
 parametru $p$. Dla wartości parametru $p$ większych i równych od wartości granicznej parametru $p$, najczęściej występuje taka sytuacja, że wyniki obydwu algorytmów są takie same.
 
 Powyższa zasada zachowywania się wyników algorytmów zachłannych względem siebie sprawdziła się dla wszystkich przypadków testowanych. Ponieważ badane algorytmy są algorytmami heurystycznymi, mogą wystąpić odstępstwa od tej reguły.
@@ -1012,7 +1012,7 @@ Kolejnym badanym czynnikiem był rozmiar komitetu. Metodyka badania była taka s
 Rozrzut wyników dwóch różnych prób dla badanych rozmiarów komitetów był w porównaniu do poprzednich badań stosunkowo niewielki. Dla najmniejszego rozmiaru komitetu wynoszącego $10$, wartość graniczna parametru $p$ była rzędu kilkadziesiąt. Dla rozmiaru komitetu równego $20$ rozrzut wyników był największy. Dla większych rozmiarów komitetu wartość graniczna była na poziomie kilka tysięcy i zdawała się mieć pewien rodzaj stabilizacji. Wciąż jednak trudno stwierdzić czy istnieje jakakolwiek zależność między badanymi wielkościami. Można jedynie zaobserwować, że dla mniejszych rozmiarów komitetu wartość graniczna przybiera dość często małą wartość rzędu kilkadziesiąt, a dla większych rozmiarów komitetu wartość graniczna jest raczej rzędu kilka tysięcy.
 
 Przeprowadzając wszystkie powyższe testy zauważono jednak inną prawidłowość. Otóż zaobserwowano, że już dla niewielkiej wartości parametru $p$ większość zwycięzców wskazanych przez obydwa algorytmy pokrywa się ze sobą. O innej wartości wskazanego komitetu dla większych wartości parametru $p$ decyduje niewielka część zwycięzców. Tworzą się pary lub trójki kandydatów, którzy znajdują się blisko siebie i w zależności od tego który z nich zostanie wybrany do zwycięskiego komitetu, wartości zadowolenia wyborców się nieco zmieniają. Przykładowo może się tak zdarzyć, że istnieje para kandydatów spośród której zawsze do zwycięskiego komitetu trafia jeden z kandydatów w tej parze. Przy czym istnieje graniczna wartość parametru $p$, poniżej której zawsze jeden z kandydatów w tej parze wchodzi do zwycięskiego komitetu i jednocześnie powyżej tej granicznej wartości parametru $p$ drugi kandydat z pary wchodzi do zwycięskiego komitetu. Jeżeli ta graniczna wartość jest duża, to wtedy algorytm zachłanny zależny od parametru $p$ długo będzie wybierał pierwszego kandydata z pary
-przewyższając tym samym algorytm według zasady \textit{Chamberlin'a-Courant’a}, który zawsze wybierze drugiego
+przewyższając tym samym algorytm według zasady \textit{Chamberlina-Couranta}, który zawsze wybierze drugiego
 kandydata. Stąd graniczna wartość parametru $p$ dla tego przypadku jest duża, bo algorytm zachłanny zależny od parametru $p$ będzie długo minimalnie lepszy od drugiego algorytmu zachłannego. Jednak trzon zwycięzców dla obydwu algorytmów szybko jest taki sam. Stąd na wartość graniczną parametru $p$ głównie ma wpływ lokalne rozmieszczenie kandydatów. Jeżeli znajdą się pary i trójki, spośród których dla dużych wartości parametru $p$ następuje zamiana miejsc w zwycięskim komitecie, wtedy wartość graniczna parametru $p$ jest dla takich przypadków duża. Jeżeli takich zaciętych par nie ma i zwycięzcy są wyłaniani w zdecydowany sposób pod kątem reprezentatywności dla pewnej części wyborców, wtedy wartość graniczna parametru $p$ jest mała. Poniekąd taka interpretacja tłumaczy tendencję do małej wartości granicznej parametru $p$ dla małych zwycięskich komitetów i dużą wartość graniczną parametru $p$ dla dużych zwycięskich komitetów. Dla małych rozmiarem komitetów, każdy ze zwycięzców klarownie reprezentuje pewną część wyborców przez co nie tworzą się dla większych $p$ pary rywalizujące o reprezentację dla pewnej części wyborców. Dla dużych komitetów, w związku z wieloma miejscami w komitecie o zwycięstwo rywalizują również mniej popierani w danej grupie wyborców kandydaci, przez co jest większa szansa na stworzenie się opisanej wcześniej pary lub trójki kandydatów.
 
 \subsection{Stopień pokrywania się zwycięzców dla różnych wartości parametru p}
