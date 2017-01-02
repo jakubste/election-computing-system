@@ -110,7 +110,7 @@ $(document).ready(function () {
             return;
         var ctx = $algorithms_chart.get(0).getContext("2d");
         new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: data['data'],
             options: {
                 showLines: true,
@@ -134,6 +134,20 @@ $(document).ready(function () {
                             display: true,
                             labelString: 'time [s]'
                         },
+                        id: 'time',
+                        position: 'left',
+                        ticks: {
+                            min: 0
+                        }
+                    },
+                    {
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'score'
+                        },
+                        id: 'score',
+                        position: 'right',
                         ticks: {
                             min: 0
                         }
