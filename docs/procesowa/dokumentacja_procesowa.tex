@@ -138,7 +138,7 @@ normalnego
 \item Obliczanie wyników wyborów algorytmem genetycznym
 \end{itemize}
 \vspace{\baselineskip}
-\textbf{Wymagania dla 4-tej wersji systemu:}
+\textbf{Wymagania dla 4-tej - ostatecznej wersji systemu:}
 \begin{itemize}
 \item Wydajniejsze obliczanie wyników wyborów przez algorytm zachłanny i genetyczny
 \item Możliwość parametryzowania z poziomu użytkownika algorytmu genetycznego
@@ -163,11 +163,11 @@ danych.
 \begin{itemize}
 \item Dotrzymanie terminów na przedstawienie poszczególnych elementów pracy -
 realizacja projektu inżynierskiego odbywa się według trybu ustalonego przez władze
-uczelni. Pierwszym aspektem są specjalnie wydzielone przedmioty - $Pracownia
-Projektowa 1$ i $Pracownia Projektowa 2$ - które wspomagają i motywują studentów
+uczelni. Pierwszym aspektem są specjalnie wydzielone przedmioty - \textit{Pracownia
+Projektowa 1} i \textit{Pracownia Projektowa 2} - które wspomagają i motywują studentów
 do wykonywania poszczególnych części projektu w wyznaczonym czasie. Na
-zajęciach seminaryjnych przedstawiano w określonych terminach kolejno: Wizję
-produktu, Studium wykonalności i prezentację kolejnych prototypów. Wyznaczono
+zajęciach seminaryjnych przedstawiano w określonych terminach kolejno: \textit{Wizję
+produktu}, \textit{Studium wykonalności} i prezentację kolejnych prototypów. Wyznaczono
 również termin na oddanie dokumentacji i przedstawienie produktu.
 \end{itemize}
 
@@ -183,13 +183,13 @@ wykonanie przygotowanych testów jednostkowych, po każdej wprowadzonej zmianie 
 repozytorium kodu źródłowego
 \section{Aspekt technologiczny}
 \label{sec:apekt_technologiczny}
-Do stworzenia oprogramowania wykorzystano język $Python \ 2.7$. System wykonany jest w
+Do stworzenia oprogramowania wykorzystano język \textit{Python 2.7}. System wykonany jest w
 formie aplikacji internetowej. Do zrealizowania aplikacji webowej wykorzystano framework
-dla języka programowania $Python$ - $Django \ 1.9$. $Django$ dostarcza w pełni funkcjonalny
+dla języka programowania \textit{Python} - \textit{Django 1.9}. \textit{Django} dostarcza w pełni funkcjonalny
 system uwierzytelniania, zapewnia obsługę kont, grup oraz uprawnień użytkowników.
 Oprócz zaoszczędzenia czasu na realizacji powyższych, nieistotnych dla realizacji tematu
 projektu, funkcjonalności systemu, głównym powodem było również doświadczenie w
-tworzeniu aplikacji z użyciem $Django$ posiadane przez jednego z członków zespołu
+tworzeniu aplikacji z użyciem \textit{Django} posiadane przez jednego z członków zespołu
 realizującego niniejszy projekt.
 
 \chapter{Analiza ryzyka}
@@ -267,13 +267,7 @@ wymagania doprecyzowywano.
 
 \indent Wątpliwość co do pełnego uznania tworzenia tego systemu
 jako ewolucyjnego procesu tworzenia oprogramowania, może pojawić się przejściach
-między kolejnymi wersjami systemu. Część tych przejść, to rzeczywiście powstanie zupełnie
-nowej wersji systemu jak na przykład przejście z aplikacji konsolowej do aplikacji webowej.
-Część przejść dotyczyła jednak dodania do aktualnej wersji systemu nowych funkcjonalności
-(bardzo poważnie ulepszających system, lecz wciąż bardziej uzupełniających poprzednią
-wersję niż tworzącą nową) i miało to cechy przyrostu w przyrostowym modelu tworzenia
-oprogramowania. Ze względu na klarowność opisu przebiegu prac i zgodność
-przytłaczającej liczby cech, zdecydowano uznać tworzenie tego systemu jako proces
+między kolejnymi wersjami systemu. Opisane w dalszej części dokumentacji przejścia, miały niekiedy cechy przyrostów w przyrostowym modelu tworzenia oprogramowania. Ze względu na klarowność opisu przebiegu prac i zgodność przytłaczającej liczby cech, zdecydowano uznać tworzenie tego systemu jako proces
 ewolucyjnego tworzenia oprogramowania.
 
 \indent Wykorzystano tworzenie badawcze, które polega na częstym kontakcie z klientem w celu
@@ -290,7 +284,11 @@ Tomasz Kasprzyk:
 \end{itemize}
 Daniel Ogiela:
 \begin{itemize}
-\item Czynność 1
+\item projekt i implementacja algorytmu zachłannego zależnego od parametru $p$
+\item implementacja algorytmu zachłannego według zasady \textit{Chamberlina-Couranta}
+\item współtworzenie dokumentacji projektowej
+\item tworzenie testów jednostkowych i porównawczych
+\item współtworzenie prezentacji na zajęcia seminaryjne
 \end{itemize}
 Jakub Stępak:
 \begin{itemize}
@@ -310,32 +308,32 @@ nad którymi powinni się skupić członkowie zespołu inżynierskiego.
 
 \section{Wykorzystane narzędzia do zarządzania projektem}
 Do zarządzania wykonywanymi w ramach projektu zadaniami wykorzystano aplikację
-internetową $Trello$. Narzędzie służyło zarówno do określania zadań, przydzielania ich do
+internetową \textit{Trello}. Narzędzie służyło zarówno do określania zadań, przydzielania ich do
 konkretnych członków zespołu, jak i do gromadzenia istotnych dla realizacji projektu
 informacji. Narzędzie umożliwiało określenie typu zadania oraz wskazanie, na którym etapie
 wykonywania zadania znajduje się dany członek zespołu.
 
 \indent Do przechowywania kodu źródłowego oprogramowania wykorzystano serwis internetowy
-$GitHub$. Dostęp do repozytorium kodu źródłowego na każdym etapie procesu tworzenia
+\textit{GitHub}. Dostęp do repozytorium kodu źródłowego na każdym etapie procesu tworzenia
 oprogramowania miał zarówno manager i klient. 
 
 \indent W celu zdalnego kontaktowania się pomiędzy członkami zespołu korzystano z
-oprogramowania $Slack$. Komunikator ten, oprócz podstawowej funkcjonalności prowadzenia
+oprogramowania \textit{Slack}. Komunikator ten, oprócz podstawowej funkcjonalności prowadzenia
 konwersacji, pozwala również na transfer plików, przesyłanie fragmentów sformatowanego
 kodu w postaci $code \ snippets$ oraz wyszukiwanie powyższych w całej historii konwersacji.
 Korzystano również z mechanizmu botów, m.in. $reminderów$ (cyklicznych przypomnieniach,
 np. o $standupach$) a także informatorach o zmianach stanu repozytorium czy $build$ serwera.
 
-\indent $Pycharm$, $IDE$ firmy $JetBrains$. W wersji dla studentów udostępniony jest pakiet
-zaawansowanych funkcjonalności, w szczególności integracja z frameworkiem $Django$. Z
-poziomu $IDE$ można również aktualizować repozytorium (opcje dostępne w zakładce $VCS$)
-W celu przepisywania dokumentacji z $Google Docs$ do $LaTeX$ korzystano z edytora
-$TexMaker$. Funkcja $WYSIWYG$ znacznie przyspiesza proces tworzenia poprawnie
+\indent \textit{Pycharm}, \textit{IDE} firmy \textit{JetBrains}. W wersji dla studentów udostępniony jest pakiet
+zaawansowanych funkcjonalności, w szczególności integracja z frameworkiem \textit{Django}. Z
+poziomu \textit{IDE} można również aktualizować repozytorium (opcje dostępne w zakładce \textit{VCS})
+W celu przepisywania dokumentacji z \textit{Google Docs} do \textit{LaTeX} korzystano z edytora
+\textit{TexMaker}. Funkcja \textit{WYSIWYG} znacznie przyspiesza proces tworzenia poprawnie
 sformatowanego dokumentu.
 
-\indent Serwisy $Travis \ CI$ oraz $Coveralls.io$ służyły odpowiednio zdalnemu budowaniu aplikacji i
+\indent Serwisy \textit{Travis CI} oraz \textit{Coveralls.io} służyły odpowiednio zdalnemu budowaniu aplikacji i
 uruchamianiu testów oraz ciągłej integracji zmian wprowadzanych do głównego
-repozytorium. Serwisy te połączono dla wygody ze $Slackiem$ zespołu projektowego poprzez
+repozytorium. Serwisy te połączono dla wygody ze \textit{Slackiem} zespołu projektowego poprzez
 wykorzystanie wspomnianych wyżej botów.
 
 \section{Weryfikacja wyników projektu}
@@ -357,7 +355,7 @@ przewidywał czas ukończenia najważniejszych elementów systemu.
 	\begin{itemize}
 	\item Implementacja pierwszych wersji algorytmów heurystycznych
 	\item Stworzenie interfejsu
-	\item Importowanie danych z $PrefLib$
+	\item Importowanie danych z \textit{PrefLib}
 	\item Symulowanie wyborów z zastosowaniem rozkładu normalnego
 	\end{itemize}
 \item Październik 2016
@@ -390,8 +388,8 @@ managerem opisującą zadany projekt inżynierski.
 \subsection{Wynik}
 \begin{itemize}
 \item Lista początkowych wymagań funkcjonalnych i niefunkcjonalnych systemu
-\item Wybór technologii $Python \ 2.7$
-\item Opis projektu inżynierskiego w postaci prezentacji Wizji produktu
+\item Wybór technologii \textit{Python 2.7}
+\item Opis projektu inżynierskiego w postaci prezentacji \textit{Wizji produktu}
 \end{itemize}
 
 \section{Opis kolejnych wersji systemu}
@@ -421,7 +419,7 @@ zaobserwowano konieczność zaprojektowania obiektowej struktury danych występu
 systemie. W związku z tym stworzono diagram klas.
 \subsubsection{Wynik}
 \begin{itemize}
-\item Pierwsza wersja systemu uruchamiana z poziomu konsoli $Pythona$ przyjmująca za
+\item Pierwsza wersja systemu uruchamiana z poziomu konsoli \textit{Pythona} przyjmująca za
 argumenty parametr $p$ konieczny do obliczania normy $\ell_p$ oraz plik z rozszerzeniem
 $.soc$.
 \item Dodane funkcjonalności: wczytywanie wyborów z pliku z rozszerzeniem $.soc$,
@@ -429,19 +427,19 @@ algorytm typu brute-force, walidacja danych z pliku wejściowego
 \item Rozpoczęcie prac nad generowaniem własnych wyborów
 \item Diagram klas
 \item Podjęcie decyzji o wykonaniu systemu w postaci aplikacji webowej i wykorzystaniu
-do tego frameworka $Django \ 1.9$
+do tego frameworka \textit{Django 1.9}
 \end{itemize}
 \subsection{Wersja 2.}
 \subsubsection{Czas trwania}
 Maj 2016
 \subsubsection{Cele wyznaczone do osiągnięcia}
 Głównym celem dla tej wersji systemu było przeniesienie zrealizowanych wcześniej
-funkcjonalności do stworzonej na bazie frameworka $Django \ 1.9$ aplikacji webowej. Celem
+funkcjonalności do stworzonej na bazie frameworka \textit{Django 1.9} aplikacji webowej. Celem
 było również dokończenie prac nad generacją własnych wyborów, w szczególności dodanie
 możliwości generowania preferencji w obiektowo zorientowany sposób.
 \subsubsection{Opis przebiegu prac}
 Prace rozpoczęto od stworzenia szkieletu aplikacji webowej generowanego przez skrypt
-$Django \ 1.9$. Następnie dodawano kolejne funkcjonalności systemu: możliwość rejestracji i
+\textit{Django 1.9}. Następnie dodawano kolejne funkcjonalności systemu: możliwość rejestracji i
 logowania się użytkowników, tworzenie wyborów, usuwanie wyborów czy wyświetlanie dla
 danego użytkownika stworzonych wyborów. Stworzono modele pozwalające na zapisanie
 obiektów w bazie danych. Równolegle dodano możliwość generowania wyborów, które
@@ -449,16 +447,16 @@ odzwierciedlały obiektową strukturę danych. Na bazie tego i stworzonych funkc
 poprzedniej wersji systemu dodano do aplikacji webowej możliwości: wczytywania wyborów
 z pliku, walidację danych z pliku wejściowego, generowanie wyborów z rozkładu normalnego
 oraz wyświetlanie preferencji wszystkich wyborców. Do kodu w repozytorium dodano ciągłą
-integrację za pomocą narzędzia $Travis \ CI$. W dalszej kolejności zajęto się umożliwieniem w aplikacji webowej obliczania wyników wyborów algorytmem typu brute-force. Równolegle
+integrację za pomocą narzędzia \textit{Travis CI}. W dalszej kolejności zajęto się umożliwieniem w aplikacji webowej obliczania wyników wyborów algorytmem typu brute-force. Równolegle
 rozpoczęto pracę nad wyświetlaniem wyborców i kandydatów reprezentowanych jako punkty
 na wykresie $2D$ (dla wyborów generowanych z rozkładu normalnego). Po ukończeniu tych
 zadań dodano funkcjonalność wyświetlania wyników wyborów na wykresie $2D$. W
-międzyczasie skonfigurowano wdrożenie systemu na platformie $Heroku$. W ramach zajęć
+międzyczasie skonfigurowano wdrożenie systemu na platformie \textit{Heroku}. W ramach zajęć
 seminaryjnych wykonano studium wykonalności, w którym podjęto szereg decyzji
 projektowych.
 \subsubsection{Wynik}
 \begin{itemize}
-\item Aplikacja webowa wdrożona na platformę $Heroku$
+\item Aplikacja webowa wdrożona na platformę \textit{Heroku}
 \item Przeniesione funkcjonalności z poprzedniej wersji systemu do aplikacji webowej
 \item Dodane nowe funkcjonalności: rejestracja i logowanie użytkowników, generacja
 wyborów z rozkładu normalnego, tworzenie oraz usuwanie wyborów, wyświetlanie
@@ -519,7 +517,7 @@ posortowanie wyników - najpierw względem algorytmów, następnie według param
 aby parametr $p$ kolejnego wyniku był nie mniejszy niż poprzedniego).
 \subsubsection{Wynik}
 \begin{itemize}
-\item Dodanie wersji algorytmu zachłannego dla szczególnego przypadku - algorytm $Greedy CC$
+\item Dodanie wersji algorytmu zachłannego dla szczególnego przypadku - algorytm $Greedy \ CC$
 \item Zastąpienie rozwijanej listy do wyboru wykresów suwakiem
 \item Dodanie informacji o wyniku punktowym dla każdego elementu listy rezultatów
 \item Dodanie możliwości usuwania pojedynczego rezultatu
