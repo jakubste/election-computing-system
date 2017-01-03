@@ -178,13 +178,14 @@ grupie znajomych.
 \begin{itemize}
     \item możliwość zarządzania swoimi wyborami (dodawanie nowych wyborów, nowych wyników, porównywanie różnych rezultatów)
     \item intuicyjna nawigacja po systemie
+    \item wygodny sposób definiowania wyborów - zadanie projektowe koncentruje się na
+projektowaniu i tworzeniu algorytmów obliczających wyniki wyborów. System musi
+wczytywać pewien format pliku wejściowego definiującego wybory, których wyniki niekoniecznie są klarowne do porównania dla różnych wartości parametru $p$. Generowanie wyborów, których wyniki w łatwy i klarowny sposób mogłyby być wizualizowane i porównywane ułatwiłoby ocenę działania systemu oraz uatrakcyjniło korzystanie z niego
 \end{itemize}
 
 \subsubsection{Usługi dodatkowe}
 \begin{itemize}
-    \item wygodny sposób definiowania wyborów - zadanie projektowe koncentruje się na
-projektowaniu i tworzeniu algorytmów obliczających wyniki wyborów. System musi
-wczytywać pewien format pliku wejściowego definiującego wybory, który niekoniecznie jest prosty i intuicyjny w tworzeniu. Jeżeli ta dodatkowa usługa zostałaby zrealizowana, ułatwiłaby użytkowanie systemu i poprawiła zadowolenie użytkowników z korzystania z systemu
+	\item wygodny sposób porównywania wyników wyborów
 \end{itemize}
 
 % ------------------------------------------------------------------------------------------
@@ -384,8 +385,7 @@ funkcjonalności systemu.
 
 Ponadto w celu zagwarantowania poprawności działania wcześniej dodanych
 funkcjonalności po dodaniu nowych skorzystano z ciągłej integracji. Do tego celu
-wykorzystano serwis Travis Cl skonfigurowany do repozytorium kodu. Przy każdej zmianie
-kodu źródłowego w repozytorium dokonywane było automatyczne włączenie testów
+wykorzystano serwis \textit{Travis Cl} skonfigurowany do repozytorium kodu. Przy każdej zmianie kodu źródłowego w repozytorium, dokonywane było automatyczne włączenie testów
 jednostkowych.  
 
 Do oceny poprawności obliczanych wyników wyborów przez stworzone algorytmu,
@@ -395,10 +395,8 @@ wyborów z oczekiwanymi rezultatami.
 \clearpage
 
 \subsection{Aspekt technologiczny}
-Do stworzenia systemu wykorzystano język $Python \ 2.7$. Produkt postanowiono wykonać w
-postaci aplikacji webowej. Aplikację internetową oparto na frameworku pythonowym $Django \
-1.9$. Do tworzenia stron internetowych użyto frameworku $Bootstrap$. Do wdrożenia systemu
-wykorzystano platformę $Heroku$.
+Do stworzenia systemu wykorzystano język \textit{Python 2.7}. Produkt postanowiono wykonać w
+postaci aplikacji webowej. Aplikację internetową oparto na frameworku pythonowym \textit{Django 1.9.} Do tworzenia stron internetowych użyto frameworku \textit{Bootstrap}. Do wdrożenia systemu wykorzystano platformę \textit{Heroku}.
 
 Wybrano taki stos technologiczny ze względu na doświadczenie części zespołu pracy z nim.
 Wiedza na temat tych narzędzi przekonywała zespół o możliwości zrealizowania projektu w
@@ -470,8 +468,8 @@ normalnym oraz zaimportowanych z pliku w formacie \textit{.soc}
 \subsubsection{Opis diagramu}
 Na diagramie oprócz przytoczonych modułów znajdują się przeglądarka internetowa oraz
 baza danych. W celu wykonania swoich usług moduły współpracują z tymi dodatkowymi
-komponentami diagramu. Wszystkie moduły wykorzystują wewnętrzne mechanizmy $Django$,
-dlatego znajdują się wewnątrz dużego obszaru oznaczonego jako $Django$. Największym
+komponentami diagramu. Wszystkie moduły wykorzystują wewnętrzne mechanizmy \textit{Django},
+dlatego znajdują się wewnątrz dużego obszaru oznaczonego jako \textit{Django}. Największym
 modułem spośród wszystkich modułów jest moduł zarządzania wyborami. Współpracuje on
 z innymi modułami w celu wykonania niektórych swoich zadań. Zleca on między innymi
 obliczenie wyników wyborów modułowi obliczania wyników wyborów przy wykonywaniu
@@ -488,7 +486,7 @@ Tworzenie systemu będącego realizacją tego projektu inżynierskiego można uz
 proces ewolucyjnego tworzenia oprogramowania. Klient na początku projektu określił
 wymagania w bardzo ogólny sposób. Tworzony system miał za zadanie obliczać wyniki
 wyborów dla zdefiniowanego przez klienta systemu wyborczego za pomocą algorytmów
-heurystycznych. W miarę postępu projektu, wymagania były precyzowane na bazie częstego
+heurystycznych. W miarę postępu projektu, wymagania były precyzowane na bazie stałego
 kontaktu z klientem i potrzeb rozwijanego systemu. Powstawały kolejne wersje systemu aż
 do osiągnięcia systemu końcowego.
 
@@ -501,7 +499,11 @@ Tomasz Kasprzyk
 \end{itemize}
 Daniel Ogiela
 \begin{itemize}
-\item czynność1
+\item projekt i implementacja algorytmu zachłannego zależnego od parametru $p$
+\item implementacja algorytmu zachłannego według zasady \textit{Chamberlina-Couranta}
+\item współtworzenie dokumentacji projektowej
+\item tworzenie testów jednostkowych i porównawczych
+\item współtworzenie prezentacji na zajęcia seminaryjne 
 \end{itemize}
 Jakub Stępak
 \begin{itemize}
@@ -510,21 +512,18 @@ Jakub Stępak
 
 \subsection{Narzędzia do zarządzania projektem}
 Do przydzielania zadań członkom zespołu i ustalania ich terminów wykorzystano aplikację
-internetową $Trello$. Do przechowywania kodu źródłowego oprogramowania wykorzystano
-serwis internetowy $GitHub$. W celu zdalnego kontaktowania się pomiędzy członkami zespołu
-korzystano z oprogramowania $Slack$. Korzystano z aplikacji $Google Docs$ do tworzenia
-roboczej wersji dokumentacji. Do przygotowywania diagramów do dokumentacji
-wykorzystano aplikację $draw.io$.
+internetową \textit{Trello}. Do przechowywania kodu źródłowego oprogramowania wykorzystano
+serwis internetowy \textit{GitHub}. W celu zdalnego kontaktowania się pomiędzy członkami zespołu korzystano z oprogramowania \textit{Slack}. Korzystano z aplikacji \textit{Google Docs }do tworzenia roboczej wersji dokumentacji. Do przygotowywania diagramów do dokumentacji wykorzystano aplikację \textit{draw.io}.
 
 \subsection{Opis kolejnych wersji systemu}
 \subsubsection{Wersja 1.}
-Pierwsza wersja systemu była uruchamiana z poziomu konsoli Pythona. Aplikacja
+Pierwsza wersja systemu była uruchamiana z poziomu konsoli \textit{Pythona}. Aplikacja
 przyjmowała za argumenty parametr $p$ konieczny do obliczania normy $\ell_p$ oraz plik z
 rozszerzeniem $.soc$ definiujący wybory. Aplikacja potrafiła obliczyć wyniki wyborów dla
 małych danych za pomocą algorytmu typu brute-force. Pierwsza wersja systemu nie spełniała wymagań stawianych systemowi. Powstała w celu dookreślenia wymagań.
 
 \subsubsection{Wersja 2.}
-Druga wersja systemu to aplikacja webowa skonfigurowana na platformie $Heroku$. Aplikacja
+Druga wersja systemu to aplikacja webowa skonfigurowana na platformie \textit{Heroku}. Aplikacja
 posiadała funkcjonalności poprzedniej wersji systemu oraz miała dodany szereg nowych
 funkcjonalności. Pozwalała na zarządzanie kontami użytkowników. Każdy użytkownik mógł
 mieć swoje konto i mógł zarządzać swoimi wyborami. Miał możliwość tworzenia wyborów,
@@ -573,7 +572,7 @@ funkcji satysfakcji systemu $\ell_p-Borda$, która jest głównym tematem projek
 aproksymowane za pomocą funkcji satysfakcji \textit{Chamberlina-Couranta} (szczegółowy opis w
 rozdziale \textit{\nameref{opis_problemu}}), która jest szczególnym przypadkiem funkcji satysfakcji systemu $\ell_p-Borda$ dla $p \to \infty$. W związku z tym na działanie tego algorytmu nie wpływa parametr $p$, który jest jedną z danych wejściowych do obliczania wyników wyborów. Jest to najważniejsza różnica między tym, a powyżej opisanym algorytmem, który różnicuje swoje działanie w zależności od parametru $p$.
 
-Działanie tego algorytmu jest właściwie identyczne jak opisanego powyżej. W algorytmie
+Schemat działania tego algorytmu jest właściwie identyczny jak opisanego powyżej. W algorytmie
 występuje główna pętla, która w każdej iteracji wybiera jednego kandydata. W danej iteracji
 dobierany jest najlepszy kandydat pod względem dodanego dodatkowego ogólnego
 zadowolenia wyborców. Dodatkowe zadowolenie jest obliczane za pomocą funkcji satysfakcji \textit{Chamberlina-Couranta}. Dość istotna różnica między tym a powyżej opisanym algorytmem jest
@@ -603,7 +602,7 @@ wyborców nie są zadowalającym reprezentantem i nie różnią się zbytnio. W 
 którym zarówno kandydaci, jak i wyborcy przedstawieni są jako punkty na płaszczyźnie,
 punkty reprezentujące zwycięzców oscylują w środku spektrum poglądów. Większość wyborców nie ma swojego wyraźnego reprezentanta, lecz jednocześnie wśród zwycięzców nie ma takiego, który byłby przez nich wyraźnie odrzucany. 
 
-Dla drugiego skrajnego przypadku funkcja satysfakcji przyjmuje postać: 
+\noindent Dla drugiego skrajnego przypadku funkcja satysfakcji przyjmuje postać: 
 \begin{equation}
 f_{CC}(i_1, i_2, ..., i_k) = \beta(i_1)\tag{\ref{eq:cc}}
 \end{equation}
@@ -648,7 +647,7 @@ zachłannego dla rosnących parametrów $p$.
 \captionof{figure}{Wyniki wyborów dla $p$ = 20}
 \end{center}
 
-Na wykresach można zaobserwować stopniowe rozpraszanie się zwycięskich kandydatów
+\noindent Na wykresach można zaobserwować stopniowe rozpraszanie się zwycięskich kandydatów
 dla zwiększającej się wartości parametru $p$.
 
 \section{Testy porównawcze}
