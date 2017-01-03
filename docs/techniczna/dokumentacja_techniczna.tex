@@ -907,6 +907,73 @@ Na cykl algorytmu składa się:
 
 Liczba N określa wielkość puli osobników i jest wybierana na początku działania algorytmu. W naszej implementacji przyjęliśmy stałą liczbę 50 osobników.
 
+\subsection{Wpływ parametrów na wyniki osiągane przez algorytm}
+Aby przekonać się jak dobór parametrów ma wpływ na wyniki osiągane przez algorytm, przeprowadziliśmy kilka testów na losowo wygenerowanych wyborach (korzystając z funkcji systemu losującej kandydatów i wyborców na podstawie rozkładu normalnego).
+
+Dla przykładu - dla wyborów 20 spośród 100 kandydatów, przy 100 wyborcach, czasy działania algorytmu wahały się w zakresie od 4,3s do 150,3s. Przy czym wyniki różniły się również znacząco - komitety uzyskiwały od 10715,65 do 10867,96 punktów. W tej serii zostały przetestowane wszystkie kombinacje parametrów spośród następujących:
+
+$\textit{liczba cykli} \in \{ 20, 50, 100 \}$
+
+$\textit{prawdopodobieństwo mutacji} \in \{ 10\%, 25\%, 50\% \}$
+
+$\textit{krzyżowanie} \in \{ 10\%, 50\%, 100\% \}$
+
+~\\ 
+Okazuje się jednak, że nawet te parametry nie wystarczają do wyznaczenia najlepszego wyniku - obliczenia w 200 cyklach (z prawodopodobieństwem mutacji 50\% i krzyżowaniem całej puli) dały jeszcze wyższy wynik - 10868.15, przy czasie 364s. 
+
+Należy mieć na uwadze, że w działaniu algorytmu genetycznego, z powodu dużego udziału czynnika losowego, wiele zależy od niego zależy i wyniki są z tym obarczone.
+
+\newpage
+
+Poniżej znajdują się wykresy obrazujące czas i wyniki osiągane przez algorytm genetyczny dla tego zestawu danych przy różnych parametrach:
+
+\begin{tabular}{cc}
+	
+\includegraphics[width=0.4\paperwidth]{pics/porownanie1/wynik20.png} & 
+\includegraphics[width=0.4\paperwidth]{pics/porownanie1/czas20.png} \\
+	
+\includegraphics[width=0.4\paperwidth]{pics/porownanie1/wynik50.png} & 
+\includegraphics[width=0.4\paperwidth]{pics/porownanie1/czas50.png} \\
+	
+\includegraphics[width=0.4\paperwidth]{pics/porownanie1/wynik100.png} & 
+\includegraphics[width=0.4\paperwidth]{pics/porownanie1/czas100.png} \\
+		
+\end{tabular}
+\captionof{figure}{Porównanie wyników i czasów działania algorytmu genetycznego z różnymi parametrami}
+
+\newpage
+
+Należy pamiętać, że nawet mała zmiana wyniku punktowego komitetu może mieć duży wpływ na faktycznie wybranych kandydatów - poniżej znajdują się mapy preferencji z zaznaczonymi dwoma wybranymi komitetami, których wynik różni się zaledwie o około 19 setnych punkta. Są to dwa najlepsze rezultaty wspomniane wcześniej.
+
+\begin{center}
+\includegraphics[width=0.5\paperwidth]{pics/porownanie1/wynik1.png} 
+\captionof{figure}{Wybrany w 150,29s komitet o punktacji 10867,96}
+
+
+\includegraphics[width=0.5\paperwidth]{pics/porownanie1/wynik2.png}
+\captionof{figure}{Wybrany w 363,92s komitet o punktacji 10868,15}
+\end{center}
+
+\newpage
+
+Podobne zestawienie wykonaliśmy jeszcze dla "większych" wyborów: 200 głosujących na 200 kandydatów, 15 miejsce w komitecie. Poniżej znajduje się porównanie osiągniętych wyników:
+
+\begin{tabular}{cc}
+	
+\includegraphics[width=0.4\paperwidth]{pics/porownanie2/wynik20.png} & 
+\includegraphics[width=0.4\paperwidth]{pics/porownanie2/czas20.png} \\
+	
+\includegraphics[width=0.4\paperwidth]{pics/porownanie2/wynik50.png} & 
+\includegraphics[width=0.4\paperwidth]{pics/porownanie2/czas50.png} \\
+	
+\includegraphics[width=0.4\paperwidth]{pics/porownanie2/wynik100.png} & 
+\includegraphics[width=0.4\paperwidth]{pics/porownanie2/czas100.png} \\
+		
+\end{tabular}
+\captionof{figure}{Porównanie wyników i czasów działania algorytmu genetycznego z różnymi parametrami}
+
+~ \\
+W tym wypadku również zwiększenie liczby cykli do 200 pozwoliło na jeszcze lepszy wynik, windując jednak czas wykonania programu do nieco ponad 10 minut. Co ciekawe próba przy 300 cyklach dała wynik gorszy - ujawnia się tutaj losowa natura algorytmu genetycznego.
 
 
 \chapter{Porównanie algorytmów}
