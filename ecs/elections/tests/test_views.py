@@ -3,22 +3,23 @@ import os
 
 import mock
 from django.core.urlresolvers import reverse
-from django.http import Http404
 from django.test import RequestFactory
 
 from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import *
 from ecs.elections.factories import ElectionFactory, VoterFactory, PreferenceFactory, CandidateFactory, \
-    PointCandidateFactory, PointVoterFactory, ResultFactory, UserFactory
+    PointCandidateFactory, PointVoterFactory, ResultFactory
 from ecs.elections.models import Preference, BRUTE_ALGORITHM, Result, Election
-from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView, ResultChartView
+from ecs.elections.views import ElectionLoadDataFormView, ElectionChartView, ResultChartView, AlgorithmsChartView
 from ecs.utils.unittestcases import TestCase
 
 mock.patch.object = mock.patch.object
 
 
 class ElectionListTestCase(TestCase):
+    TestCase.maxDiff = None
+
     def setUp(self):
         self.url = 'elections:election_list'
 
@@ -236,8 +237,8 @@ class ElectionChartViewTest(TestCase):
         colors = view.get_colors()
         labels = view.get_labels()
 
-        self.assertEqual(colors[0], 'red')
-        self.assertEqual(colors[1], 'blue')
+        self.assertEqual(colors[0], 'black')
+        self.assertEqual(colors[1], 'black')
         self.assertEqual(labels[0], 'Candidates')
         self.assertEqual(labels[1], 'Voters')
         self.assertEqual(len(candidates), 0)
@@ -262,39 +263,45 @@ class ElectionChartViewTest(TestCase):
             self.assertIn('x', point)
             self.assertIn('y', point)
 
-        self.assertEqual(colors[0], 'red')
-        self.assertEqual(colors[1], 'blue')
+        self.assertEqual(colors[0], 'black')
+        self.assertEqual(colors[1], 'black')
         self.assertEqual(labels[0], 'Candidates')
         self.assertEqual(labels[1], 'Voters')
         self.assertEqual(len(candidates), 4)
         self.assertEqual(len(voters), 10)
 
+    @mock.patch.object(ElectionChartView, 'get_title')
     @mock.patch.object(ElectionChartView, 'get_labels')
     @mock.patch.object(ElectionChartView, 'get_colors')
     @mock.patch.object(ElectionChartView, 'get_points_stroke_colors')
     @mock.patch.object(ElectionChartView, 'get_data')
     def test_get_datasets(
             self, mocked_get_data, mocked_get_points_stroke_colors,
-            mocked_get_colors, mocked_get_labels
+            mocked_get_colors, mocked_get_labels, mocked_get_title
     ):
         mocked_get_labels.return_value = ['label1', 'label2']
         mocked_get_colors.return_value = ['red', 'blue']
         mocked_get_points_stroke_colors.return_value = ['black', 'black']
         mocked_get_data.return_value = [[{'x': 0, 'y': 1}], [{'x': 2, 'y': 3}]]
-        expected = [
+        mocked_get_title.return_value = "chart title"
+        expected = {'datasets': [
             {
-                "pointColor": "red",
-                "pointStrokeColor": "black",
+                "borderColor": "red",
+                "backgroundColor": "black",
                 "data": [{"x": 0, "y": 1}],
-                "label": "label1"
+                "label": "label1",
+                "pointRadius": 5
             },
             {
-                "pointColor": "blue",
-                "pointStrokeColor": "black",
+                "borderColor": "blue",
+                "backgroundColor": "black",
                 "data": [{"x": 2, "y": 3}],
-                "label": "label2"
+                "label": "label2",
+                "pointRadius": 5
             },
-        ]
+        ],
+            'title': mocked_get_title.return_value
+        }
         request = RequestFactory().get(self.url)
         view = ElectionChartView(
             request=request,
@@ -349,38 +356,45 @@ class ResultChartViewTest(TestCase):
         self.assertEqual(len(voters), 10)
         self.assertEqual(len(winners), 2)
 
+    @mock.patch.object(ResultChartView, 'get_title')
     @mock.patch.object(ResultChartView, 'get_labels')
     @mock.patch.object(ResultChartView, 'get_colors')
     @mock.patch.object(ResultChartView, 'get_points_stroke_colors')
     @mock.patch.object(ResultChartView, 'get_data')
     def test_get_datasets(
             self, mocked_get_data, mocked_get_points_stroke_colors,
-            mocked_get_colors, mocked_get_labels
+            mocked_get_colors, mocked_get_labels, mocked_get_title
     ):
         mocked_get_labels.return_value = ['label1', 'label2', 'label3']
         mocked_get_colors.return_value = ['red', 'blue', 'yellow']
         mocked_get_points_stroke_colors.return_value = ['black', 'black', 'black']
         mocked_get_data.return_value = [[{'x': 0, 'y': 1}], [{'x': 2, 'y': 3}], [{'x': 4, 'y': 5}]]
-        expected = [
+        mocked_get_title.return_value = "chart title"
+        expected = {'datasets': [
             {
-                "pointColor": "red",
-                "pointStrokeColor": "black",
+                "borderColor": "red",
+                "backgroundColor": "black",
                 "data": [{"x": 0, "y": 1}],
-                "label": "label1"
+                "label": "label1",
+                "pointRadius": 5
             },
             {
-                "pointColor": "blue",
-                "pointStrokeColor": "black",
+                "borderColor": "blue",
+                "backgroundColor": "black",
                 "data": [{"x": 2, "y": 3}],
-                "label": "label2"
+                "label": "label2",
+                "pointRadius": 5
             },
             {
-                "pointColor": "yellow",
-                "pointStrokeColor": "black",
+                "borderColor": "yellow",
+                "backgroundColor": "black",
                 "data": [{"x": 4, "y": 5}],
-                "label": "label3"
+                "label": "label3",
+                "pointRadius": 10
             },
-        ]
+        ],
+            'title': mocked_get_title.return_value
+        }
         request = RequestFactory().get(self.url)
         view = ResultChartView(
             request=request,
@@ -398,6 +412,81 @@ class ResultChartViewTest(TestCase):
             self.url.replace(str(self.result.pk), '-1')
         )
         self.assertEqual(response.status_code, 404)
+
+
+class AlgorithmComparisonChartTestCase(TestCase):
+    def setUp(self):
+        self.election = ElectionFactory.create()
+        self.result = ResultFactory.create(election=self.election)
+        self.url = reverse('elections:algorithms_chart_data', args=(self.result.pk,))
+
+    @mock.patch.object(AlgorithmsChartView, 'get_labels')
+    @mock.patch.object(AlgorithmsChartView, 'get_colors')
+    @mock.patch.object(AlgorithmsChartView, 'get_points_stroke_colors')
+    @mock.patch.object(AlgorithmsChartView, 'get_data')
+    def test_get_datasets(self, mocked_get_data, mocked_get_points_stroke_colors, mocked_get_colors, mocked_get_labels):
+        mocked_get_labels.return_value = ['Brute Force', 'Genetic', 'Greedy', 'Greedy CC']
+        mocked_get_colors.return_value = ['red', 'green', 'gold', 'silver']
+        mocked_get_points_stroke_colors.return_value = ['red', 'green', 'gold', 'silver']
+        mocked_get_data.return_value = {
+            'b': [6.568374, 6.819739, None, None, None, 32.440533, None],
+            'g': [2.626315, None, 10.491934, None, 5.55241, 12.444652, 13.22525],
+            'r': [0.186459, None, 0.527355, 0.756524, None, 0.550341, None],
+            'c': [0.07559, 0.045842, None, None, None, None, None],
+            'x_axis': [2, 2, 3, 15, 20, 20, 20]
+        }
+        expected = {
+            "labels": [2, 2, 3, 15, 20, 20, 20],
+            "datasets": [
+                {
+                    "borderColor": "red",
+                    "label": "Brute Force",
+                    "backgroundColor": "red",
+                    "pointRadius": 5,
+                    "data": [6.568374, 6.819739, None, None, None, 32.440533, None],
+                    "fill": False,
+                    'cubicInterpolationMode': 'monotone'
+                },
+                {
+                    "borderColor": "green",
+                    "label": "Genetic",
+                    "backgroundColor": "green",
+                    "pointRadius": 5,
+                    "data": [2.626315, None, 10.491934, None, 5.55241, 12.444652, 13.22525],
+                    "fill": False,
+                    'cubicInterpolationMode': 'monotone'
+                },
+                {
+                    "borderColor": "gold",
+                    "label": "Greedy",
+                    "backgroundColor": "gold",
+                    "pointRadius": 5,
+                    "data": [0.186459, None, 0.527355, 0.756524, None, 0.550341, None],
+                    "fill": False,
+                    'cubicInterpolationMode': 'monotone'
+                },
+                {
+                    "borderColor": "silver",
+                    "label": "Greedy CC",
+                    "backgroundColor": "silver",
+                    "pointRadius": 5,
+                    "data": [0.07559, 0.045842, None, None, None, None, None],
+                    "fill": False,
+                    'cubicInterpolationMode': 'monotone'
+                }
+            ]
+        }
+        request = RequestFactory().get(self.url)
+        view = AlgorithmsChartView(
+            request=request,
+            election=self.election,
+            result=self.result
+        )
+        datasets = view.get_datasets()
+        self.assertEqual(expected, datasets)
+        response = self.client.get(self.url)
+        response = json.loads(response.content)
+        self.assertEqual(expected, response['data'])
 
 
 class ResultCreateViewTestCase(TestCase):

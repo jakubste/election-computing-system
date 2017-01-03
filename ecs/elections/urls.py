@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^result/(?P<pk>\d+)/$', ResultDetailsView.as_view(), name='result_details'),
     url(r'^result/(?P<pk>\d+)/delete/$', ResultDeleteView.as_view(), name='result_delete'),
     url(r'^chart_data/result/(?P<pk>\d+)/$', ResultChartView.as_view(), name='result_chart_data'),
+    url(r'^algorithms_chart_data/(?P<pk>\d+)/$', AlgorithmsChartView.as_view(), name='algorithms_chart_data'),
 ]

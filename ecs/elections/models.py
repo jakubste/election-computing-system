@@ -23,7 +23,7 @@ class Election(models.Model):
 
     def is_set_up(self):
         """
-        Indicates if candidates and voters where added to election.
+        Indicates if candidates and voters were added to election.
         """
         if self.candidates.all() and self.voters.all():
             return True
@@ -32,7 +32,7 @@ class Election(models.Model):
 
     def is_generated(self):
         """
-        Indicates if elections where
+        Indicates if elections were
         generated from normal distribution.
         """
         try:
@@ -99,9 +99,13 @@ class Preference(models.Model):
 
 BRUTE_ALGORITHM = 'b'
 GENETIC_ALGORITHM = 'g'
+GREEDY_ALGORITHM = 'r'
+GREEDY_CC = 'c'
 ALGORITHM_CHOICES = (
     (BRUTE_ALGORITHM, 'Brute force'),
-    (GENETIC_ALGORITHM, 'Genetic')
+    (GENETIC_ALGORITHM, 'Genetic'),
+    (GREEDY_ALGORITHM, 'Greedy Algorithm'),
+    (GREEDY_CC, 'Greedy CC'),
 )
 
 

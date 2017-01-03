@@ -15,24 +15,34 @@ function debounce(func, wait, immediate) {
 
 $(document).ready(function () {
     var $scatterChart = $("#election_chart");
+    var scatterChart;
     if ($scatterChart.length > 0) {
         $.get($scatterChart.data('url'), function (data) {
             var ctx = $scatterChart.get(0).getContext("2d");
-            new Chart(ctx).Scatter(data['data'], {
-                responsive: true,
-                datasetFill: false,
-                datasetStroke: false
+            scatterChart = new Chart.Scatter(ctx, {
+                data: data['data'],
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text:  data['data']['title']
+                    },
+                    datasetFill: false,
+                    datasetStroke: false,
+                    showLines: false,
+                    animation: false
+                }
             });
         });
     }
-
 
     var $resultsSlider = $('#results-slider');
     if ($resultsSlider.length) {
         // http://stackoverflow.com/a/6299576/5349587
         var ticks = [];
         var i = 0;
-        while (ticks.push(i++) <= $resultsSlider.data('slider-max')) {}
+        while (ticks.push(i++) <= $resultsSlider.data('slider-max')) {
+        }
 
         $resultsSlider.slider({
             formatter: function (value) {
@@ -51,13 +61,27 @@ $(document).ready(function () {
                 var $resultPk = $resultsSlider.data('results-pks').toString().split(',')[$inputResultsSlider.val() - 1];
                 source = '/elections/chart_data/result/' + $resultPk + '/'
             }
+
             $.get(source, function (data) {
+                if (scatterChart != null) {
+                    scatterChart.destroy();
+                }
                 var ctx = $scatterChart.get(0).getContext("2d");
-                new Chart(ctx).Scatter(data['data'], {
-                    responsive: true,
-                    datasetFill: false,
-                    datasetStroke: false,
-                    animation: false
+                scatterChart = new Chart.Scatter(ctx, {
+                    data: data['data'],
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: data['data']['title']
+                        },
+                        datasetFill: false,
+                        datasetStroke: false,
+                        showLines : false,
+                        animation: false,
+                        reverse: true
+                    }
+
                 });
             });
         };
@@ -79,4 +103,43 @@ $(document).ready(function () {
         $algorithm_selection.on('change', toggleVisibilityGeneticForm);
         toggleVisibilityGeneticForm();
     }
+
+    var $algorithms_chart = $("#algorithms_chart");
+    $.get($algorithms_chart.data('url'), function (data) {
+        if($algorithms_chart.length == 0)
+            return;
+        var ctx = $algorithms_chart.get(0).getContext("2d");
+        new Chart(ctx, {
+            type: 'line',
+            data: data['data'],
+            options: {
+                showLines: true,
+                spanGaps: true,
+                responsive: true,
+                title:{
+                    display:true,
+                    text:'Time measured for given algorithm and p'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'p'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'time [s]'
+                        },
+                        ticks: {
+                            min: 0
+                        }
+                    }]
+                }
+            }
+        });
+    })
 });

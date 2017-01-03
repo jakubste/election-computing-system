@@ -1,10 +1,10 @@
-from ecs.utils.scatter_view import ScatterChartMixin
+from ecs.utils.chart_views import ChartMixin
 from ecs.utils.unittestcases import TestCase
 
 
-class ScatterViewTestCase(TestCase):
+class ChartViewTestCase(TestCase):
     def setUp(self):
-        self.view = ScatterChartMixin()
+        self.view = ChartMixin()
 
     def test_get_data_raises_not_implemented(self):
         self.assertRaises(NotImplementedError, self.view.get_data)

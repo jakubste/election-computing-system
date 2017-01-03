@@ -1,8 +1,7 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
-from django.forms.fields import ChoiceField
-from django.forms.widgets import ChoiceInput, Select
+from django.forms.widgets import Select
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView
@@ -13,6 +12,8 @@ from django.views.generic.edit import CreateView, FormView
 
 from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.algorithms.genetic import GeneticAlgorithm
+from ecs.elections.algorithms.greedy_algorithm import GreedyAlgorithm
+from ecs.elections.algorithms.greedy_cc import GreedyCC
 from ecs.elections.election_generator import ElectionGenerator
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
@@ -22,8 +23,9 @@ from ecs.elections.forms import ElectionForm, ElectionLoadDataForm, ElectionGene
 from ecs.elections.helpers import check_votes_number_unique_votes_relation, check_vote_consistency, \
     check_number_of_votes_consistency
 from ecs.elections.models import Election, Candidate, Voter, BRUTE_ALGORITHM, Result, GENETIC_ALGORITHM
+from ecs.elections.models import GREEDY_ALGORITHM, GREEDY_CC
 from ecs.geo.models import Point
-from ecs.utils.scatter_view import ScatterChartMixin
+from ecs.utils.chart_views import ChartMixin
 from ecs.utils.views import LoginRequiredMixin
 
 
@@ -86,9 +88,10 @@ class ElectionDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(ElectionDetailView, self).get_context_data(**kwargs)
-        if self.object.voters.count() < 500:
+        if self.object.voters.count() <= 100:
             ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
-        ctx['results'] = self.object.results.all()
+        ctx['results'] = self.object.results.all()\
+            .select_related('geneticalgorithmsettings').prefetch_related('winners')
         choices = [(res.pk, str(res)) for res in ctx['results'].reverse()]
         choices.append((None, '------'))
         choices.reverse()
@@ -201,10 +204,11 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
         return super(ElectionGenerateDataFormView, self).form_valid(form)
 
 
-class ElectionChartView(ScatterChartMixin):
+class ElectionChartView(ChartMixin):
     datasets_number = 2
     labels = ['Candidates', 'Voters']
-    colors = ['red', 'blue']
+    colors = ['black', 'black']
+    points_stroke_colors = ['green', 'blue']
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -212,6 +216,9 @@ class ElectionChartView(ScatterChartMixin):
         except Election.DoesNotExist:
             raise Http404
         return super(ElectionChartView, self).dispatch(request, *args, **kwargs)
+
+    def get_title(self):
+        return 'Voters and candidates distribution'
 
     def get_data(self):
         """
@@ -247,6 +254,8 @@ class ResultCreateView(ConfigureElectionMixin, CreateView):
 
         algorithm = {
             BRUTE_ALGORITHM: BruteForce,
+            GREEDY_ALGORITHM: GreedyAlgorithm,
+            GREEDY_CC: GreedyCC,
             GENETIC_ALGORITHM: GeneticAlgorithm,
         }[form.cleaned_data['algorithm']]
         algorithm = algorithm(self.election, form.cleaned_data['p_parameter'], **algorithm_kwargs)
@@ -288,11 +297,18 @@ class ResultDetailsView(DetailView):
     context_object_name = 'result'
 
 
-class ResultChartView(ScatterChartMixin):
+class ResultChartView(ChartMixin):
     datasets_number = 3
     labels = ['Voters', 'Candidates', 'Winners']
-    colors = ['lightblue', 'red', 'green']
-    points_stroke_colors = ['white', 'black', 'green']
+    colors = ['black', 'black', 'black']
+    points_stroke_colors = ['blue', 'green', 'red']
+    points_radii = [5, 5, 10]
+    algorithm_keys = {
+        'b': 'Brute Force',
+        'g': 'Genetic',
+        'r': 'Greedy',
+        'c': 'Greedy CC'
+    }
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -301,6 +317,10 @@ class ResultChartView(ScatterChartMixin):
         except Result.DoesNotExist:
             raise Http404
         return super(ResultChartView, self).dispatch(request, *args, **kwargs)
+
+    def get_title(self):
+        return 'Result for algorithm: %s with p: %d' % (
+            self.algorithm_keys[self.result.algorithm], self.result.p_parameter)
 
     def get_data(self):
         """
@@ -311,6 +331,89 @@ class ResultChartView(ScatterChartMixin):
         voters = list(Point.objects.filter(voter__election=self.election).values('x', 'y'))
         winners = list(
             Point.objects.filter(candidate__in=self.result.winners.all())
-                         .extra(select={'r': '2'}).values('x', 'y', 'r')
+                .extra(select={'r': '2'}).values('x', 'y', 'r')
         )
         return [voters, candidates, winners]
+
+
+class AlgorithmsChartView(ChartMixin):
+    datasets_number = 4
+    labels = ['Brute Force', 'Genetic', 'Greedy', 'Greedy CC']
+    colors = ['red', 'green', 'gold', 'silver']
+    points_stroke_colors = ['red', 'green', 'gold', 'silver']
+    algorithm_keys = ['b', 'g', 'r', 'c']
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.results = Result.objects.filter(winners__result__election=kwargs['pk']).distinct()
+        except Result.DoesNotExist:
+            raise Http404
+        return super(AlgorithmsChartView, self).dispatch(request, *args, **kwargs)
+
+    def get_data(self):
+        """
+        :return: algorithms' datasets - dictionary with five keys
+            'b' - for brute\n
+            'g' - for genetic\n
+            'r' - for greedy\n
+            'c' - for greedy_cc\n
+                'b', 'g', 'r', 'c' - stores times measured for given entry on x_axis list
+            Under 'i' index only one and at least one of the four above lists can store
+            a time - other three lists have to store None value under 'i'-th index
+                'x_axis' - label for x axis - stores list of p_parameter values
+            Each of five lists contains the list of the same length
+        """
+        # TODO use constants from models.py after greedy branch merge
+        times_and_labels = {'b': [], 'g': [], 'r': [], 'c': [], 'x_axis': []}
+
+        prev_p = 0
+        max_list_length = 0
+
+        for result in self.results:
+            if prev_p != result.p_parameter:
+                self.fill_up_with_nones(self.algorithm_keys, max_list_length, prev_p, times_and_labels)
+                prev_p = result.p_parameter
+            times_and_labels[result.algorithm].append(result.time)
+            list_length = len(times_and_labels[result.algorithm])
+            max_list_length = list_length if list_length > max_list_length else max_list_length
+
+        self.fill_up_with_nones(self.algorithm_keys, max_list_length, prev_p, times_and_labels)
+
+        return times_and_labels
+
+    @staticmethod
+    def fill_up_with_nones(algorithm_keys, max_list_length, prev_p, times_and_labels):
+        while len(times_and_labels['x_axis']) < max_list_length:
+            times_and_labels['x_axis'].append(prev_p)
+        for key in algorithm_keys:
+            while len(times_and_labels[key]) < max_list_length:
+                times_and_labels[key].append(None)
+
+    def get_datasets(self, *args, **kwargs):
+        """
+        Format data to Scatter dataset format
+        """
+        algorithm_keys = ['b', 'g', 'r', 'c']
+        labels = self.get_labels()
+        colors = self.get_colors()
+        point_stroke_colors = self.get_points_stroke_colors()
+        points_radii = self.get_points_radii()
+        data = self.get_data()
+
+        datasets = [
+            {
+                'fill': False,
+                'label': labels[i],
+                'borderColor': colors[i],
+                'backgroundColor': point_stroke_colors[i],
+                'data': data[algorithm_keys[i]],
+                'pointRadius': points_radii[i],
+                'cubicInterpolationMode': 'monotone'
+            }
+            for i in xrange(self.datasets_number)
+            ]
+
+        return {
+            'labels': data['x_axis'],
+            'datasets': datasets
+        }
