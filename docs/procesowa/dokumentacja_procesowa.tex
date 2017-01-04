@@ -286,6 +286,7 @@ Tomasz Kasprzyk:
 \item tworzenie testów jednostkowych i porównawczych
 \item współtworzenie prezentacji na zajęcia seminaryjne
 \end{itemize}
+
 Daniel Ogiela:
 \begin{itemize}
 \item projekt i implementacja algorytmu zachłannego zależnego od parametru $p$
@@ -294,9 +295,17 @@ Daniel Ogiela:
 \item tworzenie testów jednostkowych i porównawczych
 \item współtworzenie prezentacji na zajęcia seminaryjne
 \end{itemize}
+
 Jakub Stępak:
 \begin{itemize}
-\item Czynność 1
+\item stworzenie szkieletu aplikacji
+\item konfiguracja ciągłej integracji
+\item implementacja algorytmu \textit{brute-force}
+\item implementacja algorytmu genetycznego
+\item przedstawienie wyników na wykresie i tabelaryczne
+\item współtworzenie testów jednostkowych i porównawczych
+\item współtworzenie dokumentacji projektowej
+\item współtworzenie prezentacji na zajęcia seminaryjne
 \end{itemize}
 
 \section{Komunikacja z managerem i klientem}
@@ -335,10 +344,9 @@ W celu przepisywania dokumentacji z \textit{Google Docs} do \textit{LaTeX} korzy
 \textit{TexMaker}. Funkcja \textit{WYSIWYG} znacznie przyspiesza proces tworzenia poprawnie
 sformatowanego dokumentu.
 
-\indent Serwisy \textit{Travis CI} oraz \textit{Coveralls.io} służyły odpowiednio zdalnemu budowaniu aplikacji i
-uruchamianiu testów oraz ciągłej integracji zmian wprowadzanych do głównego
-repozytorium. Serwisy te połączono dla wygody ze \textit{Slackiem} zespołu projektowego poprzez
-wykorzystanie wspomnianych wyżej botów.
+\indent Serwisy \textit{Travis CI} oraz \textit{Coveralls.io} służyły automatycznemu uruchamianiu testów jednostkowych wraz z badaniem pokrycia kodu testami. Serwisy te połączono dla wygody ze \textit{Slackiem} zespołu projektowego poprzez wykorzystanie wspomnianych wyżej botów.
+
+\indent Dodatkowo każdy zmiana na głównej gałęzi repozytorium skutkuje automatycznym zbudowaniem serwisu na platformie \textit{Heroku} - aktualna wersja serwisu jest zawsze dostępna pod adresem  \url{https://election-computing-system.herokuapp.com}.
 
 \section{Weryfikacja wyników projektu}
 Jakość obliczanych wyników wyborów weryfikowano za pomocą testów
@@ -530,9 +538,8 @@ aby parametr $p$ kolejnego wyniku był nie mniejszy niż poprzedniego).
 \section{Problemy napotkane w czasie realizacji projektu}
 Jednym z napotkanych problemów podczas realizacji systemu był niezadowalający czas
 liczenia normy $\ell_p$ . W związku z tym należało znaleźć miejsca w algorytmie, które
-zaoszczędzałyby czas trwania obliczeń. Znaleziono miejsca, w których program
-niepotrzebnie wiele razy sięga do bazy danych, zamiast sięgać do pamięci w celu
-odczytania potrzebnych danych.
+zaoszczędzałyby czas trwania obliczeń. Zlokalizowano również miejsca, w których program
+niepotrzebnie wiele razy pobierał dany z bazy danych – w tych miejscach dane zostały pobrane wcześniej do pamięci podręcznej co znacząco ograniczyło czas potrzebny na operacje odczytu z bazy danych.
 % itd.
 % \appendix
 % \include{dodatekA}
