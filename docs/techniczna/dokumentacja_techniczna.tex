@@ -135,7 +135,7 @@ Wówczas, w uogólnionej wersji metody $k-Borda$, funkcja zadowolenia $f_{kB}$ (
 f_{\ell_pB}(p,(i_1,\dots,i_k))=\sqrt[p]{[(i_1)]^p+[(i_2)]^p+...+[(i_k)]^p}
 \end{equation}
 
-Systemy $k-Borda$ i Chamberlina-Couranta są szczególnymi przypadkami zdefiniowanego powyżej systemu $\ell_p-Borda$:\\
+Systemy $k-Borda$ i \textit{Chamberlina-Couranta} są szczególnymi przypadkami zdefiniowanego powyżej systemu $\ell_p-Borda$:\\
 Dla \, $p = 1$, \, $l_1$:
 \begin{equation}
 f_{\ell_pB}(1,(i_1, \dots ,i_k)) = \beta(i_1) + \beta(i_2) + \dots + \beta(ik) = f_{kB}(i_11, \dots,i_k)
@@ -230,6 +230,7 @@ listy wszystkich wyborów i ich wyników, stworzenie nowych wyborów lub wyniku,
 usunięcie wyborów. W celu wykonania niektórych zadań współpracuje z modułem obliczania
 wyników wyborów oraz modułem wizualizacji wyborów i ich wyników. Jest to najbardziej
 rozbudowany moduł.
+\clearpage
 
 \subsection{Komponenty programowe}
 % \usepackage{array} is required
@@ -281,6 +282,7 @@ formularze & klasa \code{ElectionForm} & stworzenie wyborów \\
 formularz określający parametry wyniku \\
 \hline
 \end{tabular}
+\clearpage
 
 \section{Moduł wizualizacji wyborów i wyników wyborów}
 \subsection{Opis ogólny}
@@ -844,7 +846,7 @@ Algorytm ten nie aproksymuje wyników wyborów na bazie funkcji satysfakcji opis
 system \mbox{$\ell_p-Borda$}, ale na szczególnym przypadku tej funkcji gdy $p \to \infty$. W związku z tym parametr $p$ nie wpływa na działanie algorytmu.
 
 \subsection{Idea algorytmu}
-Algorytm został zaproponowany przez Lu i Boutilier’a. Idea jest taka sama jak dla
+Algorytm został zaproponowany przez Lu i Boutilier’a \footnote{E.Elkind, P.Faliszewski, P.Skowron. \textit{Properties of Multiwinner Voting Rule} - strona nr $6$}. Idea jest taka sama jak dla
 pierwszego algorytmu zachłannego. W każdej iteracji głównej pętli algorytmu do
 zwycięskiego komitetu dobrany zostaje jeden kandydat. Zwycięzca w danej iteracji zostaje
 dobrany według postępowania zachłannego. Wygrywa kandydat, który najwięcej dodaje do
