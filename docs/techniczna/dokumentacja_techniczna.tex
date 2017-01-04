@@ -1194,6 +1194,37 @@ mediana & 82.22 \% & 88.19 \% & 91.55 \% & 92.55 \% \\
 Uzyskane wyniki pokazują, że już dla wartości parametru $p = 50$ średnio ponad $87 \%$ zwycięskich kandydatów wśród obydwu wyników pokryło się. Dla większych wartości parametru $p$ średnie i mediany nieznacznie wzrosły. Dla wartości $p = 50$ pokrycie się wyników poza jednym przypadkiem nie schodziło poniżej $80 \%$. Zwycięzcy kandydaci, którzy nie powtórzyli się w drugim wyniku zazwyczaj stanowili dla parametru $p$ wynoszącego co najmniej $50$ około $10 \%$. Te przypadki to opisane wcześniej pary bądź trójki kandydatów, którzy wymieniają się na pozycji zwycięzcy dla dużych wartości parametru $p$. 
 
 
+\section{Wyniki osiągane przez algorytm genetyczny}
+
+\subsection{Porównanie z algorytmem brute-force}
+
+Aby przetestować implementację algorytmu genetycznego postanowiliśmy porównać wyniki z wynikiem działania algorytmu \textit{brute-force}. Niestety, ze zwzgędu na powolne działanie tego ostatniego, takie porównanie można wykonać jedynie dla wyborów o małych „rozmiarach”.
+
+~\\
+I tak, dla przykładowych wyborów o parametrach:
+\begin{itemize}
+\item liczba kandydatów: 30,
+\item liczba wyborców: 40,
+\item rozmiar komitetu: 5,
+\end{itemize}
+algorytm \textit{brute-force} działał ponad 20,5s, natomiast algorytm genetyczny potrafił podać ten sam wynik w nawet nieco ponad 6 sekund. Poniżej znajduje się fragment zestawienia wyników wygenerowany przez system - ponownie testowany był algorytm genetyczny z różnymi parametrami.
+
+\includegraphics[width=\textwidth]{pics/porownanie-gen-brut.png}
+\captionof{figure}{Porównanie wyniku algorytmu brute-force i różnych wersji algorytmu genetycznego}
+
+
+\subsection{Porównanie z algorytmem zachłannym}
+Dla danych z poprzedniego rozdziału algorytm zachłanny działał najszybciej, bo podał wynik już w 2,5s, jednak o niższym wyniku, bo jedynie 1113,37 punktów. W komitecie wskazanym przez algorytm zachłanny 2 z 5 kandydatów różniło się od rozwiązania najlepszego:
+
+\begin{center}
+\centerline{\includegraphics[width=0.6\textwidth]{pics/gg-gr.png}}
+\captionof{figure}{Wynik wskazany przez algorytm zachłanny}
+\end{center}
+\begin{center}
+\centerline{\includegraphics[width=0.6\textwidth]{pics/gg-gen.png}}
+\captionof{figure}{Wynik wzorcowy wskazany przez algorytm brute-force i większość genetycznych}
+\end{center}
+
 
 \bibliographystyle{alpha}
 \bibliography{bibliografia}
