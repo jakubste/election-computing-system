@@ -1019,6 +1019,27 @@ Podobne zestawienie wykonaliśmy jeszcze dla "większych" wyborów: 200 głosuj�
 ~ \\
 W tym wypadku również zwiększenie liczby cykli do 200 pozwoliło na jeszcze lepszy wynik, windując jednak czas wykonania programu do nieco ponad 10 minut. Co ciekawe próba przy 300 cyklach dała wynik gorszy - ujawnia się tutaj losowa natura algorytmu genetycznego.
 
+\section{Algorytm typu brute-force}
+Do zbadania poprawności działania innych algorytmów zaimplementowany został bardzo prosty algorytm typu \textit{brute-force} iterujący się po wszystkich możliwych kombinacjach komitetów i wyszukujący komitetu o najwyższym wyniku.
+
+\subsection{Pseudokod}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{$K$ - zbiór wszystkich możliwych komitetów w danych wyborach}
+\KwResult{$REZULTAT$ - zwycięski zbiór $k$ kandydatów}
+~\\
+$REZULTAT \longleftarrow \emptyset $ \\
+$najlepszy\_wynik \longleftarrow $ 0 \\
+\For{$k \in K$ }{ ~\\
+	\If{$wynik(k) > najlepszy\_wynik$}{ ~\\
+		$REZUTLAT \longleftarrow k$ \\
+		$najlepszy\_wynik \longleftarrow wynik(k)$
+	}
+}
+\caption{Pseudokod algorytmu \textit{brute-force}}
+\end{algorithm}
+
 
 \chapter{Porównanie algorytmów}
 \section{Zrównanie jakości działania algorytmów zachłannych}
@@ -1171,6 +1192,7 @@ mediana & 82.22 \% & 88.19 \% & 91.55 \% & 92.55 \% \\
 \end{center}
 
 Uzyskane wyniki pokazują, że już dla wartości parametru $p = 50$ średnio ponad $87 \%$ zwycięskich kandydatów wśród obydwu wyników pokryło się. Dla większych wartości parametru $p$ średnie i mediany nieznacznie wzrosły. Dla wartości $p = 50$ pokrycie się wyników poza jednym przypadkiem nie schodziło poniżej $80 \%$. Zwycięzcy kandydaci, którzy nie powtórzyli się w drugim wyniku zazwyczaj stanowili dla parametru $p$ wynoszącego co najmniej $50$ około $10 \%$. Te przypadki to opisane wcześniej pary bądź trójki kandydatów, którzy wymieniają się na pozycji zwycięzcy dla dużych wartości parametru $p$. 
+
 
 
 \bibliographystyle{alpha}
