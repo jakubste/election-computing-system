@@ -200,7 +200,7 @@ logowania, wylogowania oraz rejestracji. Nie współpracuje z innymi modułami. 
 jedynie z bazy danych w celu weryfikacji użytkowników.
 
 \subsection{Komponenty programowe}
-Komponenty programowe dla tego modułu znajdują się w pakiecie $ecs.accounts$ \\ \\
+Komponenty programowe dla tego modułu znajdują się w pakiecie \code{ecs.accounts} \\ \\
 {
 \centering
 \begin{tabular}{|c|c|c|}
@@ -234,7 +234,8 @@ rozbudowany moduł.
 
 \subsection{Komponenty programowe}
 % \usepackage{array} is required
-\begin{tabular}{|c|c|p{5cm}|}
+Komponenty programowe dla tego modułu znajdują się w pakietach:  \code{ecs.elections.views} (widoki), \code{ecs.elections.templates} (szablony) i \code{ecs.elections.forms} (formularze).\\ \\
+\begin{tabular}{|c|c|p{6cm}|}
 \hline
 \textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\
 \hline
@@ -296,11 +297,12 @@ celu wykonania zadania moduł wizualizacji wyborów i wyników wyborów pobiera 
 bazy danych.
 
 \subsection{Komponenty programowe}
+Komponenty programowe dla tego modułu znajdują się w pakietach:  \code{ecs.elections.views} oraz \code{ecs.utils.chart\_views} \\ \\
 \begin{tabular}{|c|c|p{5cm}|}
 \hline
 \textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\
 \hline
-widoki & klasa \code{ScatterChartMixin} & pobranie danych potrzebnych do
+widoki & klasa \code{ChartMixin} & pobranie danych potrzebnych do
 wygenerowania wykresów (punkty, tytuł
 wykresu, serii danych), dziedziczy po
 klasie \code{View} \\
@@ -314,10 +316,11 @@ dziedziczy po klasie \code{ScatterChartMixin},
 pobranie współrzędnych kandydatów,
 wyborców oraz zwycięzców \\
 \cline{2-3}
-& klasa \code{AlgorithmsComparisonChartView} & zestawia dla danych wyborów czasy wykonania obliczeń  przez rózne algorytmy dla róznych wartości parametru $p$\\
+& klasa \code{AlgorithmsChartView} & zestawia dla danych wyborów czasy wykonania obliczeń  przez rózne algorytmy dla róznych wartości parametru $p$\\
 \hline
 
 \end{tabular}
+\clearpage
 
 \section{Moduł generacji i wczytywania wyborów}
 \subsection{Opis ogólny}
@@ -329,6 +332,7 @@ wyborów z pliku. Po stworzeniu wyborów moduł komunikuje się z bazą danych w
 utrwalenia wyborów.
 
 \subsection{Komponenty programowe}
+Komponenty programowe dla tego modułu znajdują się w pakietach:  \code{ecs.elections.views} (widoki), \code{ecs.elections.templates} (szablony) oraz \code{ecs.elections.forms} (formularze).\\ \\
 \begin{tabular}{|c|c|p{5cm}|}
 \hline
 \textbf{Typ komponentu} & \textbf{Komponenty} & \textbf{Wykorzystanie} \\
@@ -378,7 +382,7 @@ odpowiednich modułów.
 
 \subsection{Komponenty programowe}
 Przyporządkowania żądań użytkownika do odpowiednich modułów (adresów URL do
-widoków) znajdują się w pliku \code{ecs.elections.urls.py}.
+widoków) znajdują się w pakiecie \code{ecs.elections.urls}.
 
 \chapter{Współpraca modułów i innych komponentów}
 \section{Diagram komunikacji}
@@ -392,6 +396,7 @@ widoków) znajdują się w pliku \code{ecs.elections.urls.py}.
 \begin{enumerate}
 \item Użytkownik za pomocą przeglądarki internetowej wysyła żądanie logowania.
 \item Moduł URL Resolver kieruje żądanie do modułu administracji kont.
+\clearpage
 \item Moduł administracji kont przesyła do przeglądarki stronę z formularzem do
 zalogowania (pole \textit{Username} i \textit{Password}).
 \item Użytkownik wypełnia formularz i za pomocą przeglądarki internetowej wysyła
@@ -432,6 +437,7 @@ użytkownika.
 uzupełniony formularz.
 \item Moduł URL Resolver przekazuje żądanie do modułu administracji kont.
 \item Moduł administracji kont przeprowadza walidację danych.
+\clearpage
 \item W zależności od rezultatu walidacji:
 	\begin{itemize}
 	\item jeżeli się powiodła, Moduł administracji kont tworzy konto nowego użytkownika, 			zapisuje je do
@@ -473,6 +479,7 @@ obiekt wyborów i zapisuje go do bazy.
 \item Widok wykorzystując szablon \code{election\_details.html} tworzy stronę i wysyła ją do
 przeglądarki użytkownika.
 \end{enumerate}
+\clearpage
 
 \subsection{Usunięcie wyborów}
 \begin{enumerate}
@@ -507,6 +514,7 @@ dane z powrotem do widoku \code{ElectionDetailView} umożliwiając stworzenie wy
 \item Widok wykorzystując szablon \code{election\_details.html} tworzy i wysyła stronę do
 przeglądarki użytkownika.
 \end{enumerate}
+\clearpage
 
 \subsection{Stworzenie nowego wyniku dla danych wyborów}
 \begin{enumerate}
@@ -543,7 +551,8 @@ wyborów.
 \item Widok pobiera z bazy danych informacje o zwycięzcach danych wyborów.
 \item Jeżeli wybory zostały wygenerowane z rozkładu normalnego, widok przekierowuje
 działanie programu do modułu wizualizacji wyborów i wyników wyborów (widok
-\code{ResultChartView}). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$
+\code{ResultChartView}). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$.
+\clearpage
 \item Widok pobiera z bazy danych obiekty będące punktami \textit{2D} reprezentującymi
 wyborców, kandydatów i zwycięzców. Ustawia parametry wykresu a następnie
 wysyła wszystkie dane z powrotem do widoku \code{ResultDetailsView}, umożliwiając
@@ -584,6 +593,7 @@ określenia parametrów wyborów oraz i rozkładu normalnego.
 \item Użytkownik uzupełnia formularz i wysyła go do systemu.
 \item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
 \code{ElectionGenerateDataFormView}).
+\clearpage
 \item Widok wczytuje dane z formularza i wykorzystując generator, generuje według
 wczytanych parametrów kandydatów, wyborców oraz liczy ich preferencje. Dane
 zostają zapisane do bazy. Następnie program przechodzi do 2-go punktu ścieżki
@@ -613,6 +623,7 @@ poziomu dokumentu \textit{HTML}
 \item \code{is\_set\_up()} - zwraca prawdę jeśli dla danych wyborów zostali określeni kandydaci i
 głosujący lub fałsz w przeciwnym przypadku
 \end{itemize}
+\clearpage
 
 \subsection{Candidate}
 \begin{center}
@@ -643,6 +654,7 @@ Pola:
 generowanych z rozkładu normalnego
 \item \code{election} - wybory, do których należy głosujący
 \end{itemize}
+\clearpage
 Metody:
 \begin{itemize}
 \item \code{set\_preferences\_by\_ids()} - metoda wykorzystywana przy parsowaniu plików
@@ -672,6 +684,7 @@ Pola:
 \centerline{\includegraphics[scale=0.85]{pics/Point.png}}
 \captionof{figure}{Obiekt przechowujący współrzędne wyborcy lub kandydata w układzie współrzędnych.}
 \end{center}
+\clearpage
 Pola - współrzędne w układzie kartezjańskim:
 \begin{itemize}
 \item \code{x: Int}
@@ -698,6 +711,7 @@ Pola:
 \item \code{score} - wynik punktowy zwycięskiego komitetu
 \end{itemize}
 
+\clearpage
 \subsection{GeneticAlgorithmSettings}
 \begin{center}
 \centerline{\includegraphics[scale=0.85]{pics/GeneticAlgorithmSettings.png}}
@@ -714,6 +728,7 @@ osobników
 \item \code{cycles} - liczba iteracji algorytmu genetycznego
 \end{itemize}
 
+\clearpage
 \section{Diagram ERD}
 \begin{center}
 \centerline{\includegraphics[scale=0.45]{pics/ECS_ERD.png}}
