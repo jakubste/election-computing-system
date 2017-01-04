@@ -9,6 +9,7 @@
 \usepackage{listings}
 \usepackage{caption}
 \usepackage{amsmath}
+\usepackage{algorithm2e}
 % TODO przenieść do aghdoc
 \newcommand{\code}[1]{\texttt{#1}}
 
@@ -806,11 +807,37 @@ zostają również pojedyncze satysfakcje wszystkich wyborców w oparciu o wybra
 danej iteracji kandydata, który w tym momencie staje się zwycięzcą.
 
 \subsection{Pseudokod}
-\begin{center}
+%\begin{center}
 % TODO poprawić znaczek różnicy w pseudokodzie
-\centerline{\includegraphics[scale=0.9]{pics/pseudocode_greedy_algorithm.png}}
-\captionof{figure}{Pseudokod algorytmu zachłannego}
-\end{center}
+%\centerline{\includegraphics[scale=0.9]{pics/pseudocode_greedy_algorithm.png}}
+%\captionof{figure}{Pseudokod algorytmu zachłannego}
+%\end{center}
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{$k$ - rozmiar komitetu, $porzadek\_preferencji$ - porządek preferencji $m$ kandydatów dla $n$ wyborców, $p$ - parametr funkcji zadowolenia}
+\KwResult{zwycięski zbiór $k$ kandydatów - zbiór $REZULTAT$}
+$REZULTAT \longleftarrow \emptyset $ \;
+$C \longleftarrow $ zbiór wszystkich $m$ kandydatów\;
+$V \longleftarrow $ zbiór wszystkich $n$ wyborców\;
+\For{$i \longleftarrow 1$ to $k$ }{
+	\For{$c \in C\setminus REZULTAT$}{
+		\For{$v \in V$}{
+		$punkty\_Bordy \longleftarrow liczba\_punktow\_w\_porzadku\_preferencji(c, v, porzadek\_preferencji)$ \;
+		$zadowolenie\_v \longleftarrow aktualne\_zadowolenie(v)$ \;
+		$zadowolenie\_v\_wraz\_z\_kandydatem\_c \longleftarrow \sqrt[p]{zadowolenie\_v^p + punkty\_Bordy^p}$\;
+		$zadowolenie\_z\_kandydata\_c += zadowolenie\_v\_wraz\_z\_kandydatem\_c$\;
+		}
+		\If{$zadowolenie\_z\_kandydata\_c > zadowolenie\_z\_najlepszego\_dotychczas\_kandydata$}{
+		$prowadzacy\_kandydat\_w\_danej\_iteracji \longleftarrow c$\;
+		$zadowolenie\_z\_najlepszego\_dotychczas\_kandydata \longleftarrow zadowolenie\_z\_kandydata\_c$\;
+		}
+		$uaktualnij\_zadowolenia\_wyborcow(prowadzacy\_kandydat\_w\_danej\_iteracji)$\;
+		$REZULTAT \longleftarrow REZULTAT \cup prowadzacy\_kandydat\_w\_danej\_iteracji$\;
+	}
+}
+\caption{Pseudokod algorytmu zachłannego}
+\end{algorithm}
+
 
 \section{Algorytm zachłanny według zasady Chamberlina-Couranta}
 Algorytm ten nie aproksymuje wyników wyborów na bazie funkcji satysfakcji opisującej
