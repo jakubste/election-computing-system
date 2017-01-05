@@ -1,5 +1,6 @@
+var ECS_DIV_NAME = "ecs-paint";
 var RANGE = 200;
-var DIVISIONS = 10, SIZE = RANGE/2; //grid helper parameters
+var DIVISIONS = 10, SIZE = RANGE / 2; //grid helper parameters
 var FONT_SIZE = 8;
 var MARKER_SIZE = 1, MIN_MARKER_SIZE = 1, MAX_MARKER_SIZE = 50;
 var CANDIDATE_COLOR = 0x0000ff, VOTER_COLOR = 0x008000, ERASE_COLOR = 0xff0000;
@@ -12,40 +13,82 @@ var current_list = voters;
 
 var MAX_POINTS = 10; //max points to add on a single click
 
+//=========
+
+var paint_container;
+var renderer;
+
+paint_container = document.getElementById('ecs-paint');
+renderer = new THREE.WebGLRenderer({canvas: paint_container});
+renderer.setSize(paint_container.width, paint_container.height);
+
+
+var render = function () {
+    requestAnimationFrame(render);
+
+    // update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // calculate objects intersecting the picking ray
+    var intersects = raycaster.intersectObjects(scene.children);
+
+    if (intersects.length > 0) {
+        x_pos = parseInt(intersects[0].point.x);
+        y_pos = parseInt(intersects[0].point.y);
+        in_range = Math.abs(x_pos) <= RANGE / 2 && Math.abs(y_pos) <= RANGE / 2;
+        occupied = intersects[0].object.name && intersects[0].object.name.indexOf("point") != -1;
+    }
+    else {
+        in_range = false;
+    }
+
+    marker.position.x = x_pos;
+    marker.position.y = y_pos;
+
+    renderer.render(scene, camera);
+};
+//=========
+
 var x_pos, y_pos;
 var in_range = false;
 var occupied = false;
 
 var scene = new THREE.Scene();
 var camera = new THREE.OrthographicCamera(
-    window.innerWidth / -8, window.innerWidth / 8, window.innerHeight / 8, window.innerHeight / -8, -200, 500);
+    paint_container.width / -8, paint_container.width / 8, paint_container.height / 8, paint_container.height / -8, -200, 500);
 camera.position.z = 5;
 
 var grid = new THREE.GridHelper(SIZE, DIVISIONS);
-var planeGeo = new THREE.PlaneGeometry( RANGE, RANGE);
-var planeMat = new THREE.MeshBasicMaterial( {color: 0xffffff, transparent: true, opacity: 0.0, side: THREE.DoubleSide} );
+var planeGeo = new THREE.PlaneGeometry(RANGE, RANGE);
+var planeMat = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.0,
+    side: THREE.DoubleSide
+});
 grid.name = "grid";
-grid.rotateX(Math.PI/2);
+grid.rotateX(Math.PI / 2);
 scene.add(grid);
 
-var plane = new THREE.Mesh( planeGeo, planeMat );
+var plane = new THREE.Mesh(planeGeo, planeMat);
 plane.name = "plane";
-scene.add( plane );
+scene.add(plane);
 
 var markerGeo = new THREE.PlaneGeometry(MARKER_SIZE, MARKER_SIZE);
-var markerMat = new THREE.MeshBasicMaterial( { color: MARKER_COLOR, transparent: true, opacity: 0.3} );
-var marker = new THREE.Mesh( markerGeo, markerMat );
-scene.add( marker );
+var markerMat = new THREE.MeshBasicMaterial({color: MARKER_COLOR, transparent: true, opacity: 0.3});
+var marker = new THREE.Mesh(markerGeo, markerMat);
+scene.add(marker);
 
 //============
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
-function onMouseMove( event ) {
+function onMouseMove(event) {
     // calculate mouse position in normalized device coordinates
     // (-1 to +1) for both components
+    console.log("Mouse positoin: " + event.clientX + ", " + event.clientY);
     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
 }
 
 function onMouseDown(event) {
@@ -63,29 +106,29 @@ function onMouseDown(event) {
 }
 
 var scale = 1;
-var onKeyDown = function ( event ) {
+var onKeyDown = function (event) {
     console.log("KEY CODE: " + event.keyCode);
 
-    if(event.keyCode == 107 || event.keyCode == 187) { // +
+    if (event.keyCode == 107 || event.keyCode == 187) { // +
         MARKER_SIZE = (MARKER_SIZE + 1) <= MAX_MARKER_SIZE ? (MARKER_SIZE + 1) : MARKER_SIZE;
         scale = MARKER_SIZE / MIN_MARKER_SIZE;
         marker.scale.set(scale, scale, 1);
     }
 
-    if(event.keyCode == 109 || event.keyCode == 189) { // -
+    if (event.keyCode == 109 || event.keyCode == 189) { // -
         MARKER_SIZE = (MARKER_SIZE - 1) >= MIN_MARKER_SIZE ? (MARKER_SIZE - 1) : MARKER_SIZE;
         scale = MARKER_SIZE / MIN_MARKER_SIZE;
         marker.scale.set(scale, scale, 1);
     }
 
-    if(event.keyCode == 67) //C
+    if (event.keyCode == 67) //C
     {
         marker.material.color = new THREE.Color(CANDIDATE_COLOR);
         current_list = candidates;
         mode = CANDIDATES_MODE;
     }
 
-    if(event.keyCode == 86) //V
+    if (event.keyCode == 86) //V
     {
         marker.material.color = new THREE.Color(VOTER_COLOR);
         current_list = voters;
@@ -99,7 +142,7 @@ var onKeyDown = function ( event ) {
 };
 
 
-function addPoints(x, y, color, square_size){
+function addPoints(x, y, color, square_size) {
 
     var NUMBER_OF_POINTS_TO_ADD = parseInt(MAX_POINTS * (square_size / MAX_MARKER_SIZE));
     NUMBER_OF_POINTS_TO_ADD = NUMBER_OF_POINTS_TO_ADD > 0 ? NUMBER_OF_POINTS_TO_ADD : 1;
@@ -107,7 +150,7 @@ function addPoints(x, y, color, square_size){
     var signum_x, signum_y;
     var success;
     for (var i = 0; i < NUMBER_OF_POINTS_TO_ADD; i++) {
-        if(!canAddMorePoints()) {
+        if (!canAddMorePoints()) {
             console.log(mode + " limit reached");
             break;
         }
@@ -128,7 +171,7 @@ function canAddMorePoints() {
 }
 
 function addPoint(x, y, color) {
-    if(Math.abs(x) > RANGE/2 || Math.abs(y) > RANGE/2)
+    if (Math.abs(x) > RANGE / 2 || Math.abs(y) > RANGE / 2)
         return false;
 
     var geometry = new THREE.SphereGeometry(1, 32, 32);
@@ -143,44 +186,13 @@ function addPoint(x, y, color) {
     return true;
 }
 
-document.addEventListener( 'keydown', onKeyDown, false );
-document.addEventListener( 'mousemove', onMouseMove, false );
-document.addEventListener( 'mousedown', onMouseDown, false );
+document.addEventListener('keydown', onKeyDown, false);
+document.addEventListener('mousemove', onMouseMove, false);
+document.addEventListener('mousedown', onMouseDown, false);
 //========
 
-//=======
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
-var render = function () {
-    requestAnimationFrame( render );
-
-    // update the picking ray with the camera and mouse position
-    raycaster.setFromCamera( mouse, camera );
-
-    // calculate objects intersecting the picking ray
-    var intersects = raycaster.intersectObjects( scene.children );
-
-    if(intersects.length > 0)
-    {
-        x_pos = parseInt(intersects[0].point.x);
-        y_pos = parseInt(intersects[0].point.y);
-        in_range = Math.abs(x_pos) <= RANGE/2 && Math.abs(y_pos) <= RANGE/2;
-        occupied = intersects[0].object.name && intersects[0].object.name.indexOf("point") != -1;
-    }
-    else {
-        in_range = false;
-    }
-
-    marker.position.x = x_pos;
-    marker.position.y = y_pos;
-
-    renderer.render(scene, camera);
-};
-//=======
-
 var loader = new THREE.FontLoader();
-var font = loader.load(font_src, function (font) {
+var font = loader.load(FONT_SRC, function (font) {
     putLabels(font);
 });
 
@@ -203,7 +215,7 @@ function putLabel(x, y, tag, color, font, size) {
     console.log("put label " + x + " " + y + " " + tag);
 
     mesh.position.x += x;
-    mesh.position.y += y; 
+    mesh.position.y += y;
     mesh.name = tag;
 }
 
