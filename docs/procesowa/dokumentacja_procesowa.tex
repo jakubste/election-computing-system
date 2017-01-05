@@ -85,12 +85,16 @@
 \chapter{Cele projektu}
 \label{cha:cele_projektu}
 Celem projektu jest stworzenie systemu obliczającego wyniki wyborów dla uogólnienia opisanego poniżej systemu k-Borda. 
+
 Stworzona aplikacja webowa ma pozwalać użytkownikowi na szybkie definiowanie wyborów, jak również importowanie istniejących danych, w celu uzyskania wyników. 
+
 Jako wybory rozumiemy nie tylko te, w których głosujący wyłaniają swoich przedstawicieli w organach władzy - swoje preferencje można także określić dla, na przykład, filmów jakie chcemy obejrzeć podczas seansu z przyjaciółmi, w jaką grę chcielibyśmy zagrać, jaką restaurację wybrać na rodzinne spotkanie itp.
+
 Ustalenie preferencji to jedno, ale o tym, kto lub co zostanie wybrane na podstawie preferencji wszystkich głosujących, decyduje również system wyborczy.
-Określając odpowiednie parametry aplikacja ma za zadanie ilustrować jak, w zależności od parametrów, zmieniają się wyniki wyborów, przy tym samym zestawie preferencji.
-W pierwszej kolejności użytkownik określa listę preferencji wyborców. Określając swoje preferencje każdy wyborca porządkuje kandydatów w kolejności od najlepszego do najgorszego. Lista preferencji może zostać wygenerowana losowo, zaimportowana z odpowiednio sformatowanego pliku lub stworzona ręcznie.
-Na wprowadzonych do systemu listach preferencji i ustalonej liczbie k wyboraców użytkownik może wielokrotnie uruchamiać algorytm wyłaniania zwycięzców. Przed każdym uruchomieniem algorytmu ustalany jest parametr p normy $\ell_p$, który w głównej mierze (pomijając listę preferencji wszystkich głosujących) decyduje o wyniku obliczeń.
+Określając parametr p systemu wyborczego aplikacja ma za zadanie ilustrować jak, w zależności od tego parametru, zmieniają się wyniki wyborów, przy tym samym zestawie preferencji.
+
+W pierwszej kolejności użytkownik określa listę preferencji wyborców. Określając swoje preferencje każdy wyborca porządkuje kandydatów w kolejności od najlepszego do najgorszego. Lista preferencji może zostać wygenerowana losowo lub zaimportowana z odpowiednio sformatowanego pliku.
+Na wprowadzonych do systemu listach preferencji i ustalonej liczbie k wyborców użytkownik może wielokrotnie uruchamiać algorytm wyłaniania zwycięzców z różnym parametrem.
 
 
 \chapter{Studium wykonalności}
@@ -102,7 +106,7 @@ Tworzony system nie posiada swojego pierwowzoru.
 
 \section{Opis wymagań}
 \subsection{Wymagania funkcjonalne}
-Ponieważ zastosowano ewolucyjny proces tworzenia oprogramowania, więc wymagania
+Ponieważ zastosowano ewolucyjny proces tworzenia oprogramowania, wymagania
 funkcjonalne zbierane były na bieżąco w trakcie trwania projektu. Dla kolejnych wersji
 systemu dodawano nowe wymagania, bądź nieco zmieniano już istniejące. Wymagania były
 dodawane lub zmienianie na bazie rozmów z klientem i rozwoju prac. Poniżej przedstawiono
@@ -115,14 +119,15 @@ heurystyczne. Definicja wyborów została ściśle określona.
 \item Przystępne przedstawienie wyników wyborów
 \end{itemize}
 \vspace{\baselineskip}
-\textbf{Wymagania dla 1-szej wersji systemu:}
+\textbf{Wymagania dla 1. wersji systemu:}
 \begin{itemize}
+
 \item Wczytanie wyborów do systemu z pliku formatu $.soc$
-\item Obliczanie wyników wyborów przez algorytm typu brute-force
 \item Obliczanie normy $\ell_p$
+\item Obliczanie wyników wyborów przez algorytm typu brute-force
 \end{itemize}
 \vspace{\baselineskip}
-\textbf{Wymagania dla 2-giej wersji systemu:}
+\textbf{Wymagania dla 2. wersji systemu:}
 \begin{itemize}
 \item Przeniesienie wcześniej dodanych funkcjonalności do aplikacji webowej
 \item Generowanie wyborów z rozkładu normalnego
@@ -132,13 +137,13 @@ heurystyczne. Definicja wyborów została ściśle określona.
 normalnego
 \end{itemize}
 \vspace{\baselineskip}
-\textbf{Wymagania dla 3-ciej wersji systemu:}
+\textbf{Wymagania dla 3. wersji systemu:}
 \begin{itemize}
 \item Obliczanie wyników wyborów algorytmem zachłannym
 \item Obliczanie wyników wyborów algorytmem genetycznym
 \end{itemize}
 \vspace{\baselineskip}
-\textbf{Wymagania dla 4-tej - ostatecznej wersji systemu:}
+\textbf{Wymagania dla 4. – ostatecznej – wersji systemu:}
 \begin{itemize}
 \item Wydajniejsze obliczanie wyników wyborów przez algorytm zachłanny i genetyczny
 \item Możliwość parametryzowania z poziomu użytkownika algorytmu genetycznego
@@ -171,6 +176,7 @@ produktu}, \textit{Studium wykonalności} i prezentację kolejnych prototypów. 
 również termin na oddanie dokumentacji i przedstawienie produktu.
 \end{itemize}
 
+\newpage
 \section{Strategia testowania}
 Poprawność działania podstawowych funkcjonalności zapewnianych przez system
 gwarantują testy jednostkowe. Pisane były one na bieżąco po dodawaniu kolejnych
@@ -286,7 +292,7 @@ Tomasz Kasprzyk:
 \item tworzenie testów jednostkowych i porównawczych
 \item współtworzenie prezentacji na zajęcia seminaryjne
 \end{itemize}
-
+\newpage
 Daniel Ogiela:
 \begin{itemize}
 \item projekt i implementacja algorytmu zachłannego zależnego od parametru $p$
@@ -319,6 +325,7 @@ Spotkania z klientem odbywały się rzadziej i miały formę sprawozdań z aktua
 prac. Klient na podstawie sprawozdań sugerował kolejne czynności i ulepszenia systemu,
 nad którymi powinni się skupić członkowie zespołu inżynierskiego.
 
+\newpage
 \section{Wykorzystane narzędzia do zarządzania projektem}
 Do zarządzania wykonywanymi w ramach projektu zadaniami wykorzystano aplikację
 internetową \textit{Trello}. Narzędzie służyło zarówno do określania zadań, przydzielania ich do
@@ -326,32 +333,35 @@ konkretnych członków zespołu, jak i do gromadzenia istotnych dla realizacji p
 informacji. Narzędzie umożliwiało określenie typu zadania oraz wskazanie, na którym etapie
 wykonywania zadania znajduje się dany członek zespołu.
 
-\indent Do przechowywania kodu źródłowego oprogramowania wykorzystano serwis internetowy
-\textit{GitHub}. Dostęp do repozytorium kodu źródłowego na każdym etapie procesu tworzenia
+Do przechowywania kodu źródłowego oprogramowania wykorzystano serwis internetowy
+\textit{GitHub}. Repozytorium jest dostępne publicznie.
+
+Dostęp do repozytorium kodu źródłowego i \textit{Trello} na każdym etapie procesu tworzenia
 oprogramowania miał zarówno manager i klient. 
 
-\indent W celu zdalnego kontaktowania się pomiędzy członkami zespołu korzystano z
-oprogramowania \textit{Slack}. Komunikator ten, oprócz podstawowej funkcjonalności prowadzenia
+W celu zdalnego kontaktowania się pomiędzy członkami zespołu korzystano z
+komunikatora \textit{Slack}. Komunikator ten, oprócz podstawowej funkcjonalności prowadzenia
 konwersacji, pozwala również na transfer plików, przesyłanie fragmentów sformatowanego
 kodu w postaci $code \ snippets$ oraz wyszukiwanie powyższych w całej historii konwersacji.
-Korzystano również z mechanizmu botów, m.in. $reminderów$ (cyklicznych przypomnieniach,
-np. o $standupach$) a także informatorach o zmianach stanu repozytorium czy $build$ serwera.
+Korzystano również z mechanizmu botów, w celu monitorowania zmian w repozytorium czy ciągłej integracji.
 
-\indent \textit{Pycharm}, \textit{IDE} firmy \textit{JetBrains}. W wersji dla studentów udostępniony jest pakiet
+\textit{Pycharm}, \textit{IDE} firmy \textit{JetBrains}. W wersji dla studentów udostępniony jest pakiet
 zaawansowanych funkcjonalności, w szczególności integracja z frameworkiem \textit{Django}. Z
 poziomu \textit{IDE} można również aktualizować repozytorium (opcje dostępne w zakładce \textit{VCS})
 W celu przepisywania dokumentacji z \textit{Google Docs} do \textit{LaTeX} korzystano z edytora
 \textit{TexMaker}. Funkcja \textit{WYSIWYG} znacznie przyspiesza proces tworzenia poprawnie
 sformatowanego dokumentu.
 
-\indent Serwisy \textit{Travis CI} oraz \textit{Coveralls.io} służyły automatycznemu uruchamianiu testów jednostkowych wraz z badaniem pokrycia kodu testami. Serwisy te połączono dla wygody ze \textit{Slackiem} zespołu projektowego poprzez wykorzystanie wspomnianych wyżej botów.
+Serwisy \textit{Travis CI} oraz \textit{Coveralls.io} służyły automatycznemu uruchamianiu testów jednostkowych wraz z badaniem pokrycia kodu testami. Serwisy te połączono dla wygody ze \textit{Slackiem} zespołu projektowego poprzez wykorzystanie wspomnianych wyżej botów.
 
-\indent Dodatkowo każdy zmiana na głównej gałęzi repozytorium skutkuje automatycznym zbudowaniem serwisu na platformie \textit{Heroku} - aktualna wersja serwisu jest zawsze dostępna pod adresem  \url{https://election-computing-system.herokuapp.com}.
+Dodatkowo każdy zmiana na głównej gałęzi repozytorium skutkuje automatycznym zbudowaniem serwisu na platformie \textit{Heroku} - aktualna wersja serwisu jest zawsze dostępna pod adresem \\  \url{https://election-computing-system.herokuapp.com}.
 
 \section{Weryfikacja wyników projektu}
 Jakość obliczanych wyników wyborów weryfikowano za pomocą testów
-porównawczych oraz oceny wizualnej. Testy porównawcze polegały one na porównywaniu wyników generowanych przez różne
-algorytmy heurystyczne. Porównanie dotyczyło czasów działania algorytmów oraz zadowoleń wyborców z wyniku wypracowanych przez algorytmy. Ocena wizualna dotyczyła ocenienia wykresów wyników wyborów generowanych przez algorytmy heurystyczne. Sprawdzano czy w miarę wzrostu parametru $p$ punkty reprezentujące zwycięskich kandydatów stopniowo rozpraszały się na mapie spektrum poglądów. Ocena wizualna dotyczyła tylko wyborów generowanych z rozkładu normalnego - tylko dla tych wyborów, wyborcy i kandydaci są reprezentowani jako punkty na płaszczyźnie.
+porównawczych oraz oceny wizualnej. Testy porównawcze polegały na porównywaniu wyników generowanych przez różne
+algorytmy heurystyczne. Porównanie dotyczyło czasów działania algorytmów oraz zadowoleń wyborców z wyniku wypracowanych przez algorytmy. Dodatkowo dla małych rozmiarów danych porównywano wyniki algorytmów heurystycznych z wynikami uzyskanymi metodą \textit{brute-force}.
+
+Ocena wizualna dotyczyła ocenienia wykresów wyników wyborów – sprawdzano czy w miarę wzrostu parametru $p$ punkty reprezentujące zwycięskich kandydatów stopniowo rozpraszały się na mapie spektrum poglądów, co byłoby zgodne z oczekiwaniami dotyczącymi zachowywania się wyników wyborów w tym systemie wyborczym. Ocena wizualna dotyczyła tylko wyborów generowanych z rozkładu normalnego - tylko dla tych wyborów, wyborcy i kandydaci są reprezentowani jako punkty na płaszczyźnie.
 
 \chapter{Przebieg prac}
 \section{Harmonogram}
@@ -381,6 +391,7 @@ przewidywał czas ukończenia najważniejszych elementów systemu.
 	\end{itemize}
 \end{itemize}
 
+\newpage
 \section{Opis zebrania podstawowych wymagań klienta i podjęcie
 decyzji projektowych}
 
@@ -397,6 +408,7 @@ bezpośrednio związane z tematem projektu inżynierskiego. Klient przekazał po
 przystąpiono do dokładnego przestudiowania dziedziny problemu. Po wnikliwej analizie
 podjęto główne decyzje projektowe. Przygotowano również prezentację na zajęcia z
 managerem opisującą zadany projekt inżynierski.
+
 \subsection{Wynik}
 \begin{itemize}
 \item Lista początkowych wymagań funkcjonalnych i niefunkcjonalnych systemu
@@ -404,21 +416,22 @@ managerem opisującą zadany projekt inżynierski.
 \item Opis projektu inżynierskiego w postaci prezentacji \textit{Wizji produktu}
 \end{itemize}
 
+\newpage
 \section{Opis kolejnych wersji systemu}
 \subsection{Wersja 1.}
 \subsubsection{Czas trwania}
-Kwiecień 2016
+kwiecień 2016
 \subsubsection{Cele wyznaczone do osiągnięcia}
 Jednym z celów do osiągnięcia w pierwszej wersji systemu (niespełniającej wszystkich
 wymagań) było zaimplementowanie wczytywania do systemu preferencji wyborców
 otrzymanych z pliku odpowiedniego formatu. Drugim ważnym celem była implementacja
-algorytmu typu brute-force do obliczania wyników wyborów. Implementacja wymienionych
+algorytmu typu \textit{brute-force} do obliczania wyników wyborów. Implementacja wymienionych
 zadań poza dodaniem funkcjonalności systemowi miała posłużyć dookreśleniu wymagań
-systemu i poznaniu specyfiki rozwiązywanego problemu. Algorytm typu brute-force miał
+systemu i poznaniu specyfiki rozwiązywanego problemu. Algorytm typu \textit{brute-force} miał
 również przydać się w późniejszej fazie projektu do testów porównawczych docelowego
 algorytmu dla małych rozmiarów danych wejściowych.
 \subsubsection{Opis przebiegu prac}
-Prace rozpoczęto od implementacji wczytywania wyborów z pliku z rozszerzeniem $.soc$.
+Przed przystąpieniem do implementacji poświęcono czas na zaprojektowanie struktury obiektowej informacji przechowywanych w systemie. Prace rozpoczęto od implementacji wczytywania wyborów z pliku z rozszerzeniem $.soc$.
 Następnie dodano liczenie normy $\ell_p$ oraz algorytmu typu brute-force pozwalającego na
 obliczanie wyników wyborów dla prostych danych. Z czasem stwierdzono, że wczytywanie
 danych z pliku jest niewystarczające dla testowania dużych danych, stąd rozpoczęto prace
@@ -426,32 +439,32 @@ nad generowaniem wyborów z rozkładu normalnego. Zdecydowano o możliwości
 przedstawiania wyborców i kandydatów jako punkty na płaszczyźnie. Preferencje wyborcze
 danego wyborcy zdecydowano ustalać na podstawie odległości euklidesowych punktu
 przedstawiającego tego wyborcę do punktów przyporządkowanych kandydatom do komitetu.
-W dalszych pracach dodano również walidację poprawności pliku wejściowego oraz
-zaobserwowano konieczność zaprojektowania obiektowej struktury danych występujących w
-systemie. W związku z tym stworzono diagram klas.
+W dalszych pracach dodano również walidację poprawności pliku wejściowego. 
 \subsubsection{Wynik}
 \begin{itemize}
+\item Diagram klas
 \item Pierwsza wersja systemu uruchamiana z poziomu konsoli \textit{Pythona} przyjmująca za
 argumenty parametr $p$ konieczny do obliczania normy $\ell_p$ oraz plik z rozszerzeniem
 $.soc$.
 \item Dodane funkcjonalności: wczytywanie wyborów z pliku z rozszerzeniem $.soc$,
 algorytm typu brute-force, walidacja danych z pliku wejściowego
 \item Rozpoczęcie prac nad generowaniem własnych wyborów
-\item Diagram klas
 \item Podjęcie decyzji o wykonaniu systemu w postaci aplikacji webowej i wykorzystaniu
 do tego frameworka \textit{Django 1.9}
 \end{itemize}
+
+\newpage
 \subsection{Wersja 2.}
 \subsubsection{Czas trwania}
-Maj 2016
+maj 2016
 \subsubsection{Cele wyznaczone do osiągnięcia}
 Głównym celem dla tej wersji systemu było przeniesienie zrealizowanych wcześniej
 funkcjonalności do stworzonej na bazie frameworka \textit{Django 1.9} aplikacji webowej. Celem
 było również dokończenie prac nad generacją własnych wyborów, w szczególności dodanie
 możliwości generowania preferencji w obiektowo zorientowany sposób.
 \subsubsection{Opis przebiegu prac}
-Prace rozpoczęto od stworzenia szkieletu aplikacji webowej generowanego przez skrypt
-\textit{Django 1.9}. Następnie dodawano kolejne funkcjonalności systemu: możliwość rejestracji i
+Prace rozpoczęto od stworzenia szkieletu aplikacji webowej we frameworku \textit{Django 1.9}. 
+Następnie dodawano kolejne funkcjonalności systemu: możliwość rejestracji i
 logowania się użytkowników, tworzenie wyborów, usuwanie wyborów czy wyświetlanie dla
 danego użytkownika stworzonych wyborów. Stworzono modele pozwalające na zapisanie
 obiektów w bazie danych. Równolegle dodano możliwość generowania wyborów, które
@@ -480,19 +493,17 @@ wyborów generowanych z rozkładu normalnego)
 
 \subsection{Wersja 3.}
 \subsubsection{Czas trwania}
-Koniec maja 2016 - czerwiec 2016
+koniec maja 2016 - czerwiec 2016
 \subsubsection{Cele wyznaczone do osiągnięcia}
 Głównym celem wyznaczonym dla tej wersji systemu było stworzenie pierwszych wersji
-dwóch algorytmów heurystycznych. Pierwszym z nich jest algorytm genetyczny. Drugim z
-nich jest algorytm zachłanny. Ponadto zdecydowano się skupić nad operacjach odczytu i
-zapisu do bazy danych w celu potencjalnego ograniczenia liczby ich wykonania.
+dwóch algorytmów heurystycznych – genetycznego oraz zachłannego. 
+Ponadto zdecydowano się skupić nad optymalizacją ilości operacji odczytu danych z bazy danych, jako czynnika, 
+który znacząco spowalniał wykonanie programu.
 \subsubsection{Opis przebiegu pracy}
 Rozpoczęto od ograniczenia liczby operacji odczytu preferencji wyborczych z bazy danych
-przy wykonywaniu algorytmu typu brute-force. Zredukowano liczbę tych operacji poprzez
-jednokrotne wczytanie do pamięci preferencji wyborczych każdego wyborcy. Następnie
-jeszcze bardziej zredukowano liczbę odwołań do bazy danych poprzez wczytywanie
-preferencji danego wyborcy do pamięci od razu przy wczytywaniu z bazy danych tego
-wyborcy. Po wykonaniu zadania redukcji operacji odczytu danych z bazy danych,
+przy wykonywaniu algorytmu \textit{brute-force}. Zredukowano liczbę tych operacji poprzez
+jednokrotne wczytanie z bazy danych preferencji wyborczych i przechowywanie ich w pamięci podręcznej.
+Po wykonaniu zadania redukcji operacji odczytu danych z bazy danych,
 przystąpiono do równoległej realizacji algorytmu genetycznego i algorytmu zachłannego. W
 ramach zajęć seminaryjnych wykonano prezentację, w której pokazano funkcjonalność
 aktualnej wersji systemu.
@@ -502,12 +513,13 @@ aktualnej wersji systemu.
 genetycznego i zachłannego
 \item Czas działania algorytmu zachłannego wyraźnie krótszy od algorytmu typu
 brute-force
-\item Czas działania algorytmu genetycznego porównywalny z czasem działania algorytmu
-typu brute-force
+\item Działający algorytm genetyczny, z parametrami zapisanymi na stałe w kodzie programu
 \item Redukcja operacji odczytu danych z bazy danych przy obliczaniu wyników wyborów
 algorytmem typu brute-force
 \end{itemize}
-\subsection{Wersja 4. - końcowa}
+
+\newpage
+\subsection{Wersja 4. – końcowa}
 \subsubsection{Czas trwania}
 Sierpień 2016 - Grudzień 2016
 \subsubsection{Cele wyznaczone do osiągnięcia}
@@ -519,19 +531,20 @@ Ponadto skupiono się na ulepszeniu dynamicznego wyświetlania wyników wyborów
 \subsubsection{Opis przebiegu pracy}
 Algorytmy heurystyczne przyspieszano głównie poprzez eliminację niepotrzebnych operacji
 na bazie danych. Zmniejszało to czas dostępu do danych i tym samym czas trwania
-algorytmów. Dla ułatwienia procesu optymalizacji algorytmów konieczne okazało się
-umożliwienie parametryzacji algorytmów (w szczególności genetycznego) z poziomu
-interfejsu webowego. Ułatwienie porównywania rezultatów wiązało się z aktualizacją
-wyglądu listy rezultatów. Dla realizacji celu ulepszenia wyświetlania wyników postanowiono
-zamienić dotychczasową listę z rozwiązaniami, na suwak pozwalający na szybsze
-przełączania pomiędzy wykresami wyników. Ważnym aspektem zadania jest odpowiednie
-posortowanie wyników - najpierw względem algorytmów, następnie według parametru $p$ (tak
-aby parametr $p$ kolejnego wyniku był nie mniejszy niż poprzedniego).
+algorytmów. 
+
+Wprowadzono możliwości ustalania parametrów algorytmu genetycznego (takich jak: ilość cykli, prawdopodobieńśtwo
+mutacji, część puli podlegająca krzyżowaniu) z poziomu interfejsu webowego.
+Dostosowano wygląd listy rezultatów, tak by pokazywała zastosowane parametry.
+
+Dla realizacji celu ulepszenia sposobu wyświetlania wyników zaimplementowano możliwość porównywania 
+wielu wyników na jednym wykresie, przełączając się między wynikami poprzez suwak. 
+
 \subsubsection{Wynik}
 \begin{itemize}
 \item Dodanie wersji algorytmu zachłannego dla szczególnego przypadku - algorytm $Greedy \ CC$
-\item Zastąpienie rozwijanej listy do wyboru wykresów suwakiem
-\item Dodanie informacji o wyniku punktowym dla każdego elementu listy rezultatów
+\item Możliwość porównania zmieniających się wyników na jednym wykresie.
+\item Dodanie informacji o czasie wykonania, wyniku punktowym i ew. parametrach algorytmu na liście rezultatów
 \item Dodanie możliwości usuwania pojedynczego rezultatu
 \end{itemize}
 
