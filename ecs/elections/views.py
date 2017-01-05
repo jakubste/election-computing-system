@@ -204,6 +204,17 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
         return super(ElectionGenerateDataFormView, self).form_valid(form)
 
 
+class ElectionPaintDataFormView(ConfigureElectionMixin, FormView):
+    form_class = ElectionGenerateDataForm
+    template_name = 'election_paint_data.html'
+    election = None
+
+    def form_valid(self, form):
+        # generator = ElectionGenerator(self.election, **form.cleaned_data)
+        # generator.generate_elections()
+        return super(ElectionPaintDataFormView, self).form_valid(form)
+
+
 class ElectionChartView(ChartMixin):
     datasets_number = 2
     labels = ['Candidates', 'Voters']
