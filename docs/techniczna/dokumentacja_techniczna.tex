@@ -287,7 +287,8 @@ formularz określający parametry wyniku \\
 
 \section{Moduł wizualizacji wyborów i wyników wyborów}
 \subsection{Opis ogólny}
-Moduł odpowiedzialny za stworzenie wykresu \textit{2D} wizualizującego wybory i jego wyniki.
+Moduł odpowiedzialny za stworzenie wykresu \textit{2D} wizualizującego wybory i jego wyniki
+oraz wykresu zestawiającego czasy obliczeń poszczególnych algorytmów w zależności od parametru $p$.\\
 Wizualizacja dotyczy tylko wyborów wygenerowanych z rozkładu normalnego.\\ Wyborcy i
 kandydaci są reprezentowani jako punkty na płaszczyźnie. Punkty reprezentujące wyborców
 i kandydatów mają na wykresie odmienne kolory. Na wykresie wyników wyborów punkty
@@ -465,12 +466,12 @@ użytkownika.
 \subsection{Stworzenie wyborów}
 \begin{enumerate}
 \item Użytkownik klikając przycisk \textit{New election} na stronie, wysyła za pomocą
-przeglądarki internetowej żądanie stworzenie nowych wyborów.
+przeglądarki internetowej żądanie stworzenia nowych wyborów.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
 \textit{ElectionCreateView}).
 \item Widok posiada zdefiniowany szablon \code{election\_create.html} i formularz \textit{ElectionForm}.
 Wykorzystując te komponenty tworzy i wysyła do użytkownika stronę z formularzem.
-\item Użytkownik wypełnia formularz (pola \textit{Name} i \textit{Commitee size}) i wysyła uzupełniony
+\item Użytkownik wypełnia formularz (pola \textit{Name} i \textit{Committee size}) i wysyła uzupełniony
 formularz.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
 \textit{ElectionCreateView}).
