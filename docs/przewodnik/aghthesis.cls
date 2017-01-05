@@ -31,7 +31,7 @@ and that I am aware of the rules of the Penal Code referring to criminal liabili
 
 % PROCESSING OPTIONS
 \ProcessOptions
-\LoadClass[a4paper]{article}
+\LoadClass[a4paper, twoside]{article}
 % \LoadClass[a4paper, twoside]{article} - dwustronne drukowanie (zamiast liniji wyżej)
 
 

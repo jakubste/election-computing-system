@@ -464,6 +464,7 @@ normalnym oraz zaimportowanych z pliku w formacie \textit{.soc}
 \centerline{\includegraphics[scale=0.7]{pics/Diagram_Komunikacji.png}}
 \captionof{figure}{Diagram komunikacji}
 \end{center}
+\newpage
 
 \subsubsection{Opis diagramu}
 Na diagramie oprócz przytoczonych modułów znajdują się przeglądarka internetowa oraz
@@ -511,7 +512,14 @@ Daniel Ogiela
 \end{itemize}
 Jakub Stępak
 \begin{itemize}
-\item czynność1
+\item stworzenie szkieletu aplikacji
+\item konfiguracja ciągłej integracji
+\item implementacja algorytmu \textit{brute-force}
+\item implementacja algorytmu genetycznego
+\item przedstawienie wyników na wykresie i tabelaryczne
+\item współtworzenie testów jednostkowych i porównawczych
+\item współtworzenie dokumentacji projektowej
+\item współtworzenie prezentacji na zajęcia seminaryjne
 \end{itemize}
 
 \subsection{Narzędzia do zarządzania projektem}
@@ -625,13 +633,14 @@ jako punkty na płaszczyźnie, w miarę wzrostu parametru $p$ rozproszenie punkt
 reprezentujących zwycięzców powinno się zwiększać aż do osiągnięcia pewnej granicznej
 wartości parametru $p$. Dla wartości parametrów $p$ większych od tej granicznej wartości, wyniki
 wyborów się już nie zmieniają.
+\newpage
 
 \subsection{Prezentacja i jakość wyników}
 \subsubsection{Prezentacja tabeli z wszystkimi wynikami dla danych wyborów}
 Poniżej tabela z czasami i zadowoleniem wyborców z wyników wyborów obliczonych za
 pomocą różnych algorytmów. Testowane wybory wygenerowano z rozkładu normalnego.
 Zawierają 30 kandydatów, 50 wyborców oraz komitet zwycięski liczący 15 kandydatów.
-Wyniki obliczono dla różnych wartości parametru $p$. Tabela generowana i wyświetlana przez system.
+Wyniki obliczono dla różnych wartości parametru $p$. Tabela generowana i wyświetlana przez system. \\
 %\clearpage
 
 \begin{center}
@@ -639,39 +648,27 @@ Wyniki obliczono dla różnych wartości parametru $p$. Tabela generowana i wyś
 \captionof{figure}{Wyniki wyborów w postaci wyświetlonej przez system tabeli}
 \end{center}
 
-System wyświetla wyniki w taki sposób, aby wyniki wyborów wygenerowanych dla tego samego parametru $p$ były zgrupowane razem. W tym celu wyniki wyborów dla tego samego parametru $p$ występują obok siebie oraz mają inny kolor tła od sąsiednich wyników dla innego parametru $p$. Warto zwrócić uwagę, że w miarę wzrostu parametru $p$ wartość zadowolenia wyborców z komitetów maleje. Wynika to specyfiki funkcji satysfakcji dla systemu $\ell_p-Borda$. Porównywanie między sobą wartości zadowoleń z danego komitetu dla różnych wartości parametru $p$ raczej mija się z celem.  
+\noindent System wyświetla wyniki w taki sposób, aby wyniki wyborów wygenerowanych dla tego samego parametru $p$ były zgrupowane razem. W tym celu wyniki wyborów dla tego samego parametru $p$ występują obok siebie oraz mają inny kolor tła od sąsiednich wyników dla innego parametru $p$. Warto zwrócić uwagę, że w miarę wzrostu parametru $p$ wartość zadowolenia wyborców z komitetów maleje. Wynika to specyfiki funkcji satysfakcji dla systemu $\ell_p-Borda$. Porównywanie między sobą wartości zadowoleń z danego komitetu dla różnych wartości parametru $p$ raczej mija się z celem.  
 
 \newpage
 \subsubsection{Prezentacja szczegółowych wyników wyborów}
 Na kolejnych grafikach przedstawiono szczegółowe wyniki wyborów w postaci wykresów $2D$. Wybory wygenerowano z rozkładu
-normalnego. Wyborcy i kandydaci są w nich przedstawiani jako punkty na płaszczyźnie. Wybory składają się z 30 kandydatów, 100 wyborców oraz komitetu
-zwycięskiego liczącego 10 kandydatów. Wyświetlone wyniki obliczano za pomocą algorytmu
-zachłannego dla rosnących parametrów $p$.
+normalnego. Wyborcy i kandydaci są w nich przedstawiani jako punkty na płaszczyźnie. Wybory składają się z $30$ kandydatów, $100$ wyborców oraz komitetu zwycięskiego liczącego $10$ kandydatów. Wyświetlone wyniki obliczano za pomocą algorytmu zachłannego dla rosnących parametrów $p$. Grafiki pochodzą ze wcześniejszej wersji systemu.
 \begin{center}
-\centerline{\includegraphics[scale=0.65]{pics/p1.png}}
+\centerline{\includegraphics[scale=0.6]{pics/p1.png}}
 \captionof{figure}{Wyniki wyborów dla $p$ = 1}
-\clearpage
-\centerline{\includegraphics[scale=0.65]{pics/p5.png}}
+%\clearpage
+\centerline{\includegraphics[scale=0.6]{pics/p5.png}}
 \captionof{figure}{Wyniki wyborów dla $p$ = 5}
-\centerline{\includegraphics[scale=0.65]{pics/p20.png}}
+\centerline{\includegraphics[scale=0.6]{pics/p20.png}}
 \captionof{figure}{Wyniki wyborów dla $p$ = 20}
 \end{center}
 
 \noindent Na wykresach można zaobserwować stopniowe rozpraszanie się zwycięskich kandydatów
 dla zwiększającej się wartości parametru $p$.
+\newpage
 
 \section{Testy porównawcze}
-\subsection{Czasy działania algorytmów}
-\begin{center}
-\centerline{\includegraphics[scale=0.65]{pics/czas_dzialania.png}}
-\captionof{figure}{Czas działania algorytmów w zależności od parametru $p$}
-\end{center}
-Na wykresie zaprezentowano czasy działania różnych algorytmów w zależności od
-dobranego parametru $p$. Testy przeprowadzono dla wyborów zawierających $30$
-kandydatów, $50$ wyborców oraz komitet zwycięski liczący $15$ kandydatów. Algorytm
-zachłanny według zasady \textit{Chamberlina-Couranta} nie zmienia swojego czasu obliczeń, gdyż działanie
-algorytmu nie zależy od parametru $p$ . Najszybciej działa algorytm zachłanny według zasady
-\textit{Chamberlina-Couranta}, drugi w kolejności jest algorytm zachłanny zależny od parametru $p$ , a najwolniejszy jest algorytm genetyczny.
 
 \subsection{Zrównanie jakości działania algorytmów zachłannych}
 \subsubsection{Przewidywany schemat działania algorytmów zachłannych}
@@ -684,6 +681,7 @@ Sprawdzono zależność granicznej wartości parametru $p$ od różnych parametr
 
 \subsubsection{Stopień pokrywania się zwycięzców dla różnych wartości parametru $p$}
 W celu zbadania jaki jest procentowy stopień pokrycia się komitetów, przeprowadzono testy dla różnych wartości parametru $p$. Dla każdej wybranej wartości parametru $p$ przeprowadzono $10$ prób. Każda próba to inaczej zdefiniowane wybory. Wśród $10$ prób rozmiar komitetu znajdował się w przedziale $[10, 55]$, liczba kandydatów w przedziale $[45, 150]$, a liczba wyborców w przedziale $[40, 150]$. Poniżej przedstawiono na wykresie średnie i mediany pokrycia się zwycięzców. Dla każdej wartości parametru $p$ obliczono średnią i medianę z $10$ opisanych prób. 
+\newpage
 
 \begin{center}
 \centerline{\includegraphics[scale=1]{pics/srednia_mediana_od_parametr_p.png}}
@@ -692,7 +690,48 @@ W celu zbadania jaki jest procentowy stopień pokrycia się komitetów, przeprow
 
 \noindent Wartości średnich i median znajdują się blisko siebie dla każdej wartości parametru $p$. Rozrzut wyników dla każdej wartości parametru $p$ nie był duży. Już dla wartości $p = 50$ średnie pokrycie się komitetów obliczanych przez obydwa algorytmy przekroczyło $87\%$. Dla $p = 100$ średnia przekroczyła $90 \%$. Natomiast dla $p = 1000$ średnia wzrosła nieznacznie w stosunku do średniej dla wartości $p = 100$. Pozostałe kilka bądź kilkanaście procent zwycięzców, którzy się nie pokrywają dla obydwu algorytmów stanowią wspomniane wcześniej pary bądź trójki kandydatów, którzy wymieniają się na pozycji zwycięzców dla dużych wartości parametru $p$, które są rzędu klika tysięcy.
 
-\noindent Wyniki wskazują, że już dla wartości $p = 50$ można stosować algorytm według zasady \mbox{\textit{Chamberlina-Couranta}} zamiast drugiego algorytmu zachłannego, mając dużą szansę na pokrycie się zwycięzców na poziomie $90 \%$. Wartość graniczną parametru $p$ trudno przewidzieć niezależnie od parametrów wyborów.  
+\noindent Wyniki wskazują, że już dla wartości $p = 50$ można stosować algorytm według zasady \mbox{\textit{Chamberlina-Couranta}} zamiast drugiego algorytmu zachłannego, mając dużą szansę na pokrycie się zwycięzców na poziomie $90 \%$. Wartość graniczną parametru $p$ trudno przewidzieć niezależnie od parametrów wyborów. 
+
+\subsection{Porównanie algorytmu genetycznego i algorytmu zachłannego dla różnych wartości parametru p} 
+
+\subsubsection{Sposób przeprowadzenia testów}
+W ramach testów porównawczych sprawdzono działanie algorytmu zachłannego i algorytmu genetycznego dla różnych zestawów parametrów działania. Porównano osiem różnych kombinacji parametrów działania algorytmu genetycznego. Liczba cykli w testowanych zestawach parametrów wynosiła $20$ lub $50$, prawdopodobieństwo mutacji wynosiło $50\%$ lub $100\%$, a zakres krzyżowania $10\%$, $50\%$ lub $100\%$. Dla tak dobranych parametrów algorytmu genetycznego zebrano wartości wybranych komitetów i czasy działania algorytmów i porównano z wynikami i czasami algorytmu zachłannego. Wartości parametru $p$, dla którego przeprowadzono badania wynosiły $1$, $5$ i $50$. Testy przeprowadzono dla wyborów zawierających $30$ kandydatów, $50$ wyborców oraz rozmiaru komitetu liczącego $15$ zwycięzców.   
+
+\subsubsection{Wyniki testów}
+Po zebraniu wyników testów, zestawiono dla każdej z badanych wartości parametru $p$ rezultaty osiągnięte przez algorytm zachłanny oraz reprezentanta algorytmu genetycznego dla danej wartości parametru $p$ (wszystkie wyniki testów umieszczono w dokumentacji technicznej). Reprezentantów algorytmu genetycznego dla danej wartości parametru $p$ dobierano oddzielnie dla wartości uzyskanego komitetu oraz czasu działania. Dla danego parametru $p$ wybierano najwyższą uzyskaną wartość komitetu oraz najkrótszy czas spośród tych wyników algorytmu genetycznego, które były co najmniej tak samo dobre jak dla wynik algorytmu zachłannego. Zestawienia wartości komitetów oraz czasów działania umieszczono w poniższych tabelach. \\
+\begin{center}
+
+\begin{tabular}{|l|c|c|}
+\hline 
+parametr p & algorytm zachłanny & algorytm genetyczny \\ 
+\hline 
+1 & 14364 & 14364 \\ 
+\hline 
+5 & 1906.82 & 1906.82 \\ 
+\hline 
+50 & 1441.4 & 1446.44 \\ 
+\hline 
+\end{tabular} 
+\captionof{table}{Zestawienie wartości komitetów}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline 
+parametr p & algorytm zachłanny & algorytm genetyczny \\ 
+\hline 
+1 & 2.1 & 10.22 \\ 
+\hline 
+5 & 10.87 & 27.65 \\ 
+\hline 
+50 & 11.64 & 13.27 \\ 
+\hline 
+\end{tabular} 
+\captionof{table}{Zestawienie czasów działania}
+\end{center}
+
+\noindent Uzyskano wyniki, w których dla każdej wartości parametru $p$ algorytm genetyczny dla pewnego zestawu parametrów działania był co najmniej tak dobry jak algorytm zachłanny. Dla niższych wartości parametru $p$ algorytm genetyczny dla pewnych parametrów uzyskiwał wartości równe wynikom algorytmu zachłannego. Wraz ze wzrostem wartości parametru $p$ algorytm genetyczny umacniał się w stosunku do algorytmu zachłannego by w końcu zdecydowanie przewyższać jego wartości. Dla $p=50$ wyniki dla wszystkich ośmiu kombinacji parametrów działania algorytmu genetycznego były lepsze od wyniku algorytmu zachłannego. Czas działania algorytmu zachłannego był krótszy od czasu trwania reprezentantów algorytmu genetycznego. Jednak dla wartości parametru $p$ wynoszącej $50$ czasy były bardzo zbliżone. Czasy działania algorytmu genetycznego i zachłannego są coraz bliżej siebie wraz ze wzrostem parametru $p$ ze względu na fakt, że wraz ze wzrostem parametru $p$ coraz więcej wyników algorytmu genetycznego dla różnych parametrów działania okazuje się być lepszych bądź równych wynikowi algorytmu zachłannego.    
+\newpage
 
 % o ile to mozliwe prosze uzywac odwolan \cite w konkretnych miejscach a nie \nocite
 
