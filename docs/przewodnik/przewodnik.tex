@@ -552,6 +552,7 @@ na przeglądanie wyników danych wyborów za pomocą suwaka oraz na usuwanie
 pojedynczych wyników. Do każdego elementu listy rezultatów dodano informację o wyniku
 punktowym. Ponadto poprawiono wygląd strony.
 
+\newpage
 \section{Opisy algorytmów heurystycznych}
 \subsection{Algorytm zachłanny}
 Algorytm aproksymuje wyniki wyborów na bazie funkcji satysfakcji systemu $\ell_p-Borda$ .
@@ -585,7 +586,11 @@ tylko wtedy, gdy badany kandydat jest wyżej w preferencji wyborcy od każdego z
 wybranych kandydatów. Ta różnica wynika z wykorzystania innej funkcji satysfakcji.
 
 \subsection{Algorytm genetyczny}
+Ideą algorytmu genetycznego jest poddawanie „osobników” - w tym wypadku wybranych komitetów (podzbiorów kandydatów) - działaniom analogicznym do ewolucji w naturze. Osobniki są więc krzyżowane (wybierani są losowo kandydaci do nowego komitetu z dwóch już istniejących) lub mutowane (zmieniany jest losowo jeden z kandydatów w komitecie). Te procesy powtarza się kilkadziesiąt - kilkaset razy, za każdym razem pozostawiając w puli tylko określoną ilość najlepszych osobników.
 
+Po zakończeniu działania najlepszy z pozostałych w puli kandydatów jest podawany jako wynik działania algorytmu.
+
+\newpage
 \section{Efekt końcowy}
 \subsection{Oczekiwane rezultaty}
 Wyniki wyborów, pomimo takich samych preferencji wyborców, powinny się różnić w
@@ -636,6 +641,7 @@ Wyniki obliczono dla różnych wartości parametru $p$. Tabela generowana i wyś
 
 System wyświetla wyniki w taki sposób, aby wyniki wyborów wygenerowanych dla tego samego parametru $p$ były zgrupowane razem. W tym celu wyniki wyborów dla tego samego parametru $p$ występują obok siebie oraz mają inny kolor tła od sąsiednich wyników dla innego parametru $p$. Warto zwrócić uwagę, że w miarę wzrostu parametru $p$ wartość zadowolenia wyborców z komitetów maleje. Wynika to specyfiki funkcji satysfakcji dla systemu $\ell_p-Borda$. Porównywanie między sobą wartości zadowoleń z danego komitetu dla różnych wartości parametru $p$ raczej mija się z celem.  
 
+\newpage
 \subsubsection{Prezentacja szczegółowych wyników wyborów}
 Na kolejnych grafikach przedstawiono szczegółowe wyniki wyborów w postaci wykresów $2D$. Wybory wygenerowano z rozkładu
 normalnego. Wyborcy i kandydaci są w nich przedstawiani jako punkty na płaszczyźnie. Wybory składają się z 30 kandydatów, 100 wyborców oraz komitetu
