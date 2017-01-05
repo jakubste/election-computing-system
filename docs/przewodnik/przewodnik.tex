@@ -62,9 +62,9 @@ Dla następujących preferencji:
 \begin{center}
 \includegraphics[width=0.8\textwidth]{pics/positions.png}
 \end{center}
-komitetu $K = \left\{a, b, e\right\}$ i wyborcy $v_3$ ciąg pozycji oznaczany ${pos_v}_3$ wynosi $(3,4,6)$, gdyż pozycja najlepszego kandydata ze zbioru $K$ wynosi $3$ (kandydat $e$), druga najlepsza to pozycja nr $4$ (kandydat $b$), a ostatnią pozycją najmniej preferowanego kandydata jest pozycja nr $6$ (kandydat $a$). \\ \\
+komitetu $K = \left\{a, b, e\right\}$ i wyborcy $v_3$ ciąg pozycji oznaczany $pos_{v_3}$ wynosi $(3,4,6)$, gdyż pozycja najlepszego kandydata ze zbioru $K$ wynosi $3$ (kandydat $e$), druga najlepsza to pozycja nr $4$ (kandydat $b$), a ostatnią pozycją najmniej preferowanego kandydata jest pozycja nr $6$ (kandydat $a$). \\ \\
 W tym momencie można zdefiniować funkcję satysfakcji, która jako argument przyjmuje
-zdefiniowany przed chwilą ciąg pozycji, który dla każdego wyborcy $i$ dla każdego komitetu
+zdefiniowany przed chwilą ciąg pozycji, który dla każdego wyborcy i dla każdego komitetu
 jest określony jednoznacznie. Funkcja satysfakcji określająca zadowolenie danego wyborcy
 ze zwycięskiego komitetu, będzie więc oznaczana jako $f(i_1, i_2, ... , i_k)$. \\ \\
 Poprzez różne zdefiniowanie funkcji satysfakcji, definiowane są odmienne systemy
@@ -100,7 +100,7 @@ l_\infty(x_1, x_2,\dots, x_n) = max(x_1, x_2,\dots, x_n)
 f_{{\ell_p}-Borda}(i_1, i_2, ..., i_k) = \ell_p(\beta(i_1), \beta(i_2), ..., \beta(i_k)) = \sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+\dots+[\beta(i_k)]^p}
 \end{equation}
 \clearpage
-Funkcja jest uogólnieniem systemu $k-Borda$. Jeżeli za $p$ przyjęta zostanie wartość $1$,
+\noindent Funkcja jest uogólnieniem systemu $k-Borda$. Jeżeli za $p$ przyjęta zostanie wartość $1$,
 zdefiniowana funkcja przyjmuje postać funkcji satysfakcji dla zwykłego systemu $k-Borda$. Dla $p$ dążącego do nieskończoności funkcja przyjmuje postać funkcji satysfakcji dla systemu
 \textit{Chamberlina-Couranta}.
 
@@ -188,6 +188,7 @@ wczytywać pewien format pliku wejściowego definiującego wybory, których wyni
 	\item wygodny sposób porównywania wyników wyborów
 \end{itemize}
 
+
 % ------------------------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------------------------
@@ -202,7 +203,7 @@ Tabela składa się z trzech pól opisujących dane wymaganie: \textit{Nazwa, Op
 \newpage
 \begin{table}
 \centering
-\begin{tabular}{|c|p{12.5cm}|}
+\begin{tabular}{|c|p{13cm}|}
 \hline
 \textbf{Nazwa} & Zdefiniowanie wyborów \\ 
 \hline 
@@ -254,8 +255,7 @@ algorytmów i porównanie ich.\\
 \textbf{Opis} & System oferuje kilka algorytmów heurystycznych obliczających wyniki
 wyborów. Algorytmy bazują na różnym paradygmacie tworzenia ich.
 Jeden z paradygmatów to programowanie zachłanne, a drugi to
-programowanie genetyczne. Algorytmy dają przybliżone rozwiązania
-problemu pod względem jego dokładności. Użytkownik przy tworzeniu
+programowanie genetyczne. Użytkownik przy tworzeniu
 nowego wyniku dla zdefiniowanych wyborów może w prosty sposób
 wybrać jeden z algorytmów. \\ 
 \hline 
@@ -288,7 +288,7 @@ wyznaczaniem maksimum dla pojedynczych wyników kandydatów z
 komitetu, dla którego liczono by normę $\ell_p$.
 Korzyści jakie płyną z takiej modyfikacji to nie tylko skrócenie czasu
 obliczeń, ale także ustalanie od jakiej wartości parametru $p$ komitet
-wygrywający jest zgodny z wynikiem otrzymanym dla systemu
+wygrywający jest jest bliski przybliżonego wyniku otrzymanego dla systemu
 \textit{Chamberlina-Couranta}.\\ 
 \hline 
 \end{tabular} 
@@ -303,7 +303,7 @@ wygrywający jest zgodny z wynikiem otrzymanym dla systemu
 \hline
 \textbf{Nazwa} & Prezentacja wyników wyborów \\ 
 \hline 
-\textbf{Opis} & System oferuje dwa sposoby prezentacji wyników wyborów. Pierwszy z
+\textbf{Opis} & System oferuje różne sposoby prezentacji wyników wyborów. Pierwszy z
 nich, to proste wskazanie kandydatów i wypisanie nazw kandydatów w
 widocznym panelu. Ta forma prezentacji dotyczy wyników wyborów,
 które zdefiniowane zostały za pomocą pliku formatu \textit{.soc}.
@@ -312,7 +312,9 @@ Druga forma prezentacji wyników wyborów dotyczy wyborów wygenerowanych z
 rozkładu normalnego. Wizualizacja polega na narysowaniu wykresu
 \textit{2D}, na którym punkty reprezentujące kandydatów ze zwycięskiego
 komitetu są wyraźnie wyróżnione na tle kandydatów, którzy nie dostali
-się do zwycięskiego komitetu. Dla wyborów generowanych z rozkładu normalnego system również oferuje wypisanie nazw zwycięzców w dobrze widocznym panelu.\\ 
+się do zwycięskiego komitetu. Dla wyborów generowanych z rozkładu normalnego system również oferuje wypisanie nazw zwycięzców w dobrze widocznym panelu.
+
+Ponadto system oferuje tabelę z wszystkimi wynikami wyborów obliczonych przez różne algorytmy i dla różnych parametrów $p$. Wyniki dla różnych parametrów $p$ są wyraźnie oddzielone.\\ 
 \hline 
 \textbf{Uzasadnienie} & Prezentacja wyników wyborów w postaci wykresu \textit{2D} z wyraźnie
 zaznaczonymi zwycięzcami i przegranymi, którzy są reprezentowani
@@ -322,22 +324,25 @@ jest jednocześnie wizualnie atrakcyjna.
 Prezentacja wyników dla wyborów zdefiniowanych z pliku formatu \textit{.soc}
 ogranicza się jedynie do wypisania zwycięzców, ponieważ kandydaci
 nie są reprezentowani jako punkty i tym samym nie mają
-współrzędnych w tej odmianie wyborów.\\ 
+współrzędnych w tej odmianie wyborów.
+
+Prezentacja wszystkich wyników w postaci tabeli z wyraźnie oddzielonymi wynikami dla różnych wartości parametru $p$, również ułatwia porównywanie wyników między różnymi algorytmami.\\ 
 \hline 
 \end{tabular} 
 \captionof{table}{Prezentacja wyników wyborów}
 }
 %\end{table}
 
-%\clearpage
+\clearpage
 \subsubsection{Wymagania niefunkcjonalne}
 Wymagania niefunkcjonalne podzielono na wymagania produktowe i wymagania organizacyjne. Poniżej zamieszczono tabele analogiczne do tych z wymagań funkcjonalnych dla odpowiednich typów wymagań niefunkcjonalnych.
-\clearpage
+
 \begin{center}
 \textbf{Wymagania produktowe}
 \end{center}
-{
-\centering
+
+\begin{center}
+
 \begin{tabular}{|c|p{10cm}|}
 \hline
 \textbf{Nazwa} & Obliczanie wyników wyborów w satysfakcjonującym czasie \\ 
@@ -355,13 +360,13 @@ użyteczności.\\
 \hline 
 \end{tabular}
 \captionof{table}{Obliczanie wyników wyborów w satysfakcjonującym czasie}
-}
+\end{center}
 
 \begin{center}
 \textbf{Wymagania organizacyjne}
 \end{center}
-{
-\centering
+
+\begin{center}
 \begin{tabular}{|c|p{10cm}|}
 \hline
 \textbf{Nazwa} & Dotrzymanie terminów na przedstawienie poszczególnych elementów
@@ -376,7 +381,7 @@ który jest ustalany przez władze uczelni.\\
 \hline 
 \end{tabular}
 \captionof{table}{Obliczanie wyników wyborów w satysfakcjonującym czasie}
-}
+\end{center}
 
 \subsection{Strategia testowania}
 Podstawowym rodzajem testów pisanych w trakcie tworzenia systemu były testy
@@ -388,7 +393,7 @@ funkcjonalności po dodaniu nowych skorzystano z ciągłej integracji. Do tego c
 wykorzystano serwis \textit{Travis Cl} skonfigurowany do repozytorium kodu. Przy każdej zmianie kodu źródłowego w repozytorium, dokonywane było automatyczne włączenie testów
 jednostkowych.  
 
-Do oceny poprawności obliczanych wyników wyborów przez stworzone algorytmu,
+W celu oceny jakości obliczanych wyników wyborów przez stworzone algorytmy,
 przeprowadzono testy porównawcze. Zestawiano wyniki wyborów obliczonych przez różne
 algorytmy dla tych samych danych wejściowych. Ponadto porównywano wykresy wyników
 wyborów z oczekiwanymi rezultatami.
@@ -405,7 +410,7 @@ tej technologii.
 \subsection{Analiza ryzyka}
 Głównym zagrożeniem dla realizacji produktu mogły być problemy ze stworzeniem
 wystarczająco dobrego algorytmu heurystycznego dla opisanego problemu. Ze względu na
-niewielkie doświadczenie zespołu w tej dziedzinie taka sytuacja mogła wystąpić. Głównym
+niewielkie doświadczenie zespołu w tej dziedzinie, opisana sytuacja z dużym prawdopodobieństwem mogła wystąpić. Głównym
 zabezpieczeniem na wypadek takiego scenariusza było stosunkowo szybkie stworzenie
 bazy całego systemu i możliwość wczesnego skupienia się na algorytmach heurystycznych.
 
@@ -525,7 +530,7 @@ Jakub Stępak
 \subsection{Narzędzia do zarządzania projektem}
 Do przydzielania zadań członkom zespołu i ustalania ich terminów wykorzystano aplikację
 internetową \textit{Trello}. Do przechowywania kodu źródłowego oprogramowania wykorzystano
-serwis internetowy \textit{GitHub}. W celu zdalnego kontaktowania się pomiędzy członkami zespołu korzystano z oprogramowania \textit{Slack}. Korzystano z aplikacji \textit{Google Docs }do tworzenia roboczej wersji dokumentacji. Do przygotowywania diagramów do dokumentacji wykorzystano aplikację \textit{draw.io}.
+serwis internetowy \textit{GitHub}. W celu zdalnego kontaktowania się pomiędzy członkami zespołu korzystano z oprogramowania \textit{Slack}. Korzystano z aplikacji \textit{Google Docs }do tworzenia roboczej wersji dokumentacji. Właściwa wersja dokumentacji została stworzona w \textit{LaTeX-u} i do jej przygotowania wykorzystano program \textit{TexMaker}. Do przygotowywania diagramów do dokumentacji wykorzystano aplikację \textit{draw.io}.
 
 \subsection{Opis kolejnych wersji systemu}
 \subsubsection{Wersja 1.}
@@ -594,7 +599,7 @@ tylko wtedy, gdy badany kandydat jest wyżej w preferencji wyborcy od każdego z
 wybranych kandydatów. Ta różnica wynika z wykorzystania innej funkcji satysfakcji.
 
 \subsection{Algorytm genetyczny}
-Ideą algorytmu genetycznego jest poddawanie „osobników” - w tym wypadku wybranych komitetów (podzbiorów kandydatów) - działaniom analogicznym do ewolucji w naturze. Osobniki są więc krzyżowane (wybierani są losowo kandydaci do nowego komitetu z dwóch już istniejących) lub mutowane (zmieniany jest losowo jeden z kandydatów w komitecie). Te procesy powtarza się kilkadziesiąt - kilkaset razy, za każdym razem pozostawiając w puli tylko określoną ilość najlepszych osobników.
+Ideą algorytmu genetycznego jest poddawanie „osobników” - w tym wypadku wybranych komitetów (podzbiorów kandydatów) - działaniom analogicznym do ewolucji w naturze. Osobniki są więc krzyżowane (wybierani są losowo kandydaci do nowego komitetu z dwóch już istniejących) lub mutowane (zmieniany jest losowo jeden z kandydatów w komitecie). Te procesy powtarza się kilkadziesiąt - kilkaset razy, za każdym razem pozostawiając w puli tylko określoną liczbę najlepszych osobników.
 
 Po zakończeniu działania najlepszy z pozostałych w puli kandydatów jest podawany jako wynik działania algorytmu.
 
@@ -639,7 +644,7 @@ wyborów się już nie zmieniają.
 \subsubsection{Prezentacja tabeli z wszystkimi wynikami dla danych wyborów}
 Poniżej tabela z czasami i zadowoleniem wyborców z wyników wyborów obliczonych za
 pomocą różnych algorytmów. Testowane wybory wygenerowano z rozkładu normalnego.
-Zawierają 30 kandydatów, 50 wyborców oraz komitet zwycięski liczący 15 kandydatów.
+Zawierają $30$ kandydatów, $50$ wyborców oraz komitet zwycięski liczący $15$ kandydatów.
 Wyniki obliczono dla różnych wartości parametru $p$. Tabela generowana i wyświetlana przez system. \\
 %\clearpage
 
@@ -688,15 +693,14 @@ W celu zbadania jaki jest procentowy stopień pokrycia się komitetów, przeprow
 \captionof{figure}{Średnie i mediany pokrycia się zwycięskich komitetów}
 \end{center}
 
-\noindent Wartości średnich i median znajdują się blisko siebie dla każdej wartości parametru $p$. Rozrzut wyników dla każdej wartości parametru $p$ nie był duży. Już dla wartości $p = 50$ średnie pokrycie się komitetów obliczanych przez obydwa algorytmy przekroczyło $87\%$. Dla $p = 100$ średnia przekroczyła $90 \%$. Natomiast dla $p = 1000$ średnia wzrosła nieznacznie w stosunku do średniej dla wartości $p = 100$. Pozostałe kilka bądź kilkanaście procent zwycięzców, którzy się nie pokrywają dla obydwu algorytmów stanowią wspomniane wcześniej pary bądź trójki kandydatów, którzy wymieniają się na pozycji zwycięzców dla dużych wartości parametru $p$, które są rzędu klika tysięcy.
-
-\noindent Wyniki wskazują, że już dla wartości $p = 50$ można stosować algorytm według zasady \mbox{\textit{Chamberlina-Couranta}} zamiast drugiego algorytmu zachłannego, mając dużą szansę na pokrycie się zwycięzców na poziomie $90 \%$. Wartość graniczną parametru $p$ trudno przewidzieć niezależnie od parametrów wyborów. 
+\noindent Wartości średnich i median znajdują się blisko siebie dla każdej wartości parametru $p$. Rozrzut wyników dla każdej wartości parametru $p$ nie był duży. Już dla wartości $p=50$ średnie pokrycie się komitetów obliczanych przez obydwa algorytmy przekroczyło $87\%$. Dla $p=100$ średnia przekroczyła $90 \%$. Natomiast dla $p=1000$ średnia wzrosła nieznacznie w stosunku do średniej dla wartości $p=100$. Pozostałe kilka bądź kilkanaście procent zwycięzców, którzy się nie pokrywają dla obydwu algorytmów stanowią wspomniane wcześniej pary bądź trójki kandydatów, którzy wymieniają się na pozycji zwycięzców dla dużych wartości parametru $p$, które są rzędu klika tysięcy.\\
+Wyniki wskazują, że już dla wartości $p=50$ można stosować algorytm według zasady \mbox{\textit{Chamberlina-Couranta}} zamiast drugiego algorytmu zachłannego, mając dużą szansę na pokrycie się zwycięzców na poziomie niecałych $90 \%$. Wartość graniczną parametru $p$ trudno przewidzieć niezależnie od parametrów wyborów. 
 
 \subsection{Porównanie algorytmu genetycznego i algorytmu zachłannego dla różnych wartości parametru p} 
 
 \subsubsection{Sposób przeprowadzenia testów}
 W ramach testów porównawczych sprawdzono działanie algorytmu zachłannego i algorytmu genetycznego dla różnych zestawów parametrów działania. Porównano osiem różnych kombinacji parametrów działania algorytmu genetycznego. Liczba cykli w testowanych zestawach parametrów wynosiła $20$ lub $50$, prawdopodobieństwo mutacji wynosiło $50\%$ lub $100\%$, a zakres krzyżowania $10\%$, $50\%$ lub $100\%$. Dla tak dobranych parametrów algorytmu genetycznego zebrano wartości wybranych komitetów i czasy działania algorytmów i porównano z wynikami i czasami algorytmu zachłannego. Wartości parametru $p$, dla którego przeprowadzono badania wynosiły $1$, $5$ i $50$. Testy przeprowadzono dla wyborów zawierających $30$ kandydatów, $50$ wyborców oraz rozmiaru komitetu liczącego $15$ zwycięzców.   
-
+\newpage
 \subsubsection{Wyniki testów}
 Po zebraniu wyników testów, zestawiono dla każdej z badanych wartości parametru $p$ rezultaty osiągnięte przez algorytm zachłanny oraz reprezentanta algorytmu genetycznego dla danej wartości parametru $p$ (wszystkie wyniki testów umieszczono w dokumentacji technicznej). Reprezentantów algorytmu genetycznego dla danej wartości parametru $p$ dobierano oddzielnie dla wartości uzyskanego komitetu oraz czasu działania. Dla danego parametru $p$ wybierano najwyższą uzyskaną wartość komitetu oraz najkrótszy czas spośród tych wyników algorytmu genetycznego, które były co najmniej tak samo dobre jak dla wynik algorytmu zachłannego. Zestawienia wartości komitetów oraz czasów działania umieszczono w poniższych tabelach. \\
 \begin{center}
