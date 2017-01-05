@@ -949,12 +949,12 @@ Na cykl algorytmu składa się:
 \item wybór N osobników do przejścia do kolejnego cyklu
 \end{itemize}
 
-Liczba N określa wielkość puli osobników i jest wybierana na początku działania algorytmu. W naszej implementacji przyjęliśmy stałą liczbę 50 osobników.
+Liczba N określa wielkość puli osobników i jest wybierana na początku działania algorytmu. W naszej implementacji przyjęto stałą liczbę 50 osobników.
 
 \subsection{Wpływ parametrów działania na wyniki osiągane przez algorytm}
-Aby przekonać się jak dobór parametrów ma wpływ na wyniki osiągane przez algorytm, przeprowadziliśmy kilka testów na losowo wygenerowanych wyborach (korzystając z funkcji systemu losującej kandydatów i wyborców na podstawie rozkładu normalnego).
+Aby przekonać się jak dobór parametrów ma wpływ na wyniki osiągane przez algorytm, przeprowadzono kilka testów na losowo wygenerowanych wyborach (korzystając z funkcji systemu losującej kandydatów i wyborców na podstawie rozkładu normalnego).
 
-Dla przykładu - dla wyborów 20 spośród 100 kandydatów, przy 100 wyborcach, czasy działania algorytmu wahały się w zakresie od 4,3s do 150,3s. Przy czym wyniki różniły się również znacząco - komitety uzyskiwały od 10715,65 do 10867,96 punktów. W tej serii zostały przetestowane wszystkie kombinacje parametrów spośród następujących:
+Dla przykładu - dla wyborów $20$ spośród $100$ kandydatów, przy $100$ wyborcach, czasy działania algorytmu wahały się w zakresie od $4,3s$ do $150,3$s. Przy czym wyniki różniły się również znacząco - komitety uzyskiwały od $10715,65$ do $10867,96$ punktów. W tej serii zostały przetestowane wszystkie kombinacje parametrów spośród następujących:
 
 $\textit{liczba cykli} \in \{ 20, 50, 100 \}$
 
@@ -963,9 +963,9 @@ $\textit{prawdopodobieństwo mutacji} \in \{ 10\%, 25\%, 50\% \}$
 $\textit{krzyżowanie} \in \{ 10\%, 50\%, 100\% \}$
 
 ~\\ 
-Okazuje się jednak, że nawet te parametry nie wystarczają do wyznaczenia najlepszego wyniku - obliczenia w 200 cyklach (z prawodopodobieństwem mutacji 50\% i krzyżowaniem całej puli) dały jeszcze wyższy wynik - 10868.15, przy czasie 364s. 
+Okazuje się jednak, że nawet te parametry nie wystarczają do wyznaczenia najlepszego wyniku - obliczenia w $200$ cyklach (z prawdopodobieństwem mutacji $50\%$ i krzyżowaniem całej puli) dały jeszcze wyższy wynik - $10868.15$, przy czasie $364s$. 
 
-Należy mieć na uwadze, że w działaniu algorytmu genetycznego, z powodu dużego udziału czynnika losowego, wiele zależy od niego zależy i wyniki są z tym obarczone.
+Należy mieć na uwadze, że w działaniu algorytmu genetycznego wiele zależy od udziału czynnika losowego i wyniki są tym obarczone.
 
 \newpage
 
@@ -987,20 +987,20 @@ Poniżej znajdują się wykresy obrazujące czas i wyniki osiągane przez algory
 
 \newpage
 
-Należy pamiętać, że nawet mała zmiana wyniku punktowego komitetu może mieć duży wpływ na faktycznie wybranych kandydatów - poniżej znajdują się mapy preferencji z zaznaczonymi dwoma wybranymi komitetami, których wynik różni się zaledwie o około 19 setnych punkta. Są to dwa najlepsze rezultaty wspomniane wcześniej.
+Należy pamiętać, że nawet mała zmiana wyniku punktowego komitetu może mieć duży wpływ na faktycznie wybranych kandydatów - poniżej znajdują się mapy preferencji z zaznaczonymi dwoma wybranymi komitetami, których wynik różni się zaledwie o około $19$ setnych punktu. Są to dwa najlepsze rezultaty wspomniane wcześniej.
 
 \begin{center}
 \includegraphics[width=0.5\paperwidth]{pics/porownanie1/wynik1.png} 
-\captionof{figure}{Wybrany w 150,29s komitet o punktacji 10867,96}
+\captionof{figure}{Wybrany w $150,29s$ komitet o punktacji $10867,96$}
 
 
 \includegraphics[width=0.5\paperwidth]{pics/porownanie1/wynik2.png}
-\captionof{figure}{Wybrany w 363,92s komitet o punktacji 10868,15}
+\captionof{figure}{Wybrany w $363,92s$ komitet o punktacji $10868,15$}
 \end{center}
 
 \newpage
 
-Podobne zestawienie wykonaliśmy jeszcze dla "większych" wyborów: 200 głosujących na 200 kandydatów, 15 miejsce w komitecie. Poniżej znajduje się porównanie osiągniętych wyników:
+Podobne zestawienie wykonano jeszcze dla "większych" wyborów: $200$ głosujących, $200$ kandydatów, $15$ miejsc w komitecie. Poniżej znajduje się porównanie osiągniętych wyników:
 
 \begin{tabular}{cc}
 	
@@ -1017,10 +1017,10 @@ Podobne zestawienie wykonaliśmy jeszcze dla "większych" wyborów: 200 głosuj�
 \captionof{figure}{Porównanie wyników i czasów działania algorytmu genetycznego z różnymi parametrami}
 
 ~ \\
-W tym wypadku również zwiększenie liczby cykli do 200 pozwoliło na jeszcze lepszy wynik, windując jednak czas wykonania programu do nieco ponad 10 minut. Co ciekawe próba przy 300 cyklach dała wynik gorszy - ujawnia się tutaj losowa natura algorytmu genetycznego.
+W tym wypadku również zwiększenie liczby cykli do $200$ pozwoliło na jeszcze lepszy wynik, windując jednak czas wykonania programu do nieco ponad $10$ minut. Co ciekawe próba przy $300$ cyklach dała wynik gorszy - ujawnia się tutaj losowa natura algorytmu genetycznego.
 
 \section{Algorytm typu brute-force}
-Do zbadania poprawności działania innych algorytmów zaimplementowany został bardzo prosty algorytm typu \textit{brute-force} iterujący się po wszystkich możliwych kombinacjach komitetów i wyszukujący komitetu o najwyższym wyniku.
+Do zbadania poprawności działania innych algorytmów zaimplementowany został bardzo prosty algorytm typu \textit{brute-force} iterujący po wszystkich możliwych kombinacjach komitetów i wyszukujący komitetu o najwyższym wyniku.
 
 \subsection{Pseudokod}
 
@@ -1198,23 +1198,23 @@ Uzyskane wyniki pokazują, że już dla wartości parametru $p = 50$ średnio po
 
 \subsection{Porównanie z algorytmem brute-force}
 
-Aby przetestować implementację algorytmu genetycznego postanowiliśmy porównać wyniki z wynikiem działania algorytmu \textit{brute-force}. Niestety, ze zwzgędu na powolne działanie tego ostatniego, takie porównanie można wykonać jedynie dla wyborów o małych „rozmiarach”.
+Aby przetestować implementację algorytmu genetycznego postanowiono porównać wyniki z wynikiem działania algorytmu \textit{brute-force}. Niestety, ze względu na powolne działanie tego ostatniego, takie porównanie można wykonać jedynie dla wyborów o małych „rozmiarach”.
 
 ~\\
 I tak, dla przykładowych wyborów o parametrach:
 \begin{itemize}
-\item liczba kandydatów: 30,
-\item liczba wyborców: 40,
-\item rozmiar komitetu: 5,
+\item liczba kandydatów: $30$,
+\item liczba wyborców: $40$,
+\item rozmiar komitetu: $5$,
 \end{itemize}
-algorytm \textit{brute-force} działał ponad 20,5s, natomiast algorytm genetyczny potrafił podać ten sam wynik w nawet nieco ponad 6 sekund. Poniżej znajduje się fragment zestawienia wyników wygenerowany przez system - ponownie testowany był algorytm genetyczny z różnymi parametrami.
+algorytm \textit{brute-force} działał ponad $20,5$ minut, natomiast algorytm genetyczny potrafił podać ten sam wynik w nawet nieco ponad $6$ sekund. Poniżej znajduje się fragment zestawienia wyników, wygenerowany przez system - ponownie testowany był algorytm genetyczny z różnymi parametrami.
 
 \includegraphics[width=\textwidth]{pics/porownanie-gen-brut.png}
 \captionof{figure}{Porównanie wyniku algorytmu brute-force i różnych wersji algorytmu genetycznego}
 
 
 \subsection{Porównanie z algorytmem zachłannym}
-Dla danych z poprzedniego rozdziału algorytm zachłanny działał najszybciej, bo podał wynik już w 2,5s, jednak o niższym wyniku, bo jedynie 1113,37 punktów. W komitecie wskazanym przez algorytm zachłanny 2 z 5 kandydatów różniło się od rozwiązania najlepszego:
+Dla danych z poprzedniego rozdziału algorytm zachłanny działał najszybciej, bo podał wynik już w $2,5s$, jednak o niższym wyniku, bo jedynie $1113,37$ punktów. W komitecie wskazanym przez algorytm zachłanny $2$ z $5$ kandydatów różniło się od rozwiązania najlepszego:
 
 \begin{center}
 \centerline{\includegraphics[width=0.6\textwidth]{pics/gg-gr.png}}
@@ -1225,6 +1225,102 @@ Dla danych z poprzedniego rozdziału algorytm zachłanny działał najszybciej, 
 \captionof{figure}{Wynik wzorcowy wskazany przez algorytm brute-force i większość genetycznych}
 \end{center}
 
+\vspace*{-2cm}
+\section{Porównanie algorytmu genetycznego z zachłannym dla różnych wartości parametru p}
+
+Porównano wyniki i czasy działania algorytmu zachłannego zależnego od parametru $p$ i algorytmu genetycznego. Sprawdzono różne parametry działania algorytmu genetycznego. Testy przeprowadzono dla wyborów zawierających $30$ kandydatów, $50$ wyborców oraz rozmiaru komitetu liczącego $15$ zwycięzców. Sprawdzone wartości parametru $p$, to $1$, $5$ oraz $50$. Wyniki przedstawiono w postaci tabel. Zmienne znajdujące się w tabeli przy określaniu parametrów algorytmu genetycznego oznaczają odpowiednio: $c$ - liczba cykli, $m$ - prawdopodobieństwo mutacji i $k$ - zakres krzyżowania. W pierwszej tabeli przedstawiono zadowolenia wyborców z komitetów wybranych przez poszczególne algorytmy dla różnych wartości parametru $p$. W drugiej tabeli zestawiono czasy działania tychże algorytmów w sekundach.\\
+
+\begin{center}
+
+\begin{tabular}{|l|c|c|c|}
+\hline 
+parametr p & 1 & 5 & 50 \\ 
+\hline 
+algorytm zachłanny & 14364 & 1906.82 & 1441.4 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=50, k=10$) & 13826 & 1889.63 & 1442.74 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=50, k=50$) & 14274 & 1906.26 & 1446.02 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=50, k=100$) & 14360 & 1906.82 & 1445.92 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=100, k=10$) & 13893 & 1901.62 & 1445.92 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=100, k=50$) & 14270 & 1906.82 & 1445.92 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=100, k=100$) & 14364 & 1906.28 & 1446.44 \\ 
+\hline 
+algorytm genetyczny ($c=50, m=50, k=50$) & 14364 & 1906.82 & 1446.44 \\ 
+\hline 
+algorytm genetyczny ($c=50, m=100, k=100$) & 14364 & 1906.82 & 1446,44 \\ 
+\hline 
+\end{tabular}
+\captionof{table}{Wyniki komitetów wskazanych przez poszczególne algorytmy}
+\end{center} 
+
+\begin{center}
+
+\begin{tabular}{|l|c|c|c|}
+\hline 
+parametr p & 1 & 5 & 50 \\ 
+\hline 
+algorytm zachłanny & 2.1 & 10.87 & 11.64 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=50, k=10$) & 3.11 & 11.14 & 13.27 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=50, k=50$) & 4.82 & 16.15 & 18.35 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=50, k=100$) & 6.58 & 30.21 & 26.81 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=100, k=10$) & 5.75 & 20.83 & 23.8 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=100, k=50$) & 8.81 & 27.65 & 29.92 \\ 
+\hline 
+algorytm genetyczny ($c=20, m=100, k=100$) & 10.22 & 38.44 & 44.31 \\ 
+\hline 
+algorytm genetyczny ($c=50, m=50, k=50$) & 11.13 & 42.85 & 45.64 \\ 
+\hline 
+algorytm genetyczny ($c=50, m=100, k=100$) & 24.45 & 96.06 & 103.89 \\ 
+\hline 
+\end{tabular}
+\captionof{table}{Czasy działania algorytmów}
+\end{center} 
+
+\newpage
+W poniższych tabelach zestawiono rezultaty osiągnięte przez algorytm zachłanny oraz rezultaty osiągnięte przez reprezentantów algorytmu genetycznego dla różnych parametrów $p$. Oddzielnie wybierany był reprezentant algorytmu genetycznego pod kątem jakości wyniku i czasu działania. Jeśli chodzi o reprezentanta algorytmu genetycznego pod kątem jakości wyniku, to dla każdej wartości parametru $p$ wybierano najwyższe zadowolenie wyborców osiągnięte przez algorytm genetyczny działający według jednego ze sprawdzanych zestawów parametrów działania algorytmu genetycznego. Jeśli zaś chodzi o reprezentanta algorytmu genetycznego pod kątem czasu działania, to dla danej wartości parametru $p$, wybierano najszybszy czas spośród tych wyników działania algorytmu genetycznego, które osiągnęły wartość komitetu co najmniej tak samo dobrą jak wartość komitetu uzyskana przez algorytm zachłanny dla danej wartości parametru $p$. \\
+
+\begin{center}
+
+\begin{tabular}{|l|c|c|}
+\hline 
+parametr p & algorytm zachłanny & algorytm genetyczny \\ 
+\hline 
+1 & 14364 & 14364 \\ 
+\hline 
+5 & 1906.82 & 1906.82 \\ 
+\hline 
+50 & 1441.4 & 1446.44 \\ 
+\hline 
+\end{tabular} 
+\captionof{table}{Zestawienie wartości komitetów}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline 
+parametr p & algorytm zachłanny & algorytm genetyczny \\ 
+\hline 
+1 & 2.1 & 10.22 \\ 
+\hline 
+5 & 10.87 & 27.65 \\ 
+\hline 
+50 & 11.64 & 13.27 \\ 
+\hline 
+\end{tabular} 
+\captionof{table}{Zestawienie czasów działania}
+\end{center}
+
+Dla każdej wartości parametru $p$ algorytm genetyczny dla pewnego zestawu parametrów działania osiągał wynik co najmniej tak samo dobry jak algorytm zachłanny. Jednocześnie czas trwania algorytmu genetycznego dla każdego przypadku był dłuższy od czasu trwania algorytmu zachłannego. Wraz ze wzrostem parametru $p$ algorytm genetyczny rósł w siłę w porównaniu z algorytmem zachłannym. Dla $p=1$ trzy z ośmiu wyników algorytmu genetycznego były tak samo dobre jak wynik algorytmu zachłannego. Dla $p=5$ już cztery z ośmiu wyników algorytmu genetycznego były tak samo dobre jak wynik algorytmu zachłannego. Z kolei dla $p=50$ każdy z wyników algorytmu genetycznego wśród badanych parametrów działania okazał się lepszy od wyniku algorytmu zachłannego. Jeśli chodzi o czas działania, to dla małych wartości parametru $p$, algorytm zachłanny wyraźnie przewyższa algorytm genetyczny. Najlepsze z wyników algorytmu genetycznego, które były co najmniej tak samo dobre jak wynik algorytmu zachłannego, obliczane były znacznie dłużej od wyniku algorytmu zachłannego. Wraz ze wzrostem parametru $p$ coraz więcej wyników algorytmu genetycznego dla różnych zestawów parametrów działania zrównuje się lub przewyższa wynik algorytmu zachłannego. W związku z tym najkrótsze czasy działania algorytmu genetycznego są coraz bliższe czasu działania algorytmu zachłannego. Dla $p=50$ czas trwania reprezentanta algorytmu genetycznego był porównywalny z czasem działania algorytmu zachłannego.  
 
 \bibliographystyle{alpha}
 \bibliography{bibliografia}
