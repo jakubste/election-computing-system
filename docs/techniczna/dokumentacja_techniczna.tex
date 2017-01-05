@@ -94,7 +94,7 @@
 \subsection{Metoda Bordy}
 \label{subsec:metoda_bordy}
 
-Niech $v$ będzie głosem nad zbiorem kandydatów $C$. Wynik według Bordy kandydata $c$ w $v$ jest równy \begin{equation}
+Niech $v$ będzie głosem nad zbiorem kandydatów $C$, tj. uporządkowanym ciągiem kandydatów. Wynik według Bordy kandydata $c$ w $v$ jest równy \begin{equation}
 \beta(i)=||C||-i,
 \end{equation}
 gdzie $i$- pozycja kandydata w ciągu $v$.\\
@@ -104,22 +104,24 @@ Wynik $c$ w wyborach jest sumą wyników $c$ u każdego z wyborców
 \subsection{Metoda k-Borda}
 \label{subsec:metoda_k_borda}
 
-Rozszerzenie metody Bordy. Wynik, zamiast dla jednego kandydata, obliczany jest dla ciągu kandydatów. $f_{kB}$- funkcja zadowolenia z komitetu, $(i_1,\dots, i_k)$- ciąg pozycji kandydatów
+Rozszerzenie metody Bordy. Wynik, zamiast dla jednego kandydata, obliczany jest dla ciągu kandydatów. $f_{kB}$- funkcja zadowolenia z komitetu, $(i_1,\dots, i_k)$ - ciąg pozycji kandydatów
 \begin{equation}
 f_{kB}=\sum_{j=1}^{k} \beta(i_j)
 \end{equation}
 
-\paragraph{Przyklad}
+\paragraph{Przykład}
 $C=\{c_1,c_2,c_3,c_4\}$ - zbiór kandydatów,
 $v=(c_2,c_1,c_4,c_3)$ - głos
+
 Niech $k = 2$ (wybory $2$ spośród $4$)
 $w=(c_4,c_3)$.
+
 Najpierw określamy pozycje kandydatów z komitetu $w$ w $v$:
 $pos_v(w)=(3,4)$, zatem wynik komitetu w dla głosu v wynosi
-$f_{kB}(3,4) = (3) + (4) = ||C|| - 3 ) + ( ||C|| - 4 ) = 1 + 0 = 1$
+$f_{kB}(3,4) = \beta(3) + \beta(4) = (||C|| - 3 ) + ( ||C|| - 4 ) = 1 + 0 = 1$
 
 
-\subsection{Uogólnienie - system $\ell_p$-Borda}
+\subsection{Uogólnienie – system $\ell_p$-Borda}
 \label{subsec:system_ell_p_borda}
 
 Zanim wprowadzone zostanie pojęcie uogólnionego systemu $k-Borda$ warto przypomnieć wzór na normę\,$\ell_p$
@@ -132,15 +134,15 @@ Zanim wprowadzone zostanie pojęcie uogólnionego systemu $k-Borda$ warto przypo
 
 Wówczas, w uogólnionej wersji metody $k-Borda$, funkcja zadowolenia $f_{kB}$ (1.2) zostaje uzależniona również od parametru $p$ ze wzoru (1.3). Norma liczona jest z wyników według Bordy, $\beta(i)$ (1.1).\\Wzór uogólniony funkcji zadowolenia przyjmuje zatem postać:
 \begin{equation}
-f_{\ell_pB}(p,(i_1,\dots,i_k))=\sqrt[p]{[(i_1)]^p+[(i_2)]^p+...+[(i_k)]^p}
+f_{\ell_pB}(p,(i_1,\dots,i_k))=\sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+...+[\beta(i_k)]^p}
 \end{equation}
 
 Systemy $k-Borda$ i \textit{Chamberlina-Couranta} są szczególnymi przypadkami zdefiniowanego powyżej systemu $\ell_p-Borda$:\\
-Dla \, $p = 1$, \, $l_1$:
+Dla \, $p = 1$, \, $l_1 \equiv +$:
 \begin{equation}
 f_{\ell_pB}(1,(i_1, \dots ,i_k)) = \beta(i_1) + \beta(i_2) + \dots + \beta(ik) = f_{kB}(i_11, \dots,i_k)
 \end{equation}
-Dla \, $p= \infty$, \, $l_{\infty}={max}$:
+Dla \, $p= \infty$, \, $l_{\infty} \equiv {max}$:
 
 \begin{multline}
 \begin{split}
