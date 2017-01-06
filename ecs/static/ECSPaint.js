@@ -85,11 +85,16 @@ scene.add(marker);
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
-function onMouseMove(event) {
+function onMouseMove(evtent) {
     // calculate mouse position in normalized device coordinates
     // (-1 to +1) for both components
-    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
+    var rect = paint_container.getBoundingClientRect();
+
+    var canv_x = evtent.clientX - rect.left;
+    var canv_y = evtent.clientY - rect.top;
+
+    mouse.x = ( canv_x / paint_container.width ) * 2 - 1;
+    mouse.y = -( canv_y / paint_container.height ) * 2 + 1;
 }
 
 function onMouseDown(event) {
