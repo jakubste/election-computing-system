@@ -3,12 +3,14 @@ var RANGE = 200;
 var DIVISIONS = 10, SIZE = RANGE / 2; //grid helper parameters
 var FONT_SIZE = 8;
 var MARKER_SIZE = 1, MIN_MARKER_SIZE = 1, MAX_MARKER_SIZE = 50;
-var CANDIDATE_COLOR = 0x0000ff, VOTER_COLOR = 0x008000, ERASE_COLOR = 0xff0000;
+var CANDIDATE_COLOR = 0x008000, VOTER_COLOR = 0x0000ff, ERASE_COLOR = 0xff0000;
 var MARKER_COLOR = VOTER_COLOR;
 
 var CANDIDATES_MODE = 'candidates', VOTERS_MODE = 'voters', mode = VOTERS_MODE;
 var candidates = [], voters = [];
 var MAX_CANDIDATES = 50, MAX_VOTERS = 50;
+document.getElementById("candidates_limit").innerHTML = MAX_CANDIDATES.toString();
+document.getElementById("voters_limit").innerHTML = MAX_VOTERS.toString();
 var current_list = voters;
 
 var MAX_POINTS = 10; //max points to add on a single click
@@ -100,6 +102,8 @@ function onMouseDown(event) {
         else {
 //                addPoint(x_pos, y_pos, marker.material.color);
             addPoints(x_pos, y_pos, marker.material.color, MARKER_SIZE);
+            document.getElementById("candidates").innerHTML = candidates.length.toString();
+            document.getElementById("voters").innerHTML = voters.length.toString();
         }
     }
 }
@@ -166,7 +170,7 @@ function addPoints(x, y, color, square_size) {
 }
 
 function canAddMorePoints() {
-    return mode === VOTERS_MODE ? voters.length <= MAX_VOTERS : candidates.length <= MAX_CANDIDATES;
+    return mode === VOTERS_MODE ? voters.length < MAX_VOTERS : candidates.length < MAX_CANDIDATES;
 }
 
 function addPoint(x, y, color) {

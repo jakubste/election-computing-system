@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    Paint your elections
+    Mark voters and candidates
 {% endblock %}
 
 {% block content %}
@@ -27,14 +27,32 @@
                 }
             }
         });
+
+        $(".spoiler-trigger").click(function () {
+            $(this).parent().next().collapse('toggle');
+        });
+
     </script>
+
+    <div class="row">
+        <div class="panel panel-primary col-xs-10">
+            <div class="panel-body">
+                <ul>
+                    <li>Press C to draw candidates</li>
+                    <li>Press V to draw voters</li>
+                    <li>Press +/- to change marker size</li>
+                    <li>Candidates: <span id="candidates">0</span>/<span id="candidates_limit"></span></li>
+                    <li>Voters: <span id="voters">0</span>/<span id="voters_limit"></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-primary" onclick="getPaintedData(PAINT_VIEW)">Save and proceed
+            </button>
+        </div>
+    </div>
 
     <script type="text/javascript" src="{% static 'three.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'ECSPaint.js' %}"></script>
 
-    <div class="col-xs-offset-2 col-xs-10">
-        <button type="submit" class="btn btn-primary" onclick="getPaintedData(PAINT_VIEW)">
-            Save and proceed
-        </button>
-    </div>
 {% endblock %}
