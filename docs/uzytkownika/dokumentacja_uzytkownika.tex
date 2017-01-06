@@ -313,8 +313,8 @@ Aby wygenerować dane losowe na podstawie rozkładu normalnego należy wybrać o
 Po wybraniu odpowiedniej opcji, powinna wyświetlić się strona z formularzem do uzupełnienia: \\
 
 \begin{center}
-\includegraphics[width=0.8\textwidth]{pics/generate-distribution.png}
-\captionof{figure}{Strona z formularzem do wyboru parametrów rozkłądu normalnego}
+\includegraphics[width=1.0\textwidth]{pics/generate-distribution.png}
+\captionof{figure}{Strona z formularzem do wyboru parametrów rozkładu normalnego}
 \end{center}
 
 \vspace{\baselineskip}
@@ -326,10 +326,46 @@ Koncepcyjnie ten sposób generacji danych odzwierciedla mapę poglądów polityc
 
 Po uzupełnieniu formularza należy potwierdzić wybór przyciskiem \textit{Generate data for election} znajdującym się pod ostatnim polem formularza.
 
-W dalszej części instrukcji będziemy posługiwali się częściej przykładem z wyborami wygenerowanymi w ten sposób.
 \newpage
+\subsection{Rysowanie własnego wykresu}
+\label{subsec:wlasnywykres}
+Ostatnim z trzech dostępnych sposobów tworzenia wyborów jest ręczne tworzenie wykresów kandydatów i wyborców.
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{pics/paint_election_button.png}
+\captionof{figure}{Przycisk otwierający stronę do rysowania własnego wykresu}
+\end{center}
+Obszar do zaznaczania punktów pokryty jest pomocniczą siatką, podobną jak na wykresach powstałych po
+wygenerowaniu punktów zgodnie z rozkładem normalnym. Użytkownik może zaznaczyć na wykresie ograniczoną 
+liczbę punktów dla kandydatów i głosujących. Limit określony jest w oknie pomocniczym znajdującym się 
+pod obszarem do zaznaczania punktów.\\
+Dostępne są dwa tryby kursora - zaznaczanie wyborców oraz zaznaczanie kandydatów. Rozmiar kursora 
+początkowo ustawiony jest domyślnie na "1" w trybie zaznaczania wyborców.\\
+Przełączanie pomiędzy dwoma dostępnymi trybami kursora dostępne jest pod klawiszami V (\textit{voters}) oraz C (\textit{candidates}).\\
+O tym w jakim trybie pracuje kursor sygnalizuje kolor (niebieski dla głosujacych, zielony dla wyborców) oraz informacja w oknie pod wykresem (Ostatni element na liście - \textit{Adding: \ldots} )
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{pics/paint_2.png}
+\captionof{figure}{Fragment strony do rysowania wykresu.}
+Poniżej wykresu znajduje się krótka 
+instrukcja obsługi edytora oraz przycisk do zapisania \mbox{wykresu i przejścia} do szczegółów wyborów
+\mbox{\textit{Save and proceed}}
+\end{center}
+
+\newpage
+Przy użyciu klawiszy + oraz - można zmieniać rozmiar kursora. 
+Powiększenie kursora skutkuje wygenerowaniem większej liczby punktów przy kliknięciu.
+Punkty generowane są losowo, wewnątrz obszaru wyznaczonego przez półprzezroczysty obszar kursora, 
+proporcjonalnie do jego wymiarów.
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{pics/paint_1.png}
+\captionof{figure}{Obszar do zaznaczania współrzędnych kandydatów i wyborców.} Na powyższym rysunku 
+kursor ustawiony jest w trybie zaznaczania kandydatów
+\end{center}
 
 
+\newpage
 \section{Szczegóły wyborów}
 \label{sec:szczegolywyborow}
 
