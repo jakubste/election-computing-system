@@ -7,6 +7,7 @@ var CANDIDATE_COLOR = 0x008000, VOTER_COLOR = 0x0000ff, ERASE_COLOR = 0xff0000;
 var MARKER_COLOR = VOTER_COLOR;
 
 var CANDIDATES_MODE = 'candidates', VOTERS_MODE = 'voters', mode = VOTERS_MODE;
+document.getElementById("mode").innerHTML = VOTERS_MODE.toString();
 var candidates = [], voters = [];
 var MAX_CANDIDATES = 50, MAX_VOTERS = 50;
 document.getElementById("candidates_limit").innerHTML = MAX_CANDIDATES.toString();
@@ -134,6 +135,7 @@ var onKeyDown = function (event) {
         marker.material.color = new THREE.Color(CANDIDATE_COLOR);
         current_list = candidates;
         mode = CANDIDATES_MODE;
+        document.getElementById("mode").innerHTML = CANDIDATES_MODE.toString();
     }
 
     if (event.keyCode == 86) //V
@@ -141,6 +143,7 @@ var onKeyDown = function (event) {
         marker.material.color = new THREE.Color(VOTER_COLOR);
         current_list = voters;
         mode = VOTERS_MODE;
+        document.getElementById("mode").innerHTML = VOTERS_MODE.toString();
     }
 
 //        if(event.keyCode == 88)
