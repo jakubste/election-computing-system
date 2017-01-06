@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.forms.widgets import Select
-from django.http.response import Http404, HttpResponseRedirect, HttpResponse
+from django.http.response import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
@@ -93,7 +93,7 @@ class ElectionDetailView(DetailView):
         ctx = super(ElectionDetailView, self).get_context_data(**kwargs)
         if self.object.voters.count() <= 100:
             ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
-        ctx['results'] = self.object.results.all()\
+        ctx['results'] = self.object.results.all() \
             .select_related('geneticalgorithmsettings').prefetch_related('winners')
         choices = [(res.pk, str(res)) for res in ctx['results'].reverse()]
         choices.append((None, '------'))
@@ -223,11 +223,10 @@ class ElectionPaintView(ConfigureElectionMixin, TemplateView):
         return ctx
 
     def post(self, request, pk):
-        print(request.body)
         data = json.loads(request.body)
         loader = ElectionPaintLoader(self.election, data['candidates'], data['voters'])
         loader.load_elections()
-        return HttpResponse(reverse('elections:election_details', args=(self.election.pk,)))
+        return HttpResponse(reverse("elections:election_details", args=(self.election.pk,)))
 
 
 class ElectionChartView(ChartMixin):

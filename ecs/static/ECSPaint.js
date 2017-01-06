@@ -227,21 +227,7 @@ var painted_data = {
 };
 
 function getPaintedData(PAINT_VIEW) {
-    $.ajax({
-        type: "post",
-        url: PAINT_VIEW,
-        data: JSON.stringify(painted_data),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data, textStatus) {
-            if (data.redirect) {
-                // data.redirect contains the string URL to redirect to
-                window.location.href = data.redirect;
-            }
-            else {
-                // data.form contains the HTML for the replacement form
-                $("#myform").replaceWith(data.form);
-            }
-        }
+    $.post(PAINT_VIEW, JSON.stringify(painted_data), function (data) {
+        window.location.href = data
     });
 }
