@@ -228,7 +228,7 @@ var painted_data = {
 
 function getPaintedData(PAINT_VIEW) {
     $.ajax({
-        type: "POST",
+        type: "post",
         url: PAINT_VIEW,
         data: JSON.stringify(painted_data),
         contentType: "application/json",
@@ -244,9 +244,4 @@ function getPaintedData(PAINT_VIEW) {
             }
         }
     });
-    // $.post(PAINT_VIEW, painted_data, function(data){
-    //     alert(data);
-    //     window.location(data);
-    // });
-    // return painted_data;
 }

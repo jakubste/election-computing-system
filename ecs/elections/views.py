@@ -17,6 +17,7 @@ from ecs.elections.algorithms.genetic import GeneticAlgorithm
 from ecs.elections.algorithms.greedy_algorithm import GreedyAlgorithm
 from ecs.elections.algorithms.greedy_cc import GreedyCC
 from ecs.elections.election_generator import ElectionGenerator
+from ecs.elections.election_paint_loader import ElectionPaintLoader
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
 from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, SummingLineFormatException
@@ -223,6 +224,9 @@ class ElectionPaintView(ConfigureElectionMixin, TemplateView):
 
     def post(self, request, pk):
         print(request.body)
+        data = json.loads(request.body)
+        loader = ElectionPaintLoader(self.election, data['candidates'], data['voters'])
+        loader.load_elections()
         return HttpResponse(reverse('elections:election_details', args=(self.election.pk,)))
 
 
