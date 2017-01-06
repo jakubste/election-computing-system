@@ -1,13 +1,15 @@
+import json
+
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.forms.widgets import Select
-from django.http.response import Http404
+from django.http.response import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import CreateView, FormView
 
 from ecs.elections.algorithms.brute_force import BruteForce
@@ -204,15 +206,24 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
         return super(ElectionGenerateDataFormView, self).form_valid(form)
 
 
-class ElectionPaintDataFormView(ConfigureElectionMixin, FormView):
-    form_class = ElectionGenerateDataForm
+class ElectionPaintView(ConfigureElectionMixin, TemplateView):
     template_name = 'election_paint_data.html'
     election = None
 
-    def form_valid(self, form):
-        # generator = ElectionGenerator(self.election, **form.cleaned_data)
-        # generator.generate_elections()
-        return super(ElectionPaintDataFormView, self).form_valid(form)
+    def dispatch(self, request, *args, **kwargs):
+        self.election = get_object_or_404(Election, pk=kwargs.get('pk'))
+        if self.election.user != self.request.user:
+            raise Http404
+        return super(ElectionPaintView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ElectionPaintView, self).get_context_data(**kwargs)
+        ctx['election'] = self.election
+        return ctx
+
+    def post(self, request, pk):
+        print(request.body)
+        return HttpResponse(reverse('elections:election_details', args=(self.election.pk,)))
 
 
 class ElectionChartView(ChartMixin):

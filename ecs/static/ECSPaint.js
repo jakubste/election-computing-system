@@ -18,7 +18,7 @@ var MAX_POINTS = 10; //max points to add on a single click
 var paint_container;
 var renderer;
 
-paint_container = document.getElementById('ecs-paint');
+paint_container = document.getElementById(ECS_DIV_NAME);
 renderer = new THREE.WebGLRenderer({canvas: paint_container});
 renderer.setSize(paint_container.width, paint_container.height);
 
@@ -86,7 +86,6 @@ var mouse = new THREE.Vector2();
 function onMouseMove(event) {
     // calculate mouse position in normalized device coordinates
     // (-1 to +1) for both components
-    console.log("Mouse positoin: " + event.clientX + ", " + event.clientY);
     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
     mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
 }
@@ -161,7 +160,7 @@ function addPoints(x, y, color, square_size) {
         y_rand = parseInt(y + signum_y * Math.random() * (square_size / 2));
         success = addPoint(x_rand, y_rand, color);
         if (success) {
-            current_list.push({'x': x_rand, 'y': y_rand});
+            current_list.push({"x": x_rand, "y": y_rand});
         }
     }
 }
@@ -212,8 +211,6 @@ function putLabel(x, y, tag, color, font, size) {
 
     scene.add(mesh);
 
-    console.log("put label " + x + " " + y + " " + tag);
-
     mesh.position.x += x;
     mesh.position.y += y;
     mesh.name = tag;
@@ -222,3 +219,34 @@ function putLabel(x, y, tag, color, font, size) {
 renderer.setClearColor(0xffffff);
 
 render();
+
+
+var painted_data = {
+    "voters": voters,
+    "candidates": candidates
+};
+
+function getPaintedData(PAINT_VIEW) {
+    $.ajax({
+        type: "POST",
+        url: PAINT_VIEW,
+        data: JSON.stringify(painted_data),
+        contentType: "application/json",
+        dataType: "json",
+        success: function (data, textStatus) {
+            if (data.redirect) {
+                // data.redirect contains the string URL to redirect to
+                window.location.href = data.redirect;
+            }
+            else {
+                // data.form contains the HTML for the replacement form
+                $("#myform").replaceWith(data.form);
+            }
+        }
+    });
+    // $.post(PAINT_VIEW, painted_data, function(data){
+    //     alert(data);
+    //     window.location(data);
+    // });
+    // return painted_data;
+}
