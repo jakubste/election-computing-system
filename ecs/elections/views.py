@@ -93,7 +93,7 @@ class ElectionDetailView(DetailView):
         ctx = super(ElectionDetailView, self).get_context_data(**kwargs)
         if self.object.voters.count() <= 100:
             ctx['voters'] = self.object.voters.all().prefetch_related('preferences', 'preferences__candidate')
-        ctx['results'] = self.object.results.all() \
+        ctx['results'] = self.object.results.all()\
             .select_related('geneticalgorithmsettings').prefetch_related('winners')
         choices = [(res.pk, str(res)) for res in ctx['results'].reverse()]
         choices.append((None, '------'))
