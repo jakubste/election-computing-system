@@ -85,7 +85,7 @@
 
 Niniejszy podręcznik opisuje sposób użytkowania systemu \texttt{Election Computing System}, powstałego w ramach pracy inżynierskiej realizowanej na Akademii Górniczo-Hutniczej w Krakowie.
 
-System umożliwia obliczenie wyników wyborów w uogólnionym systemie wyborczym k-Borda.
+System umożliwia obliczenie wyników wyborów w uogólnionym systemie wyborczym $k-Borda$.
 
 Szczegóły na temat tego systemu wyborczego można przeczytać w Przewodniku po projekcie.
 
@@ -267,10 +267,11 @@ Po naciśnięciu wskazanego przycisku powinna pojawić się strona z formularzem
 \label{sec:electionsnewlycreated}
 
 Po utworzeniu wyborów należy określić biorących udział w wyborach kandydatów oraz wyborców.
-Użytkownik ma do wyboru dwie opcje:
+Użytkownik ma do wyboru trzy opcje:
 \begin{itemize}
 \item wczytać dane z pliku w formacie .soc określonym przez \href{http://www.preflib.org/}{PrefLib},
-\item wygenerować losowy układ wyborców w oparciu o rozkład normalny.
+\item wygenerować losowy układ wyborców i kandydatów w oparciu o rozkład normalny.
+\item wygenerować układ wyborców i kandydatów w oparciu o narysowany wykres 
 \end{itemize}
 
 
@@ -322,7 +323,7 @@ Kolejne pola formularza począwszy od góry oznaczają odpowiednio: liczbę kand
 
 Średnie określone dla wyborców i kandydatów wyznaczają punkt centralny, wokół którego będą skupione ich „poglądy”.  Odchylenia standardowe określone dla wyborców i kandydatów wyznaczają „stopień rozproszenia poglądów”.
 
-Koncepcyjnie ten sposób generacji danych odzwierciedla mapę poglądów politycznych. Porządek preferencji kandydatów wśród wyborców określa ich odległość euklidesowa w układzie współrzędnych.
+Koncepcyjnie ten sposób generacji danych odzwierciedla mapę poglądów politycznych. Porządek preferencji kandydatów wśród wyborców określa odległość euklidesowa między nimi w układzie współrzędnych.
 
 Po uzupełnieniu formularza należy potwierdzić wybór przyciskiem \textit{Generate data for election} znajdującym się pod ostatnim polem formularza.
 
@@ -376,11 +377,11 @@ Po wczytaniu danych pokaże się ekran z szczegółami wyborów: \\
 \end{center}
 
 \vspace{\baselineskip}
-Wykres będzie widoczny tylko w przypadku wyborów wygenerowanych z rozkładu normalnego.
+Wykres będzie widoczny tylko w przypadku wyborów wygenerowanych z rozkładu normalnego lub na bazie stworzonego wykresu.
 
 Poniżej można zobaczyć spis dostępnych rozstrzygnięć wyborów, wykres porównujący wyniki wyborów oraz odnośnik do formularza dodawania nowego wyniku.
 
-Poniżej, jeśli liczba wyborców nie jest na tyle duża, że utrudniałoby to używanie strony przez zbytnie obciążenie przeglądarki, widać listing preferencji wyborców. Szczególnie przydatny do sprawdzenia czy poprawnie zostały wczytane dane z plików .soc. W przypadku danych z rozkładu normalnego jego przydatność jest ograniczona.
+Poniżej, jeśli liczba wyborców nie jest na tyle duża, że utrudniałoby to używanie strony przez zbytnie obciążenie przeglądarki, widać listing preferencji wyborców. Szczególnie przydatny do sprawdzenia czy poprawnie zostały wczytane dane z plików .soc. W przypadku danych z rozkładu normalnego lub stworzonych na bazie wykresu jego przydatność jest ograniczona.
 
 \newpage
 \section{Dodawanie wyniku}
@@ -432,7 +433,7 @@ W celu wyświetlenia szczegółów wyników wyborów należy na stronie ze szcze
 \end{center} 
 
 \vspace{\baselineskip}
-Na stronie ze szczegółami wyników wyborów znajdują się wykres ze zwycięzcami (jeżeli wybory zostały wygenerowane z rozkładu normalnego) oraz lista zwycięzców: \\
+Na stronie ze szczegółami wyników wyborów znajdują się wykres ze zwycięzcami (jeżeli wybory zostały wygenerowane z rozkładu normalnego lub na bazie stworzonego wykresu) oraz lista zwycięzców: \\
 \begin{center}
 \includegraphics[width=0.8\textwidth]{pics/result-details_version2.png}
 \captionof{figure}{Strona ze szczegółami wyników wyborów}
@@ -534,7 +535,7 @@ Twórcy systemu dążyli do zapewnienia dwóch podstawowych dogodności dla uży
 \section{Prezentacja wyników}
 Odpowiednia forma prezentacji wyników była sprawą nieodzowną dla dobrego działania systemu. Poza wymiarem estetycznym umożliwia zaobserwowanie sposobu zmieniania się wyników wyborów w zależności od parametrów przekazanych algorytmowi. W celu udogodnienia porównywania różnych wyników wyborów zaimplementowano suwak, który pozwala na proste przechodzenie między kolejnymi wykresami. W trakcie przechodzenia między wykresami punkty nie zmieniają swojego położenia na ekranie, dlatego wyraźnie widać każdą zmianę pomiędzy danymi wynikami wyborów.
  
-\indent Innym udogodnieniem, które zostało wprowadzone jest sposób wyświetlania tabeli z czasami działania algorytmów oraz zadowoleniami jakie osiągnęły algorytmy. Poza estetyczną prezentacją tabeli, wyniki grupowane są według parametru p - wyniki dla tego samego parametru p są obok siebie. Ponadto tło grupy wyników jest pokolorowane w taki sposób, aby sąsiednie grupy miały inne tło. Dzięki takim zabiegom w prosty sposób można zlokalizować grupy wyników dla tego samego parametru p.
+\indent Innym udogodnieniem, które zostało wprowadzone jest sposób wyświetlania tabeli z czasami działania algorytmów oraz zadowoleniami jakie osiągnęły algorytmy. Poza estetyczną prezentacją tabeli, wyniki grupowane są według parametru $p$ - wyniki dla tego samego parametru $p$ są obok siebie. Ponadto tło grupy wyników jest pokolorowane w taki sposób, aby sąsiednie grupy miały inne tło. Dzięki takim zabiegom w prosty sposób można zlokalizować grupy wyników dla tego samego parametru $p$.
 
 \section{Nawigacja po stronie}
 
