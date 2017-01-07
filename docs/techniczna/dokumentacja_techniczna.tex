@@ -140,7 +140,7 @@ f_{\ell_pB}(p,(i_1,\dots,i_k))=\sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+...+[\beta
 Systemy $k-Borda$ i \textit{Chamberlina-Couranta} są szczególnymi przypadkami zdefiniowanego powyżej systemu $\ell_p-Borda$:\\
 Dla \, $p = 1$, \, $l_1 \equiv +$:
 \begin{equation}
-f_{\ell_pB}(1,(i_1, \dots ,i_k)) = \beta(i_1) + \beta(i_2) + \dots + \beta(ik) = f_{kB}(i_11, \dots,i_k)
+f_{\ell_pB}(1,(i_1, \dots ,i_k)) = \beta(i_1) + \beta(i_2) + \dots + \beta(ik) = f_{kB}(i_1, \dots,i_k)
 \end{equation}
 Dla \, $p= \infty$, \, $l_{\infty} \equiv {max}$:
 
@@ -187,7 +187,7 @@ w \textit{Pythonie}. Wygodny \textit{ORM} zazwyczaj wystarcza do obsługi bazy d
 istnieje możliwość użycia bezpośrednio \textit{SQL}. \\ \\
 Widoki w \textit{Django} spełniają dwojaką funkcję - służą zarówno przekazaniu danych do
 wyświetlenia, jak i ich modyfikacji. W wyświetleniu danych użytkownikowi pośredniczą
-szablony (\textit{templates}), które \"opakowują\" przekazane dane do postaci \textit{HTML'a}, który może wyświetlić przeglądarka internetowa. Dzięki temu wybór danych, jakie mają zostać pokazane
+szablony (\textit{templates}), które “opakowują” przekazane dane do postaci \textit{HTML'a}, który może wyświetlić przeglądarka internetowa. Dzięki temu wybór danych, jakie mają zostać pokazane
 użytkownikowi, jest oddzielony od samego sposobu ich prezentacji. \\ \\
 Za kontroler z klasycznego \textit{MVC} można uznać sam framework dostarczający wspomnianej
 obsługi bazy danych czy mapowania adresów \textit{URL} do poszczególnych widoków.
@@ -529,7 +529,7 @@ dane z powrotem do widoku \code{ElectionDetailView} umożliwiając stworzenie wy
 \item Widok wykorzystując szablon \code{election\_details.html} tworzy i wysyła stronę do
 przeglądarki użytkownika.
 \end{enumerate}
-\clearpage
+\newpage
 
 \subsection{Stworzenie nowego wyniku dla danych wyborów}
 \begin{enumerate}
@@ -557,7 +557,7 @@ informacji szczegółowych dla danych wyborów}.
 \subsection{Wyświetlenie szczegółowych informacji o danym wyniku danych
 wyborów}
 \begin{enumerate}
-\item Użytkownik klikając na link danego wyniku wyborów na stronie ze szczegółowymi
+\item Użytkownik klikając na odpowiednią ikonę przy danym wyniku wyborów na stronie ze szczegółowymi
 informacjami o danych wyborach, wysyła za pomocą przeglądarki internetowej
 żądanie wyświetlenia szczegółowych informacji o danym wyniku dla danych
 wyborów.
@@ -605,7 +605,7 @@ internetowej żądanie wygenerowania wyborów za pomocą rozkładu normalnego.
 \code{ElectionGenerateDataFormView}).
 \item Widok wykorzystując formularz \code{ElectionGenerateDataForm} i szablon
 \code{election\_generate\_data.html} tworzy oraz wysyła do użytkownika stronę z formularzem do
-określenia parametrów wyborów oraz i rozkładu normalnego.
+określenia parametrów wyborów oraz rozkładu normalnego.
 \item Użytkownik uzupełnia formularz i wysyła go do systemu.
 \item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
 \code{ElectionGenerateDataFormView}).
@@ -968,7 +968,7 @@ Mutacja osobnika - komitetu polega na losowej zmianie jednego z kandydatów z ko
 System pozwala wybrać:
 \begin{itemize}
 \item liczbę cykli działania algorytmu
-\item cześć puli jaka jest poddawana krzyżowaniu (osobniki są z niej losowo wybierane do krzyżowania)
+\item część puli jaka jest poddawana krzyżowaniu (osobniki są z niej losowo wybierane do krzyżowania)
 \item prawdopodobieństwo wystąpienia mutacji w pojedynczym osobniku
 \end{itemize}
 
@@ -981,7 +981,7 @@ Na cykl algorytmu składa się:
 \item wybór N osobników do przejścia do kolejnego cyklu
 \end{itemize}
 
-Liczba N określa wielkość puli osobników i jest wybierana na początku działania algorytmu. W naszej implementacji przyjęto stałą liczbę 50 osobników.
+Liczba N określa wielkość puli osobników i jest wybierana na początku działania algorytmu. W naszej implementacji przyjęto stałą liczbę $50$ osobników.
 
 \subsection{Wpływ parametrów działania na wyniki osiągane przez algorytm}
 Aby przekonać się jak dobór parametrów ma wpływ na wyniki osiągane przez algorytm, przeprowadzono kilka testów na losowo wygenerowanych wyborach (korzystając z funkcji systemu losującej kandydatów i wyborców na podstawie rozkładu normalnego).
@@ -1032,7 +1032,7 @@ Należy pamiętać, że nawet mała zmiana wyniku punktowego komitetu może mie�
 
 \newpage
 
-Podobne zestawienie wykonano jeszcze dla "większych" wyborów: $200$ głosujących, $200$ kandydatów, $15$ miejsc w komitecie. Poniżej znajduje się porównanie osiągniętych wyników:
+Podobne zestawienie wykonano jeszcze dla “większych” wyborów: $200$ głosujących, $200$ kandydatów, $15$ miejsc w komitecie. Poniżej znajduje się porównanie osiągniętych wyników:
 
 \begin{tabular}{cc}
 	
@@ -1052,7 +1052,7 @@ Podobne zestawienie wykonano jeszcze dla "większych" wyborów: $200$ głosując
 W tym wypadku również zwiększenie liczby cykli do $200$ pozwoliło na jeszcze lepszy wynik, windując jednak czas wykonania programu do nieco ponad $10$ minut. Co ciekawe próba przy $300$ cyklach dała wynik gorszy - ujawnia się tutaj losowa natura algorytmu genetycznego.
 
 \section{Algorytm typu brute-force}
-Do zbadania poprawności działania innych algorytmów zaimplementowany został bardzo prosty algorytm typu \textit{brute-force} iterujący po wszystkich możliwych kombinacjach komitetów i wyszukujący komitetu o najwyższym wyniku.
+Do zbadania poprawności działania innych algorytmów zaimplementowany został bardzo prosty algorytm typu \textit{brute-force} iterujący po wszystkich możliwych kombinacjach komitetów i wyszukujący komitet o najwyższym wyniku.
 
 \subsection{Pseudokod}
 
@@ -1230,7 +1230,7 @@ Uzyskane wyniki pokazują, że już dla wartości parametru $p = 50$ średnio po
 
 \subsection{Porównanie z algorytmem brute-force}
 
-Aby przetestować implementację algorytmu genetycznego postanowiono porównać wyniki z wynikiem działania algorytmu \textit{brute-force}. Niestety, ze względu na powolne działanie tego ostatniego, takie porównanie można wykonać jedynie dla wyborów o małych „rozmiarach”.
+Aby przetestować implementację algorytmu genetycznego postanowiono porównać wyniki z wynikiem działania algorytmu \textit{brute-force}. Niestety, ze względu na powolne działanie tego ostatniego, takie porównanie można wykonać jedynie dla wyborów o małych “rozmiarach”.
 
 ~\\
 I tak, dla przykładowych wyborów o parametrach:
