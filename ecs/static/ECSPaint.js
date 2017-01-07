@@ -3,7 +3,7 @@ var RANGE = 200;
 var DIVISIONS = 10, SIZE = RANGE / 2; //grid helper parameters
 var FONT_SIZE = 8;
 var MARKER_SIZE = 1, MIN_MARKER_SIZE = 1, MAX_MARKER_SIZE = 50;
-var CANDIDATE_COLOR = 0x008000, VOTER_COLOR = 0x0000ff, ERASE_COLOR = 0xff0000;
+var CANDIDATE_COLOR = 0x008000, VOTER_COLOR = 0x0000ff;
 var MARKER_COLOR = VOTER_COLOR;
 
 var CANDIDATES_MODE = 'candidates', VOTERS_MODE = 'voters', mode = VOTERS_MODE;
@@ -106,7 +106,6 @@ function onMouseDown(event) {
             console.log("Position" + x_pos + ", " + y_pos + " is occupied");
         }
         else {
-//                addPoint(x_pos, y_pos, marker.material.color);
             addPoints(x_pos, y_pos, marker.material.color, MARKER_SIZE);
             document.getElementById("candidates").innerHTML = candidates.length.toString();
             document.getElementById("voters").innerHTML = voters.length.toString();
@@ -145,11 +144,6 @@ var onKeyDown = function (event) {
         mode = VOTERS_MODE;
         document.getElementById("mode").innerHTML = VOTERS_MODE.toString();
     }
-
-//        if(event.keyCode == 88)
-//        {
-//            marker.material.color = new THREE.Color(ERASE_COLOR);
-//        }
 };
 
 
