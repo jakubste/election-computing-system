@@ -291,11 +291,12 @@ formularz określający parametry wyniku \\
 \subsection{Opis ogólny}
 Moduł odpowiedzialny za stworzenie wykresu \textit{2D} wizualizującego wybory i jego wyniki
 oraz wykresu zestawiającego czasy obliczeń poszczególnych algorytmów w zależności od parametru $p$.\\
-Wizualizacja dotyczy tylko wyborów wygenerowanych z rozkładu normalnego.\\ Wyborcy i
-kandydaci są reprezentowani jako punkty na płaszczyźnie. Punkty reprezentujące wyborców
+Wizualizacja dotyczy wyborów wygenerowanych z rozkładu normalnego lub stworzonych poprzez zaznaczanie 
+punktów na płaszczyźnie.\\ 
+Wyborcy i kandydaci są reprezentowani jako punkty na płaszczyźnie. Punkty reprezentujące wyborców
 i kandydatów mają na wykresie odmienne kolory. Na wykresie wyników wyborów punkty
 reprezentujące zwycięzców wyborów są powiększone.\\ Moduł współpracuje z modułem
-zarządzania wyborów, który zleca mu zadanie wizualizacji wyborów lub jego wyników. W
+zarządzania wyborami, który zleca mu zadanie wizualizacji wyborów lub jego wyników. W
 celu wykonania zadania moduł wizualizacji wyborów i wyników wyborów pobiera dane z
 bazy danych.
 
@@ -327,12 +328,13 @@ wyborców oraz zwycięzców \\
 
 \section{Moduł generacji i wczytywania wyborów}
 \subsection{Opis ogólny}
-Moduł odpowiedzialny za generację wyborów z rozkładu normalnego oraz wczytywanie
-wyborów z pliku formatu \textit{.soc}. Moduł współpracuje z modułem zarządzania wyborami,
-któremu zleca po wykonaniu swoich zadań, stworzenie i wysłanie użytkownikowi
-odpowiedniej strony internetowej. Moduł zapewnia wygenerowanie wyborów z rozkładu normalnego według wskazanych parametrów oraz walidację danych przy wczytywaniu
-wyborów z pliku. Po stworzeniu wyborów moduł komunikuje się z bazą danych w celu
-utrwalenia wyborów.
+Moduł odpowiedzialny za generację wyborów z rozkładu normalnego, generację poprzez zaznaczanie punktów 
+na płaszczyźnie oraz wczytywanie wyborów z pliku formatu \textit{.soc}. Moduł współpracuje z modułem 
+zarządzania wyborami, któremu zleca po wykonaniu swoich zadań, stworzenie i wysłanie użytkownikowi
+odpowiedniej strony internetowej. Moduł zapewnia wygenerowanie wyborów z rozkładu normalnego według 
+wskazanych parametrów, wygenerowanie wyborow na podstawie zaznaczonych przez uzytkownika punktów oraz 
+walidację danych przy wczytywaniu wyborów z pliku. Po stworzeniu wyborów moduł komunikuje się z bazą 
+danych w celu utrwalenia wyborów.
 
 \subsection{Komponenty programowe}
 Komponenty programowe dla tego modułu znajdują się w pakietach:  \code{ecs.elections.views} (widoki), \code{ecs.elections.templates} (szablony) oraz \code{ecs.elections.forms} (formularze).\\ \\
@@ -345,6 +347,10 @@ Widoki & klasa \code{ElectionLoadDataFormView} & wczytanie wyborów z pliku \\
  & klasa
 \code{ElectionGenerateDataFormView} & generacja wyborów z rozkładu
 normalnego \\
+\cline{2-3}
+ & klasa
+\code{ElectionPaintView} & pobranie punktów zaznaczonych przez użytkownika, odpowiednie sformatowanie 
+danych, przekazanie ich do bazy \\
 \hline
 Szablony & \code{election\_load\_data.html} & strona z formularzem do
 wskazania pliku \\
@@ -352,6 +358,9 @@ wskazania pliku \\
  & \code{election\_generate\_data.html} & strona z formularzem do
 wskazania parametrów wyborów i
 rozkładu normalnego \\
+\cline{2-3}
+ & \code{election\_paint\_data.html} & strona z interfejsem do zaznaczania kandydatów i wyborców na 
+ płaszczyźnie\\
 \cline{2-3}
  & \code{election\_details.html} & strona wyświetlana po
 poprawnym wczytaniu danych z
@@ -502,15 +511,17 @@ i wysyła stronę do przeglądarki internetowej użytkownika.
 \end{enumerate}
 
 \subsection{Wyświetlenie informacji szczegółowych dla danych wyborów}
+\label{subsec:wyswietlanie_informacji_szczegolowych_dla_danych_wyborow}
 \begin{enumerate}
 \item Użytkownik klikając na link wyborów na stronie z listą swoich wyborów, wysyła za
 pomocą przeglądarki internetowej żądanie wyświetlenia informacji szczegółowych
 dla danych wyborów.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami\,(widok\,\code{ElectionDetailView}).
 \item Widok pobiera z bazy danych listę głosujących oraz listę wyników wyborów.
-\item Jeżeli wybory zostały wygenerowane z rozkładu normalnego, widok przekierowuje
-działanie programu do modułu wizualizacji wyborów i wyników wyborów (widok
-\code{ElectionChartView}). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$
+\item Jeżeli wybory zostały wygenerowane z rozkładu normalnego lub poprzez zaznaczenie punktów na 
+płaszczyźnie, widok przekierowuje działanie programu do modułu wizualizacji wyborów i wyników wyborów 
+(widok \code{ElectionChartView}). Jeżeli wybory nie zostały wygenerowane z w jeden z dwóch 
+wymienionych wyżej sposobów, następuje przejście do kroku nr $6$
 \item Widok pobiera z bazy danych obiekty będące punktami \textit{2D} reprezentującymi
 wyborców i kandydatów. Ustawia parametry wykresu a następnie wysyła wszystkie
 dane z powrotem do widoku \code{ElectionDetailView} umożliwiając stworzenie wykresu.
@@ -552,9 +563,10 @@ wyborów.
 \item Moduł URL Resolver kieruje żądanie do modułu zarządzania wyborami (widok
 \code{ResultDetailsView}).
 \item Widok pobiera z bazy danych informacje o zwycięzcach danych wyborów.
-\item Jeżeli wybory zostały wygenerowane z rozkładu normalnego, widok przekierowuje
-działanie programu do modułu wizualizacji wyborów i wyników wyborów (widok
-\code{ResultChartView}). Jeżeli wybory nie zostały wygenerowane z rozkładu normalnego, następuje przejście do kroku nr $6$.
+\item Jeżeli wybory zostały wygenerowane z rozkładu normalnego lub poprzez zaznaczenie punktów na 
+płaszczyźnie, widok przekierowuje działanie programu do modułu wizualizacji wyborów i wyników wyborów 
+(widok \code{ResultChartView}). Jeżeli wybory nie zostały wygenerowane w jeden z dwóch wymienionych 
+wyżej sposobów, następuje przejście do kroku nr $6$.
 \clearpage
 \item Widok pobiera z bazy danych obiekty będące punktami \textit{2D} reprezentującymi
 wyborców, kandydatów i zwycięzców. Ustawia parametry wykresu a następnie
@@ -589,7 +601,7 @@ użytkownika.
 ze szczegółowymi informacjami o danych wyborach, wysyła za pomocą przeglądarki
 internetowej żądanie wygenerowania wyborów za pomocą rozkładu normalnego.
 \item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów (widok
-\textit{ElectionGenerateDataFormView}).
+\code{ElectionGenerateDataFormView}).
 \item Widok wykorzystując formularz \code{ElectionGenerateDataForm} i szablon
 \code{election\_generate\_data.html} tworzy oraz wysyła do użytkownika stronę z formularzem do
 określenia parametrów wyborów oraz i rozkładu normalnego.
@@ -599,8 +611,23 @@ określenia parametrów wyborów oraz i rozkładu normalnego.
 \clearpage
 \item Widok wczytuje dane z formularza i wykorzystując generator, generuje według
 wczytanych parametrów kandydatów, wyborców oraz liczy ich preferencje. Dane
-zostają zapisane do bazy. Następnie program przechodzi do 2-go punktu ścieżki
-\textit{Wyświetlanie informacji szczegółowych dla danych wyborów}.
+zostają zapisane do bazy. Następnie program przechodzi do 2. punktu ścieżki
+\textit{\nameref{subsec:wyswietlanie_informacji_szczegolowych_dla_danych_wyborow}}.
+\end{enumerate}
+
+\subsection{Tworzenie wyborów poprzez zaznaczenie punktów na płaszczyźnie}
+\begin{enumerate}
+\item Użytkownik klikając na przycisk \textit{Draw chart} na stronie ze szczegółowymi informacjami o danych wyborach, wysyła za pomocą przeglądarki internetowej żądanie stworzenia wyborów w edytorze graficznym.
+\item Moduł URL Resolver kieruje żądanie do modułu generacji i wczytywania wyborów \mbox{(widok
+\code{ElectionPaintView})}.
+\item Widok przekierowuje sterowanie do \code{election\_paint\_data.html} - szablonu z edytorem graficznym.
+\item Użytkownik zaznacza kandydatów i wyborców, tworzone są listy współrzędnych kandydatów \mbox{i wyborców}. 
+\item Użytkownik klika przycisk \textit{Save and proceed}. Listy współrzędnych kandydatów i wyborców 
+zostają przesłane do widoku \textit{ElectionPaintView}
+\item Widok \code{ElectionPaintView} zapisuje dane do bazy z wykorzystaniem instancji klasy 
+\code{ElectionPaintLoader} przekazując jej listy współrzędnych kandydatów i wyborców. Następnie 
+program przechodzi do 2. punktu ścieżki 
+\textit{\nameref{subsec:wyswietlanie_informacji_szczegolowych_dla_danych_wyborow}}.
 \end{enumerate}
 
 \chapter{Struktura obiektowa przechowywanych danych}
@@ -762,8 +789,8 @@ pomocą funkcji:
 f_{{\ell_p}-Borda}(i_1, i_2,\dots, i_k) = \sqrt[p]{[\beta(i_1)]^p+[\beta(i_2)]^p+\dots+[\beta(i_k)]^p}
 \end{equation}
  Funkcja bazuje na normie $\ell_p$ oraz punktacji $k-Borda$. Dokładne informacje na temat funkcji
-umieszczone są w rozdziale \textit{Dziedzina problemu}. Ogólne zadowolenie wyborców z komitetu
-jest obliczane jako suma pojedynczych zadowoleń wszystkich wyborców. Algorytm działa w
+umieszczone są w rozdziale \textit{\nameref{cha:dziedzina_problemu}}. Ogólne zadowolenie wyborców z 
+komitetu jest obliczane jako suma pojedynczych zadowoleń wszystkich wyborców. Algorytm działa w
 ten sposób, że przed wyborem pierwszego zwycięzcy, poziom zadowolenia wyborców
 wynosi $0$, gdyż zadowolenie każdego pojedynczego wyborcy wynosi $0$ - zadowolenie z
 komitetu liczącego $0$ osób zgodnie z powyższą funkcją wynosi $0$. W pierwszej iteracji
@@ -857,7 +884,7 @@ $V \longleftarrow $ zbiór wszystkich $n$ wyborców\;
 }
 \caption{Pseudokod algorytmu zachłannego}
 \end{algorithm}
-
+\clearpage
 
 \section{Algorytm zachłanny według zasady Chamberlina-Couranta}
 Algorytm ten nie aproksymuje wyników wyborów na bazie funkcji satysfakcji opisującej
@@ -918,6 +945,7 @@ porównania w danej iteracji niewybranych jeszcze kandydatów w celu ustalenia n
 z nich. Polega on na zbadaniu jaką dodatkową satysfakcję do ogólnego poziomu
 zadowolenia wnosi badany kandydat i porównywaniu tych dodatkowych satysfakcji, a nie
 wartości ogólnego poziomu zadowolenia jak w przypadku pierwszego algorytmu.
+\clearpage
 
 \section{Algorytm genetyczny}
 Algorytmy genetyczne polegają na przedstawieniu róznych wyników problemu 

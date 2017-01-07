@@ -186,6 +186,8 @@ wczytywać pewien format pliku wejściowego definiującego wybory, których wyni
 \subsubsection{Usługi dodatkowe}
 \begin{itemize}
 	\item wygodny sposób porównywania wyników wyborów
+	\item możliwość definiowania wyborów poprzez zaznaczanie współrzędnych kandydatów i wyborców na 
+	mapie poglądów
 \end{itemize}
 
 
@@ -232,19 +234,29 @@ dotyczące: liczby kandydatów, średniej wartości współrzędnej $x$ dla
 wyborców, średniej wartości współrzędnej $x$ dla kandydatów, średniej
 wartości współrzędnej $y$ dla wyborców, średniej wartości współrzędnej
 $y$ dla kandydatów, odchylenia standardowego wyborców oraz
-odchylenia standardowego kandydatów. \\ 
+odchylenia standardowego kandydatów. 
+
+Wybory zdefiniować można również poprzez zaznaczenie współrzędnych kandydatów i wyborców na 
+płaszczyźnie stanowiącej mapę poglądów politycznych. Reprezentacja kandydatów i wyborców oraz sposób
+obliczania preferencji wyborców nie zmienia się w porównaniu do poprzedniej opcji.
+Generowanie mapy poglądów odbywa się poprzez wskazanie przez użytkownika dokładnych współrzędnych lub
+obszarów występowania kandydatów lub wyborców na płaszczyźnie.\\ 
+
+
 \hline 
 \textbf{Uzasadnienie} & Definicja wyborów za pomocą pliku formatu \textit{.soc} zapewnia spełnienie
 podstawowej usługi oferowanej przez system - wprowadzenia wyborów
 do systemu. Uzasadnieniem dla konieczności generacji wyborów z
-rozkładu normalnego jest możliwość atrakcyjnej i klarownej wizualizacji
-wyborów i wyników wyborów. Wizualizacja w ten sposób wyników
-wyborów umożliwia między innymi ocenienie jakości stworzonych
+rozkładu normalnego oraz poprzez zaznaczanie punktów na mapie poglądów jest możliwość atrakcyjnej i 
+klarownej wizualizacji wyborów i wyników wyborów. Wizualizacja w ten sposób wyników
+wyborów dla opcji z użyciem rozkładu normalnego umożliwia między innymi ocenienie jakości stworzonych
 algorytmów i porównanie ich.\\ 
 \hline 
 \end{tabular}
 \caption{Zdefiniowanie wyborów} 
 \end{table}
+
+\clearpage
 
 \begin{table}
 \centering
@@ -269,10 +281,8 @@ sposoby wyboru zwycięskiego komitetu.\\
 \end{tabular}
 \caption{Obliczanie wyników wyborów} 
 \end{table}
-\clearpage
 
-%\begin{table}
-{
+\begin{table}
 \centering
 \begin{tabular}{|c|p{10cm}|}
 \hline
@@ -293,11 +303,11 @@ wygrywający jest bliski przybliżonego wyniku otrzymanego dla systemu
 \hline 
 \end{tabular} 
 \captionof{table}{Wersja algorytmu zachłannego \textit{Greedy - CC}}
-}
-%\end{table}
+\end{table}
+
 \vspace{\baselineskip}
-%\begin{table}
-{
+
+\begin{table}
 \centering
 \begin{tabular}{|c|p{10cm}|}
 \hline
@@ -309,12 +319,16 @@ widocznym panelu. Ta forma prezentacji dotyczy wyników wyborów,
 które zdefiniowane zostały za pomocą pliku formatu \textit{.soc}.
 
 Druga forma prezentacji wyników wyborów dotyczy wyborów wygenerowanych z
-rozkładu normalnego. Wizualizacja polega na narysowaniu wykresu
+rozkładu normalnego lub poprzez zaznaczanie punktów na płaszczyźnie.
+Wizualizacja polega na narysowaniu wykresu
 \textit{2D}, na którym punkty reprezentujące kandydatów ze zwycięskiego
 komitetu są wyraźnie wyróżnione na tle kandydatów, którzy nie dostali
-się do zwycięskiego komitetu. Dla wyborów generowanych z rozkładu normalnego system również oferuje wypisanie nazw zwycięzców w dobrze widocznym panelu.
+się do zwycięskiego komitetu. Dla wyborów generowanych z rozkładu normalnego lub poprzez zaznaczanie 
+punktów system również oferuje wypisanie nazw zwycięzców w dobrze widocznym panelu.
 
-Ponadto system oferuje tabelę z wszystkimi wynikami wyborów obliczonych przez różne algorytmy i dla różnych parametrów $p$. Wyniki dla różnych parametrów $p$ są wyraźnie oddzielone.\\ 
+Ponadto system oferuje wykres zależności czasu wykonanania obliczeń od parametru $p$ i 
+wybranego algorytmu oraz tabelę z wszystkimi wynikami wyborów obliczonych przez różne algorytmy i dla 
+różnych parametrów $p$. Wyniki dla różnych parametrów $p$ są wyraźnie oddzielone.\\ 
 \hline 
 \textbf{Uzasadnienie} & Prezentacja wyników wyborów w postaci wykresu \textit{2D} z wyraźnie
 zaznaczonymi zwycięzcami i przegranymi, którzy są reprezentowani
@@ -326,12 +340,11 @@ ogranicza się jedynie do wypisania zwycięzców, ponieważ kandydaci
 nie są reprezentowani jako punkty i tym samym nie mają
 współrzędnych w tej odmianie wyborów.
 
-Prezentacja wszystkich wyników w postaci tabeli z wyraźnie oddzielonymi wynikami dla różnych wartości parametru $p$, również ułatwia porównywanie wyników między różnymi algorytmami.\\ 
+Prezentacja wszystkich wyników w postaci wykresu i tabeli z wyraźnie oddzielonymi wynikami dla różnych wartości parametru $p$, również ułatwia porównywanie wyników między różnymi algorytmami.\\ 
 \hline 
 \end{tabular} 
 \captionof{table}{Prezentacja wyników wyborów}
-}
-%\end{table}
+\end{table}
 
 \clearpage
 \subsubsection{Wymagania niefunkcjonalne}
@@ -401,7 +414,10 @@ wyborów z oczekiwanymi rezultatami.
 
 \subsection{Aspekt technologiczny}
 Do stworzenia systemu wykorzystano język \textit{Python 2.7}. Produkt postanowiono wykonać w
-postaci aplikacji webowej. Aplikację internetową oparto na frameworku pythonowym \textit{Django 1.9.} Do tworzenia stron internetowych użyto frameworku \textit{Bootstrap}. Do wdrożenia systemu wykorzystano platformę \textit{Heroku}.
+postaci aplikacji webowej. Aplikację internetową oparto na frameworku pythonowym \textit{Django 1.9.} 
+Do tworzenia stron internetowych użyto frameworku \textit{Bootstrap}. Wyświetlanie wykresów w 
+aplikacji zrealizowano z użyciem wtyczki \textit{Chart.js}. Tworzenie wykresów poprzez zaznaczanie punktów na płaszczyźnie zrealizowane z użyciem biblioteki \textit{Three.js}. Do wdrożenia systemu wykorzystano 
+platformę \textit{Heroku}.
 
 Wybrano taki stos technologiczny ze względu na doświadczenie części zespołu pracy z nim.
 Wiedza na temat tych narzędzi przekonywała zespół o możliwości zrealizowania projektu w
@@ -443,16 +459,20 @@ poprzez współpracę różnych modułów.
 	\item usunięcie wyborów
 	\item usunięcie wyniku
 	\end{itemize}
+\clearpage
+
 \item Moduł wizualizacji wyborów i wyników wyborów
 	\begin{itemize}
-	\item wizualizacja wyborów wygenerowanych zgodnie z rozkładem normalnym
-	\item wizualizacja wyników wyborów dla wyborów wygenerowanych zgodnie z rozkładem
-normalnym oraz zaimportowanych z pliku w formacie \textit{.soc}
+	\item wizualizacja wyborów wygenerowanych zgodnie z rozkładem normalnym lub poprzez zaznaczanie 
+	punktów na płaszczyźnie
+	\item wizualizacja wyników wyborów dla wyborów wygenerowanych zgodnie z rozkładem normalnym, 	
+	wygenerowanych poprzez zaznaczanie punktów oraz zaimportowanych z pliku w formacie \textit{.soc}
 	\end{itemize}
 \item Moduł generacji i wczytywania wyborów
 	\begin{itemize}
-	\item generacja wyborów z rozkładu normalnego
 	\item wczytywanie wyborów z pliku formatu $.soc$
+	\item generacja wyborów z rozkładu normalnego
+	\item generacja wyborów z punktów zaznaczonych na płaszczyźnie
 	\end{itemize}
 \item Moduł obliczania wyników wyborów
 	\begin{itemize}
@@ -463,13 +483,13 @@ normalnym oraz zaimportowanych z pliku w formacie \textit{.soc}
 	\item przekazywanie żądań otrzymywanych przez klienta do odpowiednich modułów
 	\end{itemize}
 \end{enumerate}
+\clearpage
 
 \subsection{Diagram komunikacji}
 \begin{center}
 \centerline{\includegraphics[scale=0.7]{pics/Diagram_Komunikacji.png}}
 \captionof{figure}{Diagram komunikacji}
 \end{center}
-\newpage
 
 \subsubsection{Opis diagramu}
 Na diagramie oprócz przytoczonych modułów znajdują się przeglądarka internetowa oraz
@@ -503,8 +523,9 @@ Tomasz Kasprzyk
 \begin{itemize}
 \item generacja wyborów z rozkładu normalnego
 \item wizualizacja wyników wyborów i wydajności algorytmów na wykresach
+\item tworzenie wyborów poprzez zaznaczanie punktów na płaszczyźnie
 \item współtworzenie dokumentacji projektowej
-\item tworzenie testów jednostkowych i porównawczych
+\item współtworzenie testów jednostkowych i porównawczych
 \item współtworzenie prezentacji na zajęcia seminaryjne
 \end{itemize}
 Daniel Ogiela
@@ -559,7 +580,8 @@ większych danych i dawał wizualnie zadowalające rezultaty.
 \subsubsection{Wersja 4 - końcowa.}
 Końcowa wersja systemu usprawniła wcześniejsze algorytmy heurystyczne oraz dodała do
 funkcjonalności jeszcze jeden algorytm heurystyczny, który skutecznie i szybko obliczał
-wyniki wyborów dla odpowiednio dużego parametru $p$. Dodano ponadto liczne
+wyniki wyborów dla odpowiednio dużego parametru $p$. Dodano ponadto możliwość tworzenia wykresu 
+poprzez zaznaczanie współrzędnych kandydatów i wyborców na płaszczyźnie oraz liczne
 funkcjonalności poprawiające łatwość i intuicyjność korzystania z aplikacji. System pozwalał
 na przeglądanie wyników danych wyborów za pomocą suwaka oraz na usuwanie
 pojedynczych wyników. Do każdego elementu listy rezultatów dodano informację o wyniku
@@ -735,10 +757,8 @@ parametr p & algorytm zachłanny & algorytm genetyczny \\
 \end{center}
 
 \noindent Uzyskano wyniki, w których dla każdej wartości parametru $p$ algorytm genetyczny dla pewnego zestawu parametrów działania był co najmniej tak dobry jak algorytm zachłanny. Dla niższych wartości parametru $p$ algorytm genetyczny dla pewnych parametrów uzyskiwał wartości równe wynikom algorytmu zachłannego. Wraz ze wzrostem wartości parametru $p$ algorytm genetyczny umacniał się w stosunku do algorytmu zachłannego by w końcu zdecydowanie przewyższać jego wartości. Dla $p=50$ wyniki dla wszystkich ośmiu kombinacji parametrów działania algorytmu genetycznego były lepsze od wyniku algorytmu zachłannego. Czas działania algorytmu zachłannego był krótszy od czasu trwania reprezentantów algorytmu genetycznego. Jednak dla wartości parametru $p$ wynoszącej $50$ czasy były bardzo zbliżone. Czasy działania algorytmu genetycznego i zachłannego są coraz bliżej siebie wraz ze wzrostem parametru $p$ ze względu na fakt, że wraz ze wzrostem parametru $p$ coraz więcej wyników algorytmu genetycznego dla różnych parametrów działania okazuje się być lepszych bądź równych wynikowi algorytmu zachłannego.    
-\newpage
 
-\newpage
-\cleardoublepage
+\clearpage
 \addcontentsline{toc}{section}{\listfigurename}
 \listoffigures
 
@@ -755,6 +775,10 @@ E.Elkind, P.Faliszewski, P.Skowron. \textit{Properties of Multiwinner Rules}, 20
 \textit{Python 2.7} documentation, \url{https://docs.python.org/2/} 
 \bibitem{}
 \textit{Django} documentation, \url{https://docs.djangoproject.com/en/1.10/}
+\bibitem{}
+\textit{Chart.js} documentation, \url{http://www.chartjs.org/docs/}
+\bibitem{}
+\textit{Three.js} documentation, \url{https://threejs.org/docs/}
 \bibitem{}
 I. Sommerville, \textit{Inżynieria oprogramowania/Ian Sommerville;z ang. przeł. Krzysztof Stencel},WNT 2003
 
