@@ -189,6 +189,7 @@ wczytywać pewien format pliku wejściowego definiującego wybory, których wyni
 	\item możliwość definiowania wyborów poprzez zaznaczanie współrzędnych kandydatów i wyborców na 
 	mapie poglądów
 \end{itemize}
+\newpage
 
 
 % ------------------------------------------------------------------------------------------
@@ -201,8 +202,56 @@ wczytywać pewien format pliku wejściowego definiującego wybory, których wyni
 
 \subsubsection{Wymagania funkcjonalne}
 Poniżej zamieszczona jest lista najważniejszych wymagań, które wyewoluowały do przedstawionej postaci w trakcie trwania projektu. Wymagania są przedstawione w formie tabel.\\
-Tabela składa się z trzech pól opisujących dane wymaganie: \textit{Nazwa, Opis} i \textit{Uzasadnienie}. Pole \textit{Nazwa} jest nazwą usługi dostarczanej przez system, pole \textit{Opis} szczegółowo opisuje w jaki sposób jest realizowane dane wymaganie, a pole \textit{Uzasadnienie} podaje powód dlaczego w taki, a nie inny sposób wymaganie zostało zrealizowane i postawione.
+Tabela składa się z trzech pól opisujących dane wymaganie: \textit{Nazwa, Opis} i \textit{Uzasadnienie}. Pole \textit{Nazwa} jest nazwą usługi dostarczanej przez system, pole \textit{Opis} szczegółowo opisuje w jaki sposób jest realizowane dane wymaganie, a pole \textit{Uzasadnienie} podaje powód dlaczego w taki, a nie inny sposób wymaganie zostało zrealizowane i postawione. \\
+
+\begin{center}
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{Nazwa} & Obliczanie wyników wyborów \\ 
+\hline 
+\textbf{Opis} & System oferuje kilka algorytmów heurystycznych obliczających wyniki
+wyborów. Algorytmy bazują na różnym paradygmacie tworzenia ich.
+Jeden z paradygmatów to programowanie zachłanne, a drugi to
+programowanie genetyczne. Użytkownik przy tworzeniu
+nowego wyniku dla zdefiniowanych wyborów może w prosty sposób
+wybrać jeden z algorytmów. \\ 
+\hline 
+\textbf{Uzasadnienie} & Kilka stworzonych algorytmów i różne podejście do tworzenia ich,
+umożliwia ocenę jakości algorytmów na bazie zestawienia wyników
+obliczonych wyborów. Ponadto stworzenie różnych algorytmów pozwoli
+na dogłębniejsze poznanie sposobów tworzenia algorytmów
+heurystycznych, jak również samej tematyki pracy, jaką były różne
+sposoby wyboru zwycięskiego komitetu.\\ 
+\hline 
+\end{tabular}
+\captionof{table}{Obliczanie wyników wyborów} 
+\end{center}
+
+\vspace{\baselineskip}
+
+\begin{center}
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{Nazwa} & Wersja algorytmu zachłannego \textit{Greedy - CC} \\ 
+\hline 
+\textbf{Opis} & Implementacja algorytmu zachłannego dla szczególnego przypadku
+(parametr $p \to \infty$) \\ 
+\hline 
+\textbf{Uzasadnienie} & Dla stosunkowo ``dużych'' wartości parametru $p$ wykonywanie operacji
+pierwiastkowania i potęgowania stanowi niepotrzebny narzut czasowy.
+W tym przypadku operację obliczania normy $\ell_p$ można zastąpić
+wyznaczaniem maksimum dla pojedynczych wyników kandydatów z
+komitetu, dla którego liczono by normę $\ell_p$.
+Korzyści jakie płyną z takiej modyfikacji to nie tylko skrócenie czasu
+obliczeń, ale także ustalanie od jakiej wartości parametru $p$ komitet
+wygrywający jest bliski przybliżonego wyniku otrzymanego dla systemu
+\textit{Chamberlina-Couranta}.\\ 
+\hline 
+\end{tabular} 
+\captionof{table}{Wersja algorytmu zachłannego \textit{Greedy - CC}}
+\end{center}
 \newpage
+
 \begin{table}
 \centering
 \begin{tabular}{|c|p{13cm}|}
@@ -255,57 +304,7 @@ algorytmów i porównanie ich.\\
 \end{tabular}
 \caption{Zdefiniowanie wyborów} 
 \end{table}
-
-\clearpage
-
-\begin{table}
-\centering
-\begin{tabular}{|c|p{10cm}|}
-\hline
-\textbf{Nazwa} & Obliczanie wyników wyborów \\ 
-\hline 
-\textbf{Opis} & System oferuje kilka algorytmów heurystycznych obliczających wyniki
-wyborów. Algorytmy bazują na różnym paradygmacie tworzenia ich.
-Jeden z paradygmatów to programowanie zachłanne, a drugi to
-programowanie genetyczne. Użytkownik przy tworzeniu
-nowego wyniku dla zdefiniowanych wyborów może w prosty sposób
-wybrać jeden z algorytmów. \\ 
-\hline 
-\textbf{Uzasadnienie} & Kilka stworzonych algorytmów i różne podejście do tworzenia ich,
-umożliwia ocenę jakości algorytmów na bazie zestawienia wyników
-obliczonych wyborów. Ponadto stworzenie różnych algorytmów pozwoli
-na dogłębniejsze poznanie sposobów tworzenia algorytmów
-heurystycznych, jak również samej tematyki pracy, jaką były różne
-sposoby wyboru zwycięskiego komitetu.\\ 
-\hline 
-\end{tabular}
-\caption{Obliczanie wyników wyborów} 
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{|c|p{10cm}|}
-\hline
-\textbf{Nazwa} & Wersja algorytmu zachłannego \textit{Greedy - CC} \\ 
-\hline 
-\textbf{Opis} & Implementacja algorytmu zachłannego dla szczególnego przypadku
-(parametr $p \to \infty$) \\ 
-\hline 
-\textbf{Uzasadnienie} & Dla stosunkowo ``dużych'' wartości parametru $p$ wykonywanie operacji
-pierwiastkowania i potęgowania stanowi niepotrzebny narzut czasowy.
-W tym przypadku operację obliczania normy $\ell_p$ można zastąpić
-wyznaczaniem maksimum dla pojedynczych wyników kandydatów z
-komitetu, dla którego liczono by normę $\ell_p$.
-Korzyści jakie płyną z takiej modyfikacji to nie tylko skrócenie czasu
-obliczeń, ale także ustalanie od jakiej wartości parametru $p$ komitet
-wygrywający jest bliski przybliżonego wyniku otrzymanego dla systemu
-\textit{Chamberlina-Couranta}.\\ 
-\hline 
-\end{tabular} 
-\captionof{table}{Wersja algorytmu zachłannego \textit{Greedy - CC}}
-\end{table}
-
-\vspace{\baselineskip}
+\newpage
 
 \begin{table}
 \centering
@@ -314,19 +313,18 @@ wygrywający jest bliski przybliżonego wyniku otrzymanego dla systemu
 \textbf{Nazwa} & Prezentacja wyników wyborów \\ 
 \hline 
 \textbf{Opis} & System oferuje różne sposoby prezentacji wyników wyborów. Pierwszy z
-nich, to proste wskazanie kandydatów i wypisanie nazw kandydatów w
-widocznym panelu. Ta forma prezentacji dotyczy wyników wyborów,
-które zdefiniowane zostały za pomocą pliku formatu \textit{.soc}.
+nich, to proste wskazanie zwycięzców i wypisanie nazw kandydatów w
+widocznym panelu. Ta forma to jedyny sposób prezentacji dla wyników wyborów,
+które zdefiniowane zostały za pomocą pliku formatu \textit{.soc}. Dla wyborów wygenerowanych z rozkładu normalnego lub na bazie stworzonego wykresu, ta forma prezentacji jest również dostępna, choć nie ma większego zastosowania.
 
 Druga forma prezentacji wyników wyborów dotyczy wyborów wygenerowanych z
 rozkładu normalnego lub poprzez zaznaczanie punktów na płaszczyźnie.
 Wizualizacja polega na narysowaniu wykresu
 \textit{2D}, na którym punkty reprezentujące kandydatów ze zwycięskiego
 komitetu są wyraźnie wyróżnione na tle kandydatów, którzy nie dostali
-się do zwycięskiego komitetu. Dla wyborów generowanych z rozkładu normalnego lub poprzez zaznaczanie 
-punktów system również oferuje wypisanie nazw zwycięzców w dobrze widocznym panelu.
+się do zwycięskiego komitetu. 
 
-Ponadto system oferuje wykres zależności czasu wykonanania obliczeń od parametru $p$ i 
+Ponadto system oferuje wykres zależności czasu wykonania obliczeń od parametru $p$ i 
 wybranego algorytmu oraz tabelę z wszystkimi wynikami wyborów obliczonych przez różne algorytmy i dla 
 różnych parametrów $p$. Wyniki dla różnych parametrów $p$ są wyraźnie oddzielone.\\ 
 \hline 
@@ -435,6 +433,7 @@ poszczególnych członków zespołu. Ponieważ dla członków zespołu projekt i
 tylko jednym z wielu zajęć w czasie trwania projektu, mogła wystąpić sytuacja kiedy ze
 względu na natężenie innych obowiązków, dany członek zespołu nie mógłby wykonać
 koniecznej pracy w odpowiednim czasie.
+\newpage
 
 \section{Wybrane aspekty realizacji}
 \subsection{Lista modułów}
@@ -459,8 +458,6 @@ poprzez współpracę różnych modułów.
 	\item usunięcie wyborów
 	\item usunięcie wyniku
 	\end{itemize}
-\clearpage
-
 \item Moduł wizualizacji wyborów i wyników wyborów
 	\begin{itemize}
 	\item wizualizacja wyborów wygenerowanych zgodnie z rozkładem normalnym lub poprzez zaznaczanie 
@@ -505,6 +502,7 @@ kieruje odpowiednie żądania do tego modułu i jest to jedyna komunikacja zwią
 modułem administracji kont. Większość modułów w celu realizacji swoich zadań komunikuje
 się z bazą danych. Dokładny opis diagramu ze ścieżkami przejść znajduje się w dokumentacji
 technicznej.
+\newpage
 
 \section{Organizacja pracy}
 \subsection{Metodyka pracy}

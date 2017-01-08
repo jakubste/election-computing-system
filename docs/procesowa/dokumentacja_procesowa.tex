@@ -91,13 +91,13 @@ Stworzona aplikacja webowa ma pozwalać użytkownikowi na szybkie definiowanie w
 Jako wybory rozumiemy nie tylko te, w których głosujący wyłaniają swoich przedstawicieli w organach władzy - swoje preferencje można także określić dla, na przykład, filmów jakie chcemy obejrzeć podczas seansu z przyjaciółmi, w jaką grę chcielibyśmy zagrać, jaką restaurację wybrać na rodzinne spotkanie itp.
 
 Ustalenie preferencji to jedno, ale o tym, kto lub co zostanie wybrane na podstawie preferencji wszystkich głosujących, decyduje również system wyborczy.
-Określając parametr p systemu wyborczego aplikacja ma za zadanie ilustrować jak, w zależności od tego parametru, zmieniają się wyniki wyborów, przy tym samym zestawie preferencji.
+Określając parametr $p$ systemu wyborczego, aplikacja ma za zadanie ilustrować jak, w zależności od tego parametru, zmieniają się wyniki wyborów przy tym samym zestawie preferencji.
 
-W pierwszej kolejności użytkownik określa listę preferencji wyborców. Określając swoje preferencje 
+W pierwszej kolejności użytkownik określa listę preferencji wyborców. Określając swoje preferencje, 
 każdy wyborca porządkuje kandydatów w kolejności od najlepszego do najgorszego. Lista preferencji może 
-zostać zaimportowana z odpowiednio sformatowanego pliku, wygenerowana losowo lub przez zaznaczenie 
+zostać zaimportowana z odpowiednio sformatowanego pliku, wygenerowana z rozkładu normalnego lub wygenerowana z zaznaczonych 
 punktów na płaszczyźnie.
-Na wprowadzonych do systemu listach preferencji i ustalonej liczbie k wyborców użytkownik może 
+Na wprowadzonych do systemu listach preferencji i ustalonego rozmiaru komitetu, użytkownik może 
 wielokrotnie uruchamiać algorytm wyłaniania zwycięzców z różnym parametrem.
 
 \chapter{Studium wykonalności}
@@ -188,7 +188,7 @@ możliwości i udogodnień systemu.
 
 \indent W celu zagwarantowania poprawności działania wcześniej dodanych funkcjonalności, po
 wykonaniu i wdrożeniu nowych funkcjonalności systemu, skorzystano z praktyki ciągłej
-integracji. Zrealizowano ją za pomocą serwisu Travis CI. Serwis zapewnia automatyczne
+integracji. Zrealizowano ją za pomocą serwisu \textit{Travis CI}. Serwis zapewnia automatyczne
 wykonanie przygotowanych testów jednostkowych, po każdej wprowadzonej zmianie do
 repozytorium kodu źródłowego
 \section{Aspekt technologiczny}
@@ -197,8 +197,8 @@ Do stworzenia oprogramowania wykorzystano język \textit{Python 2.7}. System wyk
 formie aplikacji internetowej. Do zrealizowania aplikacji webowej wykorzystano framework
 dla języka programowania \textit{Python} - \textit{Django 1.9}. \textit{Django} dostarcza w pełni funkcjonalny
 system uwierzytelniania, zapewnia obsługę kont, grup oraz uprawnień użytkowników.
-Oprócz zaoszczędzenia czasu na realizacji powyższych, nieistotnych dla realizacji tematu
-projektu, funkcjonalności systemu, głównym powodem było również doświadczenie w
+Oprócz zaoszczędzenia czasu na realizację powyższych, nieistotnych dla realizacji tematu
+projektu, funkcjonalności systemu, głównym powodem wybrania tego stosu technologicznego było doświadczenie w
 tworzeniu aplikacji z użyciem \textit{Django} posiadane przez jednego z członków zespołu
 realizującego niniejszy projekt.
 
@@ -222,7 +222,7 @@ Należy liczyć się również z problemami z synchronizacją czasową. Różne 
 zajęć członków zespołu (różne przedmioty obieralne i związane z tym obciążenie
 czasowe w danej części semestru), praca zawodowa członków zespołu, konieczność
 odbycia staży wakacyjnych, pobyt poza Krakowem (brak możliwości spotkania się
-we trójkę).
+we trójkę) mogą utrudnić tworzenie systemu.
 \end{enumerate}
 
 \section{Analiza zagrożeń}
@@ -303,7 +303,7 @@ Daniel Ogiela:
 \item projekt i implementacja algorytmu zachłannego zależnego od parametru $p$
 \item implementacja algorytmu zachłannego według zasady \textit{Chamberlina-Couranta}
 \item współtworzenie dokumentacji projektowej
-\item tworzenie testów jednostkowych i porównawczych
+\item współtworzenie testów jednostkowych i porównawczych
 \item współtworzenie prezentacji na zajęcia seminaryjne
 \end{itemize}
 
@@ -366,7 +366,7 @@ Jakość obliczanych wyników wyborów weryfikowano za pomocą testów
 porównawczych oraz oceny wizualnej. Testy porównawcze polegały na porównywaniu wyników generowanych przez różne
 algorytmy heurystyczne. Porównanie dotyczyło czasów działania algorytmów oraz zadowoleń wyborców z wyniku wypracowanych przez algorytmy. Dodatkowo dla małych rozmiarów danych porównywano wyniki algorytmów heurystycznych z wynikami uzyskanymi metodą \textit{brute-force}.
 
-Ocena wizualna dotyczyła ocenienia wykresów wyników wyborów – sprawdzano czy w miarę wzrostu parametru $p$ punkty reprezentujące zwycięskich kandydatów stopniowo rozpraszały się na mapie spektrum poglądów, co byłoby zgodne z oczekiwaniami dotyczącymi zachowywania się wyników wyborów w tym systemie 
+Ocena wizualna dotyczyła ocenienia wykresów wyników wyborów – sprawdzano czy w miarę wzrostu parametru $p$, punkty reprezentujące zwycięskich kandydatów stopniowo rozpraszały się na mapie spektrum poglądów, co byłoby zgodne z oczekiwaniami dotyczącymi zachowywania się wyników wyborów w tym systemie 
 wyborczym. Ocena wizualna dotyczyła tylko wyborów generowanych z rozkładu normalnego. Dla tych 
 wyborów, wyborcy i kandydaci są reprezentowani jako punkty na płaszczyźnie.
 
@@ -498,6 +498,7 @@ reprezentowanych jako punkty oraz wyników wyborów na wykresach $2D$ (dla
 wyborów generowanych z rozkładu normalnego)
 \item Studium wykonalności
 \end{itemize}
+\newpage
 
 \subsection{Wersja 3.}
 \subsubsection{Czas trwania}
@@ -505,7 +506,7 @@ koniec maja 2016 - czerwiec 2016
 \subsubsection{Cele wyznaczone do osiągnięcia}
 Głównym celem wyznaczonym dla tej wersji systemu było stworzenie pierwszych wersji
 dwóch algorytmów heurystycznych – genetycznego oraz zachłannego. 
-Ponadto zdecydowano się skupić nad optymalizacją ilości operacji odczytu danych z bazy danych, jako czynnika, 
+Ponadto zdecydowano się skupić nad optymalizacją liczby operacji odczytu danych z bazy danych, jako czynnika, 
 który znacząco spowalniał wykonanie programu.
 \subsubsection{Opis przebiegu pracy}
 Rozpoczęto od ograniczenia liczby operacji odczytu preferencji wyborczych z bazy danych
@@ -542,13 +543,13 @@ Algorytmy heurystyczne przyspieszano głównie poprzez eliminację niepotrzebnyc
 na bazie danych. Zmniejszyło to czas dostępu do danych i tym samym czas trwania
 algorytmów. 
 
-Wprowadzono możliwości ustalania parametrów algorytmu genetycznego (takich jak: ilość cykli, prawdopodobieńśtwo
+Wprowadzono możliwości ustalania parametrów algorytmu genetycznego (takich jak: liczba cykli, prawdopodobieństwo
 mutacji, część puli podlegająca krzyżowaniu) z poziomu interfejsu webowego.
 Dostosowano wygląd listy rezultatów, tak by pokazywała zastosowane parametry.
 
 Dla realizacji celu ulepszenia sposobu wyświetlania wyników zaimplementowano możliwość porównywania 
 wielu wyników na jednym wykresie, przełączając się między wynikami poprzez suwak. 
-Dodano rownież wykres zestawiający czasy obliczeń algorytmów w zależności od parametru $p$.
+Dodano również wykres zestawiający czasy obliczeń algorytmów w zależności od parametru $p$.
 
 Tworzenie wyborów poprzez zaznaczanie punktów na płaszczyźnie wiązało się z dodaniem graficznego 
 interfejsu do zaznaczania punktów oraz przekazaniem tak uzyskanych danych do bazy.
