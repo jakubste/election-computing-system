@@ -1,20 +1,24 @@
+import json
+
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.forms.widgets import Select
-from django.http.response import Http404
+from django.http.response import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import CreateView, FormView
 
+from ecs import settings
 from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.algorithms.genetic import GeneticAlgorithm
 from ecs.elections.algorithms.greedy_algorithm import GreedyAlgorithm
 from ecs.elections.algorithms.greedy_cc import GreedyCC
 from ecs.elections.election_generator import ElectionGenerator
+from ecs.elections.election_paint_loader import ElectionPaintLoader
 from ecs.elections.exceptions import CandidatesNameIncorrectFormatException, SummingLineTypeException, \
     BadDataFormatException, PreferenceOrderTypeException, PreferenceOrderLogicException
 from ecs.elections.exceptions import IncorrectTypeOfCandidatesNumberException, SummingLineFormatException
@@ -202,6 +206,30 @@ class ElectionGenerateDataFormView(ConfigureElectionMixin, FormView):
         generator = ElectionGenerator(self.election, **form.cleaned_data)
         generator.generate_elections()
         return super(ElectionGenerateDataFormView, self).form_valid(form)
+
+
+class ElectionPaintView(ConfigureElectionMixin, TemplateView):
+    template_name = 'election_paint_data.html'
+    election = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.election = get_object_or_404(Election, pk=kwargs.get('pk'))
+        if self.election.user != self.request.user:
+            raise Http404
+        return super(ElectionPaintView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ElectionPaintView, self).get_context_data(**kwargs)
+        ctx['election'] = self.election
+        ctx['MAX_CANDIDATES'] = settings.ELECTION_GENERATOR['MAX_CANDIDATES']
+        ctx['MAX_VOTERS'] = settings.ELECTION_GENERATOR['MAX_VOTERS']
+        return ctx
+
+    def post(self, request, pk):
+        data = json.loads(request.body)
+        loader = ElectionPaintLoader(self.election, data['candidates'], data['voters'])
+        loader.load_elections()
+        return HttpResponse(reverse("elections:election_details", args=(self.election.pk,)))
 
 
 class ElectionChartView(ChartMixin):
