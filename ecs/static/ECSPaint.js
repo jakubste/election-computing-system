@@ -8,7 +8,6 @@ var MARKER_COLOR = VOTER_COLOR;
 var CANDIDATES_MODE = 'candidates', VOTERS_MODE = 'voters', mode = VOTERS_MODE;
 document.getElementById("mode").innerHTML = VOTERS_MODE.toString();
 var candidates = [], voters = [];
-// var MAX_CANDIDATES = 50, MAX_VOTERS = 50;
 document.getElementById("candidates_limit").innerHTML = MAX_CANDIDATES.toString();
 document.getElementById("voters_limit").innerHTML = MAX_VOTERS.toString();
 var current_list = voters;
