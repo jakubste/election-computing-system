@@ -2,7 +2,7 @@
     float: right;
 }
 
-#results-slider{
+#results-slider {
     width: 100%;
 }
 
@@ -19,4 +19,10 @@
 
 .form-group label {
     margin-top: 7px;
+}
+
+#ecs-paint {
+padding: 0;
+margin: auto;
+display: block;
 }
