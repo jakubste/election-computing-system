@@ -2,7 +2,7 @@
     float: right;
 }
 
-#results-slider{
+#results-slider {
     width: 100%;
 }
 
@@ -15,4 +15,10 @@
 .algorithm-settings .algorithm-settings-single {
     width: 60px;
     float: left;
+}
+
+#ecs-paint {
+    padding: 0;
+    margin: auto;
+    display: block;
 }

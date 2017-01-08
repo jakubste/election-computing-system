@@ -1,7 +1,6 @@
 var ECS_DIV_NAME = "ecs-paint";
 var RANGE = 200;
 var DIVISIONS = 10, SIZE = RANGE / 2; //grid helper parameters
-var FONT_SIZE = 8;
 var MARKER_SIZE = 1, MIN_MARKER_SIZE = 1, MAX_MARKER_SIZE = 50;
 var CANDIDATE_COLOR = 0x008000, VOTER_COLOR = 0x0000ff;
 var MARKER_COLOR = VOTER_COLOR;
@@ -9,7 +8,7 @@ var MARKER_COLOR = VOTER_COLOR;
 var CANDIDATES_MODE = 'candidates', VOTERS_MODE = 'voters', mode = VOTERS_MODE;
 document.getElementById("mode").innerHTML = VOTERS_MODE.toString();
 var candidates = [], voters = [];
-var MAX_CANDIDATES = 50, MAX_VOTERS = 50;
+// var MAX_CANDIDATES = 50, MAX_VOTERS = 50;
 document.getElementById("candidates_limit").innerHTML = MAX_CANDIDATES.toString();
 document.getElementById("voters_limit").innerHTML = MAX_VOTERS.toString();
 var current_list = voters;
@@ -47,7 +46,7 @@ var render = function () {
 
     marker.position.x = x_pos;
     marker.position.y = y_pos;
-
+    
     renderer.render(scene, camera);
 };
 //=========
@@ -96,6 +95,9 @@ function onMouseMove(evtent) {
 
     mouse.x = ( canv_x / paint_container.width ) * 2 - 1;
     mouse.y = -( canv_y / paint_container.height ) * 2 + 1;
+
+    document.getElementById("x_pos").innerHTML = x_pos.toString();
+    document.getElementById("y_pos").innerHTML = y_pos.toString();
 }
 
 function onMouseDown(event) {
@@ -195,32 +197,6 @@ document.addEventListener('keydown', onKeyDown, false);
 document.addEventListener('mousemove', onMouseMove, false);
 document.addEventListener('mousedown', onMouseDown, false);
 //========
-
-var loader = new THREE.FontLoader();
-var font = loader.load(FONT_SRC, function (font) {
-    putLabels(font);
-});
-
-function putLabels(font) {
-    putLabel(0, 0, "(0,0)", 0x000000, font, 4);
-    putLabel(-100, 100, "(-100,100)", 0x000000, font, 4);
-    putLabel(100, 100, "(100,100)", 0x000000, font, 4);
-    putLabel(-100, -100, "(-100,-100)", 0x000000, font, 4);
-    putLabel(100, -100, "(100,-100)", 0x000000, font, 4);
-}
-
-function putLabel(x, y, tag, color, font, size) {
-    var font_size = size ? size : FONT_SIZE;
-    var geometry = new THREE.TextGeometry(tag, {font: font, size: font_size, height: 2, curveSegments: 2});
-    var material = new THREE.MeshBasicMaterial({color: color});
-    var mesh = new THREE.Mesh(geometry, material);
-
-    scene.add(mesh);
-
-    mesh.position.x += x;
-    mesh.position.y += y;
-    mesh.name = tag;
-}
 
 renderer.setClearColor(0xffffff);
 

@@ -7,10 +7,46 @@
 {% block content %}
     <!--- threejs for paint -->
     {% csrf_token %}
-    <canvas id="ecs-paint" width="1000" height="1000"></canvas>
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <ul>
+                <li>Press V to draw voters</li>
+                <li>Press C to draw candidates</li>
+                <li>Press +/- to change marker size</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <canvas id="ecs-paint" width="810" height="810"></canvas>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-xs-offset-2 col-sm-2">
+                    Candidates: <span id="candidates">0</span>/<span id="candidates_limit"></span>
+                </div>
+                <div class="col-sm-2">
+                    Voters: <span id="voters">0</span>/<span id="voters_limit"></span>
+                </div>
+                <div class="col-sm-2">
+                    Adding: <span id="mode"></span>
+                </div>
+                <div class="col-sm-1">
+                    X: <span id="x_pos">0</span>
+                </div>
+                 <div class="col-sm-1">
+                    Y: <span id="y_pos">0</span>
+                </div>
+                <div class="col-sm-4">
+                    <button type="submit" class="btn btn-primary" onclick="getPaintedData(PAINT_VIEW)">Save and proceed
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        var FONT_SRC = "{% static 'gentilis_regular.typeface.json' %}";
+        var MAX_CANDIDATES = {{ MAX_CANDIDATES }};
+        var MAX_VOTERS = {{ MAX_VOTERS }};
         var PAINT_VIEW = "{%  url 'elections:election_paint' election.pk %}"
     </script>
 
@@ -28,25 +64,6 @@
             }
         });
     </script>
-
-    <div class="row">
-        <div class="panel panel-primary col-xs-10">
-            <div class="panel-body">
-                <ul>
-                    <li>Press V to draw voters</li>
-                    <li>Press C to draw candidates</li>
-                    <li>Press +/- to change marker size</li>
-                    <li>Candidates: <span id="candidates">0</span>/<span id="candidates_limit"></span></li>
-                    <li>Voters: <span id="voters">0</span>/<span id="voters_limit"></span></li>
-                    <li>Adding: <span id="mode"></span></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-xs-2">
-            <button type="submit" class="btn btn-primary" onclick="getPaintedData(PAINT_VIEW)">Save and proceed
-            </button>
-        </div>
-    </div>
 
     <script type="text/javascript" src="{% static 'three.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'ECSPaint.js' %}"></script>

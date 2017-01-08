@@ -12,6 +12,7 @@ from django.views.generic import ListView
 from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import CreateView, FormView
 
+from ecs import settings
 from ecs.elections.algorithms.brute_force import BruteForce
 from ecs.elections.algorithms.genetic import GeneticAlgorithm
 from ecs.elections.algorithms.greedy_algorithm import GreedyAlgorithm
@@ -220,6 +221,8 @@ class ElectionPaintView(ConfigureElectionMixin, TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super(ElectionPaintView, self).get_context_data(**kwargs)
         ctx['election'] = self.election
+        ctx['MAX_CANDIDATES'] = settings.ELECTION_GENERATOR['MAX_CANDIDATES']
+        ctx['MAX_VOTERS'] = settings.ELECTION_GENERATOR['MAX_VOTERS']
         return ctx
 
     def post(self, request, pk):
