@@ -17,8 +17,12 @@
     float: left;
 }
 
+.form-group label {
+    margin-top: 7px;
+}
+
 #ecs-paint {
-    padding: 0;
-    margin: auto;
-    display: block;
+padding: 0;
+margin: auto;
+display: block;
 }

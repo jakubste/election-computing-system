@@ -2,8 +2,10 @@
 from django import forms
 from django.contrib.auth.models import User
 
+from ecs.utils.forms import BootstrapForm
 
-class LoginForm(forms.Form):
+
+class LoginForm(BootstrapForm):
     class Errors:
         USER_WITH_EMAIL_DOES_NOT_EXIST = u'No user with such email found'
         USER_WITH_USERNAME_DOESNT_EXIST = u'No user with such username found'
@@ -37,7 +39,7 @@ class LoginForm(forms.Form):
         return cleaned_data
 
 
-class RegistrationForm(forms.Form):
+class RegistrationForm(BootstrapForm):
     class Errors:
         EMAIL_ALREADY_USED = u'User with given email already exists'
         USERNAME_ALREADY_USED = u'User with given username already exists'
