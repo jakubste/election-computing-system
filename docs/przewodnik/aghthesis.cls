@@ -72,6 +72,7 @@ and that I am aware of the rules of the Penal Code referring to criminal liabili
 \renewcommand{\baselinestretch}{1.1}
 
 \def\title#1        {\gdef\@title{#1}}
+\def\en_title#1     {\gdef\@en_title{#1}}
 \def\faculty#1      {\gdef\@faculty{#1}}
 \def\thesistype#1   {\gdef\@thesistype{#1}}
 \def\supervisor#1   {\gdef\@supervisor{#1}}
@@ -102,10 +103,17 @@ and that I am aware of the rules of the Penal Code referring to criminal liabili
 
 \doublespacing
 {\huge{\bfseries\scshape \@title}}\\
+\singlespacing
+{\scshape\@en_title}
 \vspace*{1.5cm}
 
-{\LARGE\scshape \@author}\\
-%\vspace*{5cm}
+
+{\Large\scshape 
+\begin{doublespacing}
+\@author
+\end{doublespacing}
+}\\
+
 \vfill
 
 \singlespacing
