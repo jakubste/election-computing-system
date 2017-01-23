@@ -284,6 +284,80 @@ $$
 
 \end{frame}
 
+%----------------------------------------------------------------------------------------
+
+\subsection{Algorytm genetyczny}
+
+\begin{frame}
+\frametitle{Osobnik}
+Jako początkową populację osobników przyjmujemy 50 losowo wybranych komitetów.
+
+~ \\ ~ \\ ~ \\
+
+\includegraphics[width=0.8\paperwidth]{pics/committee.png}
+
+
+\end{frame}
+
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Krzyżowanie}
+Podczas krzyżowania dwa osobniki wymieniają się losowo kandydatami. Tworzony jest nowy osobnik, zawierający k kandydatów którzy poprzednio byli w co najmniej jednym z osobników przystępujących do krzyżowania.
+
+~ \\ ~ \\ ~ \\
+
+\includegraphics[width=0.8\paperwidth]{pics/crossing.png}
+
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Mutacja}
+Podczas mutacji jeden z kandydatów w osobniku jest wymieniany na innego, niebędącego dotąd w danym osobniku.
+
+~ \\ ~ \\ ~ \\
+
+\includegraphics[width=0.8\paperwidth]{pics/mutation.png}
+
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Cykl}
+
+Na jeden cykl algorytmu składa się:
+
+\begin{itemize}
+\item wybór par osobników do krzyżowania się
+\item krzyżowanie osobników
+\item mutacja osobników zgodnie z zadanym prawdopodobieństwem
+\item wybór N osobników do przejścia do kolejnego cyklu
+\end{itemize}
+
+Liczba N określa wielkość puli osobników i jest wybierana na początku działania algorytmu. W naszej implementacji przyjęto stałą liczbę $50$ osobników.
+
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Parametry algorytmu}
+
+System pozwala wybrać:
+\begin{itemize}
+\item liczbę cykli działania algorytmu
+\item część puli jaka jest poddawana krzyżowaniu (osobniki są z niej losowo wybierane do krzyżowania)
+\item prawdopodobieństwo wystąpienia mutacji w pojedynczym osobniku
+\end{itemize}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+
 \begin{frame}
 \Huge{\centerline{Dziękujemy za uwagę}}
 \end{frame}
