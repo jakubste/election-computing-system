@@ -1,0 +1,293 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Election Computing System
+% System obliczający i wizualizujący wyniki zgodnie z uogólnieniem systemu k-Borda na podstawie norm ell_p.
+%
+% Prezentacja wykonana na Pracownię Projektową
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{algorithm2e}
+
+\selectlanguage{polish}
+
+\mode<presentation> {
+	\usetheme{Copenhagen}
+}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+
+% Custom macros
+
+\newcommand{\red}[1]{
+	{ \color{red}{#1} }
+}
+
+\newcommand{\score}[2]{
+	\stackrel
+	{\red{#1}}
+	{#2}
+}
+
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title
+[System obliczający wyniki wyborów]
+{System obliczający wyniki wyborów dla uogólnienia systemu k-Borda}
+
+\author
+[T. Kasprzyk, D. Ogiela, J. Stępak]
+{Tomasz Kasprzyk, \ Daniel Ogiela, \ Jakub Stępak}
+
+\institute
+[AGH]
+{
+Akademia Górniczo-Hutnicza
+
+Wydział Informatyki, Elektroniki i Telekomunikacji
+
+Katedra Informatyki 
+\newline \newline
+Projekt realizowany pod opieką \\dr. hab. inż. Piotra Faliszewskiego
+
+}
+\date{26 stycznia 2017}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\frame{\titlepage}
+
+%\begin{frame}
+%\frametitle{Plan}
+%\tableofcontents
+%\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+\section{Opis problemu}
+%------------------------------------------------
+
+\subsection{Definicja wyborów}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Definicja wyborów}
+Wybory to para $E = (C, V)$,
+gdzie $C = \{ c_1, c_2, \ldots, c_m \}$ to zbiór kandydatów,
+a $V = (v_1, v_2, \ldots, v_n)$ to ciąg wyborców.
+Każdy wyborca posiada swoje $preferencje$,
+które są ciągiem kandydatów w porządku od najbardziej preferowanego
+przez danego wyborcę do najmniej preferowanego. Ponadto dana jest liczba $k$, będąca wielkością wybieranego komitetu.
+\end{frame}
+
+%------------------------------------------------
+
+\subsection{Przykładowe wybory}
+\begin{frame}
+\frametitle{Przykładowe wybory}
+\begin{exampleblock}{Wybory filmów}
+
+
+$ C = \{$komedia, horror, film akcji, dramat, science fiction$\} $ \\
+$ V = ($Anna, Jan, Piotr, Paweł$) $ \\ ~ \\
+ \textbf{Anna:}  $\score{1}{dramat} \ > \ \score{2}{komedia} \ > \ \score{3}{film \ akcji} \ > \ \score{4}{horror} \ > \ \score{5}{science \ fiction}$\\
+ \textbf{Jan:}  $\score{1}{science \ fiction} \ > \ \score{2}{komedia} \ > \ \score{3}{dramat} \ > \ \score{4}{film \ akcji} \ > \ \score{5}{horror}$ \\
+ \textbf{Piotr:} $\score{1}{horror} \ > \ \score{2}{dramat} \ > \ \score{3}{film \ akcji} \ > \ \score{4}{komedia} \ > \ \score{5}{science \ fiction}$\\
+ \textbf{Paweł:} $\score{1}{science \ fiction} \ > \ \score{2}{film \ akcji} \ > \ \score{3}{komedia} \ > \ \score{4}{horror} \ > \ \score{5}{dramat}$\\ ~ \\
+$ k = 2 $
+
+
+\end{exampleblock}
+\end{frame}
+
+%------------------------------------------------
+\subsection{Pojęcia pomocnicze}
+
+\begin{frame}
+\frametitle{Punktacja Bordy}
+
+Niech $v$ będzie głosem nad zbiorem kandydatów $C$.
+Punkty przyporządkowane każdemu kandydatowi $c \in C$ w $v$ wynoszą
+$||C|| - pos_v(c)$, gdzie $pos_v(c)$ to pozycja kandydata $c$ w $v$.
+
+\begin{exampleblock}{Funkcja Bordy}
+$$
+\beta(i) = m-i, \quad gdzie \ m = ||C||
+$$
+\end{exampleblock}
+
+\begin{exampleblock}{Preferencje wyborcy}
+$$ 
+v_1: \score{m-1}{c_1} \ > \ \score{m-2}{c_2} \ > \ \score{m-3}{c_3} \ > \ \score{m-4}{c_4} \ > \ \ldots
+$$
+\end{exampleblock}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Ciąg pozycji}
+
+Dla wybranego komitetu $S$ i danego
+wyborcy $v$ definiujemy ciąg $pos_v(S) $ jako
+posortowany ciąg pozycji, które zajmują kandydaci z $S$ w preferencjach wyborcy $v$. \\ 
+\vspace{\baselineskip}
+Niech $S = \{c_1, c_3, c_5, c_6\}$
+
+\begin{exampleblock}{Preferencje wyborcy}
+$$
+v_1: \ \score{1}{c_5} \ > \ \score{2}{c_3} \ > \ \score{3}{c_1} \ > \ \score{4}{c_2} \ > \ \score{5}{c_6} \ > \ \score{6}{c_4} > \ldots
+$$
+\end{exampleblock}
+
+$$pos_{v_1}(S) = (1, 2, 3, 5)$$
+
+\begin{exampleblock}{Oznaczenie wartości funkcji satysfakcji}
+$$
+f(i_1, \ldots, i_k)
+$$
+\end{exampleblock}
+
+\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Committee scoring rules}
+
+%Istnieją systemy wyborcze: \\ ~ \\
+
+%\begin{tabular}{ll}
+%k-Borda: 			& $f_{kB}(i_1, \ldots, i_k) = \beta(i_1) + \ldots + \beta(i_k)$\\
+%Chamberlin–Courant:  & $f_{CC}(i_1, \ldots, i_k) = \beta(i_1)$
+%\end{tabular}
+
+%\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Norma $\ell_p$}
+Niech $x_1, x_2, \ldots , x_n \in \mathbb{R}, p \in \mathbb{N}$
+\begin{block}{Norma $\ell_p$}
+$$
+\ell_p(x_1, x_2, \ldots, x_n ) = \sqrt[p]{ x_1^p + x_2^p + \ldots + x_n^p }
+$$
+\end{block}
+
+\begin{exampleblock}{}
+$$
+\begin{aligned}
+\ell_1 	\	 &\equiv 	\ \ +  \\
+\ell_\infty 	\  &\equiv 	\ max 
+\end{aligned}
+$$
+\end{exampleblock}
+
+\end{frame}
+
+%------------------------------------------------
+
+\subsection{System $\ell_p-Borda$}
+\begin{frame}
+\frametitle{System $\ell_p-Borda$}
+
+\begin{block}{Funkcja satysfakcji $\ell_p-Borda$}
+$$
+f_{\ell_p}(i_1, i_2, \ldots, i_k ) = \ell_p(\beta(i_1), \beta(i_2), \ldots ,\beta(i_k))
+$$
+\end{block}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+
+\begin{exampleblock}{Funkcja satysfakcji k-Borda (gdy $p = 1$)}
+$$
+f_{k-Borda}(i_1, \ldots, i_k) = \beta(i_1) + \ldots + \beta(i_k)
+$$
+\end{exampleblock}
+
+\begin{exampleblock}{Funkcja satysfakcji Chamberlina-Couranta (gdy $p \to \infty$)}
+$$
+f_{CC}(i_1, \ldots, i_k) = \beta(i_1)
+$$
+\end{exampleblock}
+
+%\begin{exampleblock}{}
+%$$
+%\begin{aligned}
+%f_{\ell_1} 	\	 &\equiv 	f_{k-Borda}  \\
+%f_{\ell_\infty} 	\  &\equiv 	\ f_{Chamberlin-Courant} 
+%\end{aligned}
+%$$
+%\end{exampleblock}
+
+\end{frame}
+
+\section{Opis algorytmów}
+
+\subsection{Algorytmy zachłanne}
+\begin{frame}
+\frametitle{Algorytm zachłanny zależny od parametru $p$}
+
+\begin{algorithm}[H]
+%\SetAlgoLined
+\For{$i \longleftarrow 1$ to $k$ }{
+	\For{$c \in C\setminus REZULTAT$}{
+		\For{$v \in V$}{
+		$dodaj\_zadowolenie\_wyborcy(v, REZULTAT \cup c)$\;
+		}
+		\If{$badany\_kandydat\_najlepszy(c)$}{
+		$uaktualnij\_lidera\_iteracji(c)$\;
+		}
+	}
+	$REZULTAT \longleftarrow REZULTAT \cup zwyciezca\_iteracji$\;
+}
+\Return{$REZULTAT$}
+\end{algorithm}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Algorytm zachłanny wg zasady $Chamberlina-Couranta$}
+\begin{itemize}
+\item niezależny od parametru $p$
+\item aproksymacja wg funkcji satysfakcji $Chamberlina-Couranta$
+\item schemat działania identyczny jak wcześniejszego algorytmu
+\item zdecydowanie szybszy od głównego algorytmu zachłannego
+\item dobra aproksymacja systemu $\ell_p-Borda$ dla dużych wartości parametru $p$   
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\Huge{\centerline{Dziękujemy za uwagę}}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document} 
