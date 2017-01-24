@@ -248,7 +248,69 @@ $$
 
 \end{frame}
 
+\section{Wprowadzenie}
+\subsection{Aplikacja}
+\begin{frame}
+\frametitle{Konto użytkownika}
+\includegraphics[width=0.9\paperwidth]{pics/home_page.png}
+\end{frame}
+
+\subsection{Wprowadzanie danych o wyborach}
+\begin{frame}
+\frametitle{Metody wprowadzania danych}
+\includegraphics[width=0.7\paperwidth]{pics/three_options.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Zaznaczanie punktów na płaszczyźnie}
+\includegraphics[width=0.7\paperwidth]{pics/paint.png}
+\end{frame}
+
+\subsection{Obliczanie wyników}
+\begin{frame}
+\frametitle{Dobór parametrów do obliczeń}
+\includegraphics[width=0.9\paperwidth]{pics/parameters.png}
+\end{frame}
+
+\subsection{Prezentacja wyników}
+\begin{frame}
+\frametitle{Wykres rozmieszczenia kandydatów, lista zwycięzców}
+\includegraphics[width=0.80\paperwidth]{pics/chart_with_slider_and_winners.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Porównanie wyników dla różnych algorytmów}
+\includegraphics[width=0.85\paperwidth]{pics/algorithms_comparison_table.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Porównanie wyników dla różnych algorytmów}
+\begin{center}
+\includegraphics[width=0.5\paperwidth]{pics/p_t_chart.png}
+\end{center}
+\end{frame}
+
+
 \section{Opis algorytmów}
+\subsection{Algorytm brute-force}
+\begin{frame}
+\frametitle{Algorytmm brute-force}
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{$K$ - zbiór wszystkich możliwych komitetów w danych wyborach}
+\KwResult{$REZULTAT$ - zwycięski zbiór $k$ kandydatów}
+~\\
+$REZULTAT \longleftarrow \emptyset $ \\
+$najlepszy\_wynik \longleftarrow $ 0 \\
+\For{$k \in K$ }{ ~\\
+	\If{$wynik(k) > najlepszy\_wynik$}{ ~\\
+		$REZUTLAT \longleftarrow k$ \\
+		$najlepszy\_wynik \longleftarrow wynik(k)$
+	}
+}
+\Return{$REZULTAT$}
+\end{algorithm}
+\end{frame}
 
 \subsection{Algorytmy zachłanne}
 \begin{frame}
